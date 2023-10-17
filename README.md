@@ -156,3 +156,30 @@ After pushing your code up, go to Github
 Pull request should be approved by a team member before being merged
 
 Code should be reviewed, don't just blindly approve and merge.
+
+
+### Branch Rules
+When creating a new branch, the name should be named in the following format:
+```
+silver_[id]
+```
+ID is the number found in the url when the trello card is open
+
+In your branch, drop a link to the related trello card
+```
+> https://trello.com/c/pHPgtwqs/trello-card-id
+```
+
+In the trello card, put a link to the related pull request
+```
+> https://github.com/silvertrek-capstone/silverpi/pull/pr-id
+```
+
+After a pull request is merged, delete the old branch. (The pull request can still be viewed, but we don't want remote branches taking up room)
+
+---
+
+## Contributors
+Below are the people who have worked on this project.
+
+- Judah Tanninen
