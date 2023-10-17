@@ -183,3 +183,4 @@ After a pull request is merged, delete the old branch. (The pull request can sti
 Below are the people who have worked on this project.
 
 - Judah Tanninen
+- Muhamad Al-zughir
