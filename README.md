@@ -10,6 +10,11 @@ A web app portal for Silvertreks customers to view progress on work.
 ```bash
 npm ci
 ```
+3. Create a file called .env.local, copied from .env.local.dev
+```bash
+cp .env.local.dev .env.local
+```
+4. Replace the variables inside with actual values.
 
 ### Running
 For development, just run the following

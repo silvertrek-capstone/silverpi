@@ -9,7 +9,6 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
-  console.log(children);
   return (
     <html lang="en" className="h-full bg-white">
       <body className="h-full">{children}</body>
