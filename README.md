@@ -2,6 +2,29 @@
 A web app portal for Silvertreks customers to view progress on work.
 > https://github.com/silvertrek-capstone/silverpi
 
+## Getting Started
+
+### Before running
+1. `cd silverpi`
+2. Run the following to install all packages
+```bash
+npm ci
+```
+3. Create a file called .env.local, copied from .env.local.dev
+```bash
+cp .env.local.dev .env.local
+```
+4. Replace the variables inside with actual values.
+
+### Running
+For development, just run the following
+```bash
+npm run dev
+```
+
+The react app will then be available at http://localhost:3000
+
+
 ## Initial Setup
 
 ### Setting up SSH keys
