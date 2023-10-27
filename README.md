@@ -88,6 +88,27 @@ In the trello card, put a link to the related pull request
 
 ---
 
+## Downloading and Installing Postman
+### Downloading Postman:
+
+Visit Postman's official website.
+Choose the appropriate version for your operating system (Windows or Linux) and download it.
+
+### Installing Postman:
+
+Windows: Run the installer (.exe file) and follow the on-screen instructions.
+
+Linux: Open the terminal and navigate to the directory where the installer is downloaded. Run the install command specific to your package manager (usually just apt-get for most people).
+
+### Launching Postman:
+
+Once installed, launch the application. Alternatively , you can use the online environment as well.
+
+### Setting Up Account:
+
+You'll be prompted to log in or create an account. You should create one, as this will be needed for sync collections and environments.
+
+
 ## Contributors
 Below are the people who have worked on this project.
 
