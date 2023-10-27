@@ -132,6 +132,41 @@ Input the URL you wish to make the POST request to.
 
 You will then have go to `Body` and choose raw or form-data depending on the specific usage required with the data. Fill in the data to **POST** and click Send to make the request. You can view the results in the text box below the URL bar.
 
+## Automating Tests with Newman
+### Installing Newman:
+
+Open your terminal and run `npm install -g newman`.
+
+### Exporting Collections from Postman:
+
+In the Postman environment (online or application), go to the collection you want to export.
+
+Then, click on the `...` then choose `Export`. Save the .json file.
+
+### Running Tests:
+
+In your terminal, run `newman run <path-to-json-file>`.
+
+## Integrating with GitHub/GitLab
+
+### Export Collections and Environments:
+
+Similar to before, export the .json files for collections and environments.
+
+### Push to Repository:
+
+Either create a repository, or use an existing one on GitHub/GitLab and push the .json files to it.
+
+### Automate with CI/CD:
+
+In your CI/CD pipeline (like GitHub Actions or GitLab CI/CD), you can add a step to run Newman tests. Firstly, you need to install Newman as a step and then run `newman run <path-to-json-file>`.
+
+### Sharing and Collaborating:
+
+All the team members can clone the repository and import the .json files into their local Postman.
+
+Changes can be pushed and pulled using Git, making it accessible by all members with access.
+
 
 ## Contributors
 Below are the people who have worked on this project.
