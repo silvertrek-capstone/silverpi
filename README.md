@@ -98,7 +98,7 @@ Choose the appropriate version for your operating system (Windows or Linux) and 
 
 Windows: Run the installer (.exe file) and follow the on-screen instructions.
 
-Linux: Open the terminal and navigate to the directory where the installer is downloaded. Run the install command specific to your package manager (usually just apt-get for most people).
+Linux: Open the terminal and navigate to the directory where the installer is downloaded. Run the install command specific to your package manager (usually just `apt-get` for most people).
 
 ### Launching Postman:
 
@@ -107,6 +107,30 @@ Once installed, launch the application. Alternatively , you can use the online e
 ### Setting Up Account:
 
 You'll be prompted to log in or create an account. You should create one, as this will be needed for sync collections and environments.
+
+### Initial Configuration:
+
+After logging in, you'll be presented with an interface. You can set your workspace, import APIs, etc. At the beginning stage, this may not be necessary, though these capabilities will likely be utilized in the near future.
+
+## Making Requests in Postman
+### GET Request
+First, open Postman and click the `New` button. Then, you can choose a Request and fill out the name, description, and collection of the API you want to access.
+
+Then, Select **GET** from the dropdown next to the URL bar.
+Input the URL you wish to make the GET request to.
+
+Click the Send button to make the request. You can view the results in the text box below the URL bar.
+
+### POST Request
+The procedure is identical to the GET request, except you will be selecting **POST** from the dropdown bar.
+
+First, open Postman and click the `New` button.
+Then, you can choose a Request and fill out the name, description, and collection of the API you want to access.
+
+Select **POST** from the dropdown next to the URL bar.
+Input the URL you wish to make the POST request to.
+
+You will then have go to `Body` and choose raw or form-data depending on the specific usage required with the data. Fill in the data to **POST** and click Send to make the request. You can view the results in the text box below the URL bar.
 
 
 ## Contributors
