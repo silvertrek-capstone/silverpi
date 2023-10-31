@@ -4,12 +4,17 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
-  const supabase = createClientComponentClient()
+  const supabase = createClientComponentClient({
+    supabaseUrl,
+    supabaseKey,
+  });
 
   const handleSignIn = async () => {
     const response = await supabase.auth.signInWithPassword({
@@ -18,6 +23,12 @@ export default function Login() {
     })
     console.log(response)
     router.refresh()
+    if (response.error) {
+      console.error(response.error.message);       // Handle error (Optional: You can add UI notifications here)
+    }
+    else {
+      router.push('/dashboard');                   // Navigate user to dashboard
+    }
   }
 
   return (
