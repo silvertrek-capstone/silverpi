@@ -4,20 +4,12 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request) {
   const requestUrl = new URL(request.url)
-  const formData = await request.formData()
-  const email = formData.get('email')
-  const password = formData.get('password')
   const cookieStore = cookies()
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
 
-  const response = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
+  await supabase.auth.signOut()
 
-  console.log(response)
-
-  return NextResponse.redirect(`${requestUrl.origin}/home`, {
+  return NextResponse.redirect(`${requestUrl.origin}/login`, {
     status: 301,
   })
 }
