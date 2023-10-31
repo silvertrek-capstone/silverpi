@@ -1,11 +1,44 @@
+'use client'
+import { useState, useEffect } from 'react'
+
 export default function Home() {
+
+//  sim getting data for user comp name and user name 
+    const [comp_name, setcomp] = useState('');
+    const [cust_name, setcust] = useState('');
+
+    useEffect(() => {
+        const comp_name = getCompanyName()
+        const cust_name = getCustomer()  
+        setcomp(comp_name) 
+        setcust(cust_name)     
+      }, []); 
+
+//  sim getting data for tables 
+    const [ids, setIds] = useState([]);
+    const [data2, setData2] = useState([]);
+    const [data3, setData3] = useState([]);
+
+    useEffect(() => {
+        // Simulate fetching data from db 
+        const idData = databaseIds(); 
+        const data2Data = databaseData2();
+        const data3Data = databaseData3();
+
+        // Update state of fetched data
+        setIds(idData);
+        setData2(data2Data);
+        setData3(data3Data);
+    }, []);
+
+
     return (
     <div className="bg-grey">
         {/* Dashboard + cust_name */}
         <div className="bg-grey px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-8xl font-bold tracking-tight text-gray-900 ">Dashboard</h1>
-            <h2 className ="mt-10 text-2xl font-bold tracking-tight text-gray-900 "> Customer Name </h2>
+            <h2 className ="mt-10 text-2xl font-bold tracking-tight text-gray-900 "> {cust_name} </h2>
             </div>
         </div>  {/*End of Dashboard + cust_name */}
 
@@ -28,7 +61,18 @@ export default function Home() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            {/* iterate through data  */}
+                          {ids.map((id, index) => ( 
+                                <tr key={id}>
+                                     <td className="px-6 py-3.5 text-left font-medium text-gray-900">
+                                        {id} </td>
+                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
+                                        {data2[index]} </td>
+                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
+                                        {data3[index]} </td>
+                                </tr>
+                          ))}
+                            {/* <tr>
                                 <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
                                 <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
                                 <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
@@ -45,7 +89,7 @@ export default function Home() {
                                 <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
                                 <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
 
-                            </tr>
+                            </tr> */}
                         </tbody>
                     </table>
                          <button type="button"
@@ -149,7 +193,29 @@ export default function Home() {
 
             
         </div>
+        {/* End of Tables  Agreements Work Orders Invoices*/}
 
     </div>
     )
   }
+
+// Simulated "database" functions returning data arrays
+function databaseIds() {
+    return [1, 2, 3, 4, 5]; 
+}
+
+function databaseData2() {
+    return ['2023-10-01', '2023-10-05', '2023-10-10', '2023-10-15', '2023-10-20'];
+}
+
+function databaseData3() {
+    return ['blank_desc1', 'blank_desc2', 'blank_desc3', 'blank_desc4', 'blank_desc5']; 
+}
+
+function getCompanyName(){ 
+    return "GENERIC_COMPANY_NAME"
+}
+
+function getCustomer(){
+    return "GENERIC_CUSTOMER_NAME"
+}
