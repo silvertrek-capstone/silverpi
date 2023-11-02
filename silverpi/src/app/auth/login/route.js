@@ -15,8 +15,6 @@ export async function POST(request) {
     password,
   })
 
-  console.log(response)
-
   return NextResponse.redirect(`${requestUrl.origin}/home`, {
     status: 301,
   })
