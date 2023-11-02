@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { z } from 'zod'
 import { ExclamationCircleIcon, EnvelopeIcon } from '@heroicons/react/20/solid'
+import { NextResponse } from 'next/server'
 
 
 // Create a little schema for data validation
@@ -34,15 +35,13 @@ export default function Login() {
     // Attempt to validate the form data
     try {
       const validatedData = schema.parse(formData);
-      console.log(validatedData)
+      const inData = new FormData(e.currentTarget)
       // Above will throw an error on validation failure, if we get to this point, we are good to attempt login.
-      const response = await fetch('/auth/login', {
+      await fetch('/auth/login', {
         method: 'POST',
-        body: formData,
+        body: inData,
       })
-      // Handle response
-      const data = await response.json()
-      console.log(data)
+
     } catch (error) {
       console.log(error)
       if (error instanceof z.ZodError) {
