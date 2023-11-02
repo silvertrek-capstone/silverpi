@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server'
 export async function POST(request) {
   const requestUrl = new URL(request.url)
   const formData = await request.formData()
+  console.log(formData)
   const email = formData.get('email')
   const password = formData.get('password')
   const cookieStore = cookies()
