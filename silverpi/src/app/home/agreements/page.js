@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 
-const buttonStyles = {
+const homeButtonStyles = {
     position: 'absolute',
     top: '40px', // Adjust the top position as needed
     right: '60px', // Adjust the right position as needed
@@ -33,7 +33,7 @@ const agreements = agreementsData();
 export default function Agreements() {
   return (
     <div>
-        <a href="/home" style={buttonStyles}>
+        <a href="/home" style={homeButtonStyles}>
             <button
                 type="button"
                 className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm 
@@ -68,12 +68,21 @@ function agreementsData(){
         {
             id: 1,
             title: 'Agreement 1',
-            content: 'This is the content of Agreement 1.',
+            content: `
+                This is the content of Agreement 1. You have agreed that you are a super super 
+                super super super super super super super super super super super super super super super 
+                super super super super super super super super super super super super super super super 
+                super super super super super super super super super super super super super super super 
+                super super super super super super super super super super super super super super super 
+                super super super super super super super super super super super super super super super 
+                super super super super super super super super super super super super super super super 
+                super super super super super super super super cool customer.
+            `
         },
         {
             id: 2,
             title: 'Agreement 2',
-            content: 'This is the content of Agreement 2.',
+            content: 'This is the content of Agreement 2. You have agreed that you depend solely on us in order to manage your product status.',
         }
     ];
 }
