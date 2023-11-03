@@ -27,30 +27,58 @@ const homeButtonStyles = {
 //    {name 'Dashboard', href: '/home', icon: HomeIcon} 
 //]
 
+function AgreementComponent({ agreements }) {
+    return (
+        <div>
+            <h1>Agreements</h1>
+            {agreements.map((agreement) => (
+                <div key={agreement.id}>
+                    <h2>{agreement.title}</h2>
+                    <pre style={{ whiteSpace: 'pre-wrap' }}>{agreement.content}</pre>
+                </div>
+            ))}
+        </div>
+    );
+}
 
-const agreements = agreementsData();
+
 
 export default function Agreements() {
-  return (
-    <div>
-        <a href="/home" style={homeButtonStyles}>
-            <button
-                type="button"
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm 
-                hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-                focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center space-x-2"
-            >
-                <HomeIcon className="w-6 h-6" />
-                <span>Dashboard</span>
-            </button>
-        </a>
-        <div className="bg-grey px-6 py-24 sm:py-32 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-8xl font-bold tracking-tight text-gray-900 ">Agreements</h1>
+    const agreements = agreementsData();
+    return (
+        <div className="bg-grey">
+            <a href="/home" style={homeButtonStyles}>
+                <button
+                    type="button"
+                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm 
+                    hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
+                    focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center space-x-2"
+                >
+                    <HomeIcon className="w-6 h-6" />
+                    <span>Dashboard</span>
+                </button>
+            </a>
+            <div className="bg-grey px-6 py-24 sm:py-32 lg:px-8">
+                <div className="mx-auto max-w-2xl text-center">
+                    <h1 className="text-8xl font-bold tracking-tight text-gray-900 ">Agreements</h1>
+                </div>
             </div>
-        </div>
-        <h1>Agreements</h1>
-        <ul>
+            {agreements.map((agreement) => (
+                <div className="bg-grey px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-2xl text-center position: relative">
+                        <div className= "bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <h2 className="position absolute top-0 mt-3 ml-3 text-2xl font-semibold leading-6 text-gray-900">
+                                {agreement.title}
+                            </h2>
+                            <p className="text-gray-700 mt-3">
+                                {agreement.content}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            ))}
+
+        {/*<ul>
             {agreements.map((agreement) => (
                 <li key={agreement.id}>
                     <h3>{agreement.title}</h3>
@@ -58,8 +86,8 @@ export default function Agreements() {
                     <a href={`/agreements/${agreement.id}`}>View Agreement</a>
                 </li>
             ))}
-        </ul>
-    </div>
+            </ul> */}
+        </div>
     );
 }
 
@@ -67,7 +95,7 @@ function agreementsData(){
     return [
         {
             id: 1,
-            title: 'Agreement 1',
+            title: 'ALPHA Agreement',
             content: `
                 This is the content of Agreement 1. You have agreed that you are a super super 
                 super super super super super super super super super super super super super super super 
@@ -81,8 +109,58 @@ function agreementsData(){
         },
         {
             id: 2,
-            title: 'Agreement 2',
-            content: 'This is the content of Agreement 2. You have agreed that you depend solely on us in order to manage your product status.',
+            title: 'Equipment Checkout Agreement',
+            content: `
+                <pre>
+                This Equipment Checkout Agreement ("Agreement") is entered into on [Date], by and between:
+
+                Lender:
+                Name of Lending Organization/Individual: [Name of Lender]
+                Address: [Address of Lender]
+                Contact Information: [Phone number and email address of Lender]
+            
+                Borrower:
+                Name of Borrower: [Name of Borrower]
+                Affiliation (if applicable): [Affiliation, e.g., school, company]
+                Address: [Address of Borrower]
+                Contact Information: [Phone number and email address of Borrower]
+            
+                Collectively, the Lender and Borrower may be referred to as the "Parties."
+            
+                Equipment Details:
+            
+                Description of Equipment: [Provide a detailed description of the equipment, including make, model, and any unique identifiers]
+            
+                Serial/ID Number: [If applicable, provide the serial number or identification number]
+            
+                Terms and Conditions:
+            
+                Checkout Date: The Lender hereby loans the described equipment to the Borrower, and the Borrower acknowledges receiving the equipment on [Date].
+            
+                Duration: The Borrower is granted permission to use the equipment for a specific period starting from the Checkout Date and ending on [Return Date]. The Borrower is responsible for returning the equipment promptly and in the same condition it was received.
+            
+                Care and Responsibility: The Borrower agrees to use the equipment with care and take reasonable precautions to prevent damage, loss, or theft. The Borrower will be responsible for any damage or loss beyond normal wear and tear.
+            
+                Return of Equipment: The Borrower agrees to return the equipment in good working condition on or before the specified Return Date. If an extension or delay in return is necessary, the Borrower must obtain prior consent from the Lender.
+            
+                Late Return: In the event of late return without prior approval, the Borrower may be subject to penalties, including fees and/or restrictions on future equipment loans.
+            
+                Liability: The Borrower understands that they are liable for any damages, losses, or theft of the equipment during the loan period and shall be responsible for the repair or replacement costs.
+            
+                Use Restrictions: The Borrower agrees to use the equipment only for its intended purpose and in compliance with all applicable laws and regulations.
+            
+                Indemnification: The Borrower shall indemnify and hold the Lender harmless from any claims, losses, damages, or liabilities arising out of the Borrower's use of the equipment.
+                </pre>
+            `,
+        },
+        {
+            id: 3,
+            title: 'Reminder Agreement',
+            content: `
+                This another ridiculous that you agreed to. You can not take it back right now. You are held
+                responsible for anything that will happen to your equipement. Better take care of your 
+                equipement better next time.
+            `
         }
     ];
 }
