@@ -1,4 +1,9 @@
-// pages/agreements.js
+'use client'
+
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+
 
 
 
@@ -25,9 +30,7 @@ export default function Agreements() {
           <li key={agreement.id}>
             <h3>{agreement.title}</h3>
             <p>{agreement.content}</p>
-            <Link href={`/agreements/${agreement.id}`}>
-              <a>View Agreement</a>
-            </Link>
+              <a href={`/agreements/${agreement.id}`}>View Agreement</a>
           </li>
         ))}
       </ul>
