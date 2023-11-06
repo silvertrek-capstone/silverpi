@@ -3,12 +3,10 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function POST(request) {
-  console.log(request);
   const requestUrl = new URL(request.url)
   const formData = await request.formData()
   const cookieStore = cookies()
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-  const searchParams = requestUrl.searchParams; // Information about the url.
   // Create a nice object with all the form data
   const signupData = {
     email: formData.get('email'),
@@ -16,36 +14,70 @@ export async function POST(request) {
     rePassword: formData.get('re-password'),
     first: formData.get('first-name'),
     last: formData.get('last-name'),
+    inviteId: formData.get('invite-id') || null, // Get the invite id, or null if non existent.
+    custNum: null,
   }
+  console.log(signupData)
+  // First, check that password and rePassword match
+  if (signupData.password !== signupData.rePassword) {
+    return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
+  }
+
 
   // First, create a signup
   const response = await supabase.auth.signUp({
     email: signupData.email,
-    password: signupData.email,
+    password: signupData.password,
+    options: {
+      emailRedirectTo: `${requestUrl.origin}/auth/callback`,
+    },
   })
 
   // Next, check that there was not an error
   if (response.error !== null) {
-    console.log(response.error)
-    return NextResponse.next()
+    console.log('error1', response.error)
+    return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
+  }
+
+  const userData = response.data.user // Data about the user, id, email, etc.
+
+  // Next, if we have an invite id, fetch the customer number related to the invite id.
+  if (signupData.inviteId) {
+    // Make a search on the invite table for customer numbers
+    let response2 = await supabase
+      .from('invites')
+      .select('cust_num')
+      .eq('id', signupData.inviteId);
+  
+      console.log(response2)
+      // If error, quit.
+      if (response2.error) {
+        console.log('error2', response2.error)
+        return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
+      }
+      if (response2.data.length) {
+        signupData.custNum = response2.data[0].cust_num;
+
+        // Kind messy, but add the customer - user relation here.
+        await supabase.from('customer_to_user').insert({user_id: userData.id, cust_num: signupData.custNum})
+      }
   }
 
   // If no error, add the first and last to the profiles table
-  const userData = data.user // Data about the user, id, email, etc.
-  const { error } = await supabase
-    .from('countries')
-    .insert({ 
-      id: userData.id, 
+  let response3 = await supabase
+    .from('profiles')
+    .insert({
+      id: userData.id,
       first_name: signupData.first,
       last_name: signupData.last,
+      role_id: signupData.custNum ? 2 : null, // If we got a valid customer number, set their role to customer off the bat.
     })
 
-  if (error) {
-    console.log(error)
-    return NextResponse.next()
+  if (response3.error) {
+    console.log('error3', response3.error)
+    return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
   }
 
-  console.log(response)
   return NextResponse.redirect(`${requestUrl.origin}/home`, {
     status: 301,
   })
