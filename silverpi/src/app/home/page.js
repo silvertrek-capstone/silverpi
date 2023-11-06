@@ -1,4 +1,5 @@
 'use client'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link';
 import { useState, useEffect } from 'react'
 
@@ -54,11 +55,26 @@ export default function Home() {
                         <thead>
                             <tr>
                                 <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                    ID</th>
+                                <a href="#" className="group inline-flex">
+                                    ID
+                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                                        <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    </a>
+                                </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                    Date</th>
+                                <a href="#" className="group inline-flex">
+                                    Date
+                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                                        <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    </a>
+                                </th>
+                            
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                    Description</th>
+                                <a href="#" className="group inline-flex">
+                                    Description</a>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,9 +115,21 @@ export default function Home() {
                         <thead>
                             <tr>
                                 <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                    ID</th>
+                                <a href="#" className="group inline-flex">
+                                    ID
+                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                                        <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    </a>
+                                </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                    Date</th>
+                                <a href="#" className="group inline-flex">
+                                    Date
+                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                                        <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    </a>
+                                </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
                                     Description</th>
                             </tr>
@@ -143,10 +171,22 @@ export default function Home() {
                     <table className="min-w-full divide-y divide-gray-300">
                         <thead>
                             <tr>
-                                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                    ID</th>
+                            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                <a href="#" className="group inline-flex">
+                                    ID
+                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                                        <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    </a>
+                                </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                    Date</th>
+                                <a href="#" className="group inline-flex">
+                                    Date
+                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                                        <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    </a>
+                                </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
                                     Description</th>
                             </tr>
