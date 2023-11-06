@@ -1,94 +1,121 @@
 'use client'
 
-// Standard page.js imports (ref'd from login)
+// Base Imports from Login
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
 
-export default function AdministratorPage() {
-  const router = useRouter()
+// Auth Stuff
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // Dummy Info to test visuals
-  // Will add fetching data from tables and putting them into arrays later
-  const pendingUsers = [
-    {id: '1', name: 'Richard Johnson', email: 'richjohnson@gmail.com'},
-    {id: '2', name: 'Christian Pulisic', email: 'dortmundfan19@yahoo.com'},
-  ]
+// Process for changing this later (need stuff to be passed in)
+var adminName = "John";
 
-  const allUsers = [
-    {id: '1', name: 'Richard Johnson', email: 'richjohnson@gmail.com'},
-    {id: '2', name: 'Christian Pulisic', email: 'dortmundfan19@yahoo.com'},
-    {id: '3', name: 'Smith Rivers', email: 'gamerlord42@aol.com'},
-  ]
+export default function AdminPanel() {
+    const [email, setEmail] = useState('')              // State and Update component for the user emails
+    const [password, setPassword] = useState('')        // State and Update component for the user Passwords
+    const router = useRouter()                          // Routing hook for page interactions
+    
+    const supabase = createClientComponentClient({      // Initialize Supabase auth client
+      supabaseUrl,
+      supabaseKey,
+    }); 
 
-  return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900"> {/* Dark Background color for the admins */}
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+    
+    const [users, setUsers] = useState([                // Create Dummy data for Visual purposes (will add fetching later)      
+        { id: 1, name: 'Richard Johnson', email: 'richjohnson@gmail.com' },
+        { id: 2, name: 'Christian Pulisic', email: 'dortmundfan19@yahoo.com' },
+        { id: 3, name: 'Smith Rivers', email: 'gamerlord42@aol.com' },
+    ]);
+    const [pendingUsers, setPendingUsers] = useState([
+        { id: 1, name: 'Richard Johnson', email: 'richjohnson@gmail.com' },
+        { id: 2, name: 'Christian Pulisic', email: 'dortmundfan19@yahoo.com' },
+    ]);
 
-        {/* Initialize Custom Icon and Center it*/}
-        <img
-          className="mx-auto h-12 w-auto"
-          src="/login.png" 
-          alt="Silver Trek Progress Inquries"
-        />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">
-          Welcome Admin
-        </h2>
-      </div>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-2xl">
-          <h1 className="text-3xl font-bold leading-9 tracking-tight text-gray-200">
-            Admin Panel
-          </h1>
-          <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-gray-200"> 
-            Pending Users
-          </h2>
-          {/* Draw Table Rows, Columns, and Borders for the pending users */}
-          <table className="min-w-full divide-y divide-gray-600 border border-white"> 
-            <thead>
-              <tr>
-                <th className="py-2 px-4 text-gray-200 border border-white">id</th> 
-                <th className="py-2 px-4 text-gray-200 border border-white">name</th> 
-                <th className="py-2 px-4 text-gray-200 border border-white">email</th> 
-              </tr>
-            </thead>
-            <tbody>
-                {/* Add Clickable for users (will redirect to diff pages) */}
-              {pendingUsers.map(user => (
-                <tr key={user.id} className="hover:bg-gray-700 cursor-pointer" onClick={() => router.push(`/home/user/${user.id}`)}>
-                  <td className="py-2 px-4 text-gray-200 border border-white">{user.id}</td> 
-                  <td className="py-2 px-4 text-gray-200 border border-white">{user.name}</td> 
-                  <td className="py-2 px-4 text-gray-200 border border-white">{user.email}</td> 
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    return (
+        
+        /* 
+        Order of Implementation (so far)
 
-          <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-gray-200"> 
-            All Users
-          </h2>
-          {/* Draw Table Rows, Columns, and Borders for all the users*/}
-          <table className="min-w-full divide-y divide-gray-600 border border-white"> 
-            <thead>
-              <tr>
-                <th className="py-2 px-4 text-gray-200 border border-white">id</th> 
-                <th className="py-2 px-4 text-gray-200 border border-white">name</th> 
-                <th className="py-2 px-4 text-gray-200 border border-white">email</th> 
-              </tr>
-            </thead>
-            <tbody>
-                {/* Add Clickable for users (will redirect to diff pages) */}
-              {allUsers.map(user => (
-                <tr key={user.id} className="hover:bg-gray-700 cursor-pointer" onClick={() => router.push(`/home/user/${user.id}`)}>
-                  <td className="py-2 px-4 text-gray-200 border border-white">{user.id}</td> 
-                  <td className="py-2 px-4 text-gray-200 border border-white">{user.name}</td> 
-                  <td className="py-2 px-4 text-gray-200 border border-white">{user.email}</td> 
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        Silvertrek Icon
+        General Text
+        Admin Login Display
+        Interactive Tables tied to users (to be routed to user page later)
+        
+        Note: padding added to even layout
+
+        */
+        <div className="min-h-screen bg-gray-100 p-8 pt-20 flex flex-col items-center"> 
+            <img
+                className="mx-auto h-12 w-auto -mt-10"
+                src="/login.png"
+                alt="Silver Trek Progress Inquries"
+            />
+        <div className="max-w-4xl mx-auto">                                           
+            <div className="mb-8 text-center">
+            <h1 className="text-4xl font-bold text-gray-800 p-8 -mt-4">Admin Panel</h1> 
+            <p className="text-gray-600 p-2">Signed in as: {adminName}</p>
+            </div> 
+            <div className="mb-6">
+            <h2 className="mb-2 text-xl font-semibold text-gray-700">Pending Users</h2>
+            <div className="overflow-hidden rounded-lg shadow">
+                <table className="min-w-full bg-white"> 
+                <thead className="bg-gray-50">
+                    <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                    </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {pendingUsers.map(user => ( // Clickable Users, to be routed to user page
+                    <tr key={user.id} className="hover:bg-gray-200 cursor-pointer" onClick={() => router.push(`/home/user/${user.id}`)}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.id}</td> 
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                    </tr>
+                    ))}
+                </tbody>
+                </table>
+            </div>
+            </div>
+            <div>
+            <h2 className="mb-2 text-xl font-semibold text-gray-700">All Users</h2>
+            <div className="overflow-hidden rounded-lg shadow">
+                <table className="min-w-full bg-white">
+                <thead className="bg-gray-50">
+                    <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                    </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {users.map(user => ( // Clickable Users, to be routed to user page
+                    <tr key={user.id} className="hover:bg-gray-200 cursor-pointer" onClick={() => router.push(`/home/user/${user.id}`)}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.id}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                    </tr>
+                    ))}
+                </tbody>
+                </table>
+            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  )
-}
+        </div>
+    );
+    }

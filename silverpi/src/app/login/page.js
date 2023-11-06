@@ -14,7 +14,7 @@ export default function Login() {
   const supabase = createClientComponentClient({
     supabaseUrl,
     supabaseKey,
-  });
+  }); 
 
   const handleSignIn = async () => {
     const response = await supabase.auth.signInWithPassword({
