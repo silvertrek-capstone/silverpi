@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import { useState, useEffect } from 'react'
 
 export default function Home() {
@@ -46,7 +47,7 @@ export default function Home() {
       
         <div className="bg-grey px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center position: relative">
-                <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+                <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg mb-20">
                     <h2 className="position absolute top-0 mt-3 ml-3 text-2xl font-semibold leading-6 text-gray-900">
                         Agreements</h2>
                     <table className="min-w-full divide-y divide-gray-300">
@@ -63,48 +64,37 @@ export default function Home() {
                         <tbody>
                             {/* iterate through data  */}
                           {ids.map((id, index) => ( 
-                                <tr key={id}>
-                                     <td className="px-6 py-3.5 text-left font-medium text-gray-900">
-                                        {id} </td>
+                                <tr key={index}>
+                                     <td key={index} className="px-6 py-3.5 text-left font-medium text-gray-900">
+                                        <Link href={`/home/Agreements/${id}`}>
+                                            <div className="hover:underline">
+                                                {id}
+                                            </div>
+                                        </Link>
+                                    </td>
                                         <td className="px-3 py-3.5 text-left font-medium text-gray-900">
                                         {data2[index]} </td>
                                         <td className="px-3 py-3.5 text-left font-medium text-gray-900">
                                         {data3[index]} </td>
                                 </tr>
                           ))}
-                            {/* <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr> */}
-                        </tbody>
+               </tbody>
                     </table>
+                    <Link href="./home/Agreements">
                          <button type="button"
                             className="mt-2 position absolute right-0 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm
                              hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                               focus-visible:outline-indigo-600">
                             Button text
-                        </button>
+                        </button>                
+                    </Link>
                 </div>
-            </div>
+            </div> {/*End of Tables  Agreements*/}
 
-            <div className="mx-auto mt-20 max-w-2xl text-center position: relative">
-                <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+            <div className="mx-auto max-w-2xl text-center position: relative">
+                <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg mb-20">
                     <h2 className="position absolute top-0 mt-3 ml-3 text-2xl font-semibold leading-6 text-gray-900">
-                        Work Orders</h2>
+                        Workorders</h2>
                     <table className="min-w-full divide-y divide-gray-300">
                         <thead>
                             <tr>
@@ -117,37 +107,37 @@ export default function Home() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                        </tbody>
+                            {/* iterate through data  */}
+                          {ids.map((id, index) => ( 
+                                <tr key={index}>
+                                     <td key={index} className="px-6 py-3.5 text-left font-medium text-gray-900">
+                                        <Link href={`/home/Workorders/${id}`}>
+                                            <div className="hover:underline">
+                                                {id}
+                                            </div>
+                                        </Link>
+                                    </td>
+                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
+                                        {data2[index]} </td>
+                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
+                                        {data3[index]} </td>
+                                </tr>
+                          ))}
+               </tbody>
                     </table>
+                    <Link href="./home/Workorders">
                          <button type="button"
                             className="mt-2 position absolute right-0 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm
                              hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                               focus-visible:outline-indigo-600">
                             Button text
-                        </button>
+                        </button>                
+                    </Link>
                 </div>
-            </div>
+            </div> {/*End of Tables  Workorders*/}
 
-            <div className="mx-auto mt-20 max-w-2xl text-center position: relative">
-                <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+            <div className="mx-auto max-w-2xl text-center position: relative">
+                <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg mb-20">
                     <h2 className="position absolute top-0 mt-3 ml-3 text-2xl font-semibold leading-6 text-gray-900">
                         Invoices</h2>
                     <table className="min-w-full divide-y divide-gray-300">
@@ -162,39 +152,41 @@ export default function Home() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                            <tr>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-                                <td className="px-3 py-3.5 text-left font-medium text-gray-900">example </td>
-
-                            </tr>
-                        </tbody>
+                            {/* iterate through data  */}
+                          {ids.map((id, index) => ( 
+                                <tr key={index}>
+                                     <td key={index} className="px-6 py-3.5 text-left font-medium text-gray-900">
+                                        <Link href={`/home/Invoices/${id}`}>
+                                            <div className="hover:underline">
+                                                {id}
+                                            </div>
+                                        </Link>
+                                    </td>
+                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
+                                        {data2[index]} </td>
+                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
+                                        {data3[index]} </td>
+                                </tr>
+                          ))}
+               </tbody>
                     </table>
+                    <Link href="./home/Invoices">
                          <button type="button"
                             className="mt-2 position absolute right-0 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm
                              hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                               focus-visible:outline-indigo-600">
                             Button text
-                        </button>
+                        </button>                
+                    </Link>
                 </div>
+            </div> 
+            {/*End of Tables  Invoices*/}
+
+            <div>
+                <h1 className="margin-block-end: 20px">footer</h1>
             </div>
 
-            
-        </div>
-        {/* End of Tables  Agreements Work Orders Invoices*/}
-
+        </div> {/* End of Tables  Agreements Work Orders Invoices*/}
     </div>
     )
   }
