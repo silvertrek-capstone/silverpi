@@ -1,13 +1,8 @@
 'use client'
 
 // Base Imports from Login
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react';
-
-// Auth Stuff
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Process for changing this later (need stuff to be passed in)
 var adminName = "John";
@@ -16,12 +11,6 @@ export default function AdminPanel() {
     const [email, setEmail] = useState('')              // State and Update component for the user emails
     const [password, setPassword] = useState('')        // State and Update component for the user Passwords
     const router = useRouter()                          // Routing hook for page interactions
-    
-    const supabase = createClientComponentClient({      // Initialize Supabase auth client
-      supabaseUrl,
-      supabaseKey,
-    }); 
-
     
     const [users, setUsers] = useState([                // Create Dummy data for Visual purposes (will add fetching later)      
         { id: 1, name: 'Richard Johnson', email: 'richjohnson@gmail.com' },
