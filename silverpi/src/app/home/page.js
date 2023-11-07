@@ -33,11 +33,31 @@ export default function Home() {
         setData3(data3Data);
     }, []);
 
+    const [isSorted, setIsSorted] = useState(false);
 
+    const sortColumn = () => {
+      const idsCopy = [...ids];
+      
+      if (isSorted) {
+        idsCopy.reverse();
+      } else {
+        itemsArray.sort(function(a, b){  
+            return sortingArr.indexOf(a) - sortingArr.indexOf(b);
+        });
+        
+        idsCopy.sort((a, b) => a - b);
+      }
+  
+      setIds(idsCopy);
+      setIsSorted(!isSorted); // Toggle sorting state
+    };
+      
+
+    
     return (
-    <div className="bg-grey">
+    <div>
         {/* Dashboard + cust_name */}
-        <div className="bg-grey px-6 py-24 sm:py-32 lg:px-8">
+        <div className="px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-8xl font-bold tracking-tight text-gray-900 ">Dashboard</h1>
             <h2 className ="mt-10 text-2xl font-bold tracking-tight text-gray-900 "> {cust_name} </h2>
@@ -46,7 +66,7 @@ export default function Home() {
 
       {/* Tables  Agreements Work Orders Invoices*/}
       
-        <div className="bg-grey px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center position: relative">
                 <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg mb-20">
                     <h2 className="position absolute top-0 mt-3 ml-3 text-2xl font-semibold leading-6 text-gray-900">
@@ -55,15 +75,17 @@ export default function Home() {
                         <thead>
                             <tr>
                                 <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                <a href="#" className="group inline-flex">
+                                <a className="group inline-flex">
                                     ID
-                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-                                        <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                    <span onClick={sortColumn} className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                                    {isSorted ? 'Sort IDs (Desc)' : 'Sort IDs (Asc)'}
+                                    <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                                     </span>
+
                                     </a>
                                 </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                <a href="#" className="group inline-flex">
+                                <a className="group inline-flex">
                                     Date
                                     <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                                         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
@@ -72,7 +94,7 @@ export default function Home() {
                                 </th>
                             
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                <a href="#" className="group inline-flex">
+                                <a className="group inline-flex">
                                     Description</a>
                                 </th>
                             </tr>
@@ -82,7 +104,7 @@ export default function Home() {
                           {ids.map((id, index) => ( 
                                 <tr key={index}>
                                      <td key={index} className="px-6 py-3.5 text-left font-medium text-gray-900">
-                                        <Link href={`/home/Agreements/${id}`}>
+                                        <Link href={`/home/agreements/${id}`}>
                                             <div className="hover:underline">
                                                 {id}
                                             </div>
@@ -96,12 +118,12 @@ export default function Home() {
                           ))}
                </tbody>
                     </table>
-                    <Link href="./home/Agreements">
+                    <Link href="./home/agreements">
                          <button type="button"
                             className="mt-2 position absolute right-0 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm
                              hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                               focus-visible:outline-indigo-600">
-                            Button text
+                            see more
                         </button>                
                     </Link>
                 </div>
@@ -115,7 +137,7 @@ export default function Home() {
                         <thead>
                             <tr>
                                 <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                <a href="#" className="group inline-flex">
+                                <a className="group inline-flex">
                                     ID
                                     <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                                         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
@@ -123,7 +145,7 @@ export default function Home() {
                                     </a>
                                 </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                <a href="#" className="group inline-flex">
+                                <a className="group inline-flex">
                                     Date
                                     <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                                         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
@@ -139,7 +161,7 @@ export default function Home() {
                           {ids.map((id, index) => ( 
                                 <tr key={index}>
                                      <td key={index} className="px-6 py-3.5 text-left font-medium text-gray-900">
-                                        <Link href={`/home/Workorders/${id}`}>
+                                        <Link href={`/home/workorders/${id}`}>
                                             <div className="hover:underline">
                                                 {id}
                                             </div>
@@ -153,12 +175,12 @@ export default function Home() {
                           ))}
                </tbody>
                     </table>
-                    <Link href="./home/Workorders">
+                    <Link href="./home/workorders">
                          <button type="button"
                             className="mt-2 position absolute right-0 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm
                              hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                               focus-visible:outline-indigo-600">
-                            Button text
+                            see more
                         </button>                
                     </Link>
                 </div>
@@ -172,7 +194,7 @@ export default function Home() {
                         <thead>
                             <tr>
                             <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                <a href="#" className="group inline-flex">
+                                <a className="group inline-flex">
                                     ID
                                     <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                                         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
@@ -180,7 +202,7 @@ export default function Home() {
                                     </a>
                                 </th>
                                 <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                                <a href="#" className="group inline-flex">
+                                <a className="group inline-flex">
                                     Date
                                     <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                                         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
@@ -196,7 +218,7 @@ export default function Home() {
                           {ids.map((id, index) => ( 
                                 <tr key={index}>
                                      <td key={index} className="px-6 py-3.5 text-left font-medium text-gray-900">
-                                        <Link href={`/home/Invoices/${id}`}>
+                                        <Link href={`/home/invoices/${id}`}>
                                             <div className="hover:underline">
                                                 {id}
                                             </div>
@@ -210,12 +232,12 @@ export default function Home() {
                           ))}
                </tbody>
                     </table>
-                    <Link href="./home/Invoices">
+                    <Link href="./home/invoices">
                          <button type="button"
                             className="mt-2 position absolute right-0 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm
                              hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                               focus-visible:outline-indigo-600">
-                            Button text
+                            see more
                         </button>                
                     </Link>
                 </div>
@@ -225,8 +247,9 @@ export default function Home() {
             <div>
                 <h1 className="margin-block-end: 20px">footer</h1>
             </div>
-
+                            
         </div> {/* End of Tables  Agreements Work Orders Invoices*/}
+   
     </div>
     )
   }
