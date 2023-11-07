@@ -35,7 +35,7 @@ export default function AdminPanel() {
         Note: padding added to even layout
 
         */
-        <div className="min-h-screen bg-gray-100 p-8 pt-20 flex flex-col items-center"> 
+        <div className="min-h-screen bg-transparent p-8 pt-20 flex flex-col items-center"> 
             <img
                 className="mx-auto h-12 w-auto -mt-10"
                 src="/login.png"
