@@ -77,7 +77,6 @@ export default function Signup({searchParams}) {
                   id="invite-id"
                   name="invite-id"
                   type="text"
-                  required
                   readOnly={Boolean(inviteId)}
                   defaultValue={inviteId}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
