@@ -1,5 +1,4 @@
 'use client'
-import Navbar from "../components/navbar.js"
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link';
 import { useState, useEffect } from 'react'
