@@ -49,17 +49,6 @@ export default function Agreements() {
     const agreements = agreementsData();
     return (
         <div className="bg-grey">
-            <Link href="/home" style={homeButtonStyles}>
-                <button
-                    type="button"
-                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm 
-                    hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-                    focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center space-x-2"
-                >
-                    <HomeIcon className="w-6 h-6" />
-                    <span>Dashboard</span>
-                </button>
-            </Link>
             <div className="bg-grey px-6 py-24 sm:py-32 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h1 className="text-8xl font-bold tracking-tight text-gray-900 ">Agreements</h1>
