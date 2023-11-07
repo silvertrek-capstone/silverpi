@@ -14,7 +14,8 @@ npm ci
 ```bash
 cp .env.local.dev .env.local
 ```
-4. Replace the variables inside with actual values.
+Enviroment variable locations:
+* Supabase found here: https://supabase.com/dashboard/project/ucicynibbhaktksvlure/settings/api (don't use the private key)
 
 ### Running
 For development, just run the following
