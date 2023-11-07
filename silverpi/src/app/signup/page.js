@@ -1,7 +1,6 @@
 export default function Signup({searchParams}) {
 
   // Do some simple stuff for getting request data
-  console.log(searchParams)
   const inviteId = searchParams.invite || ''
 
   return (

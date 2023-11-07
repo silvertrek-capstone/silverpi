@@ -17,7 +17,6 @@ export async function POST(request) {
     inviteId: formData.get('invite-id') || null, // Get the invite id, or null if non existent.
     custNum: null,
   }
-  console.log(signupData)
   // First, check that password and rePassword match
   if (signupData.password !== signupData.rePassword) {
     return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
