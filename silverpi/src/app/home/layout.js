@@ -8,7 +8,8 @@ import BreadcrumbItem from "../components/breadcrumbitem.js";
 export default function DashboardLayout({ children }) {
     const router = useRouter();
     const [breadcrumbs, setBreadcrumbs] = useState();
-    const pathName = usePathname()
+    var pathName = usePathname()
+
     useEffect(() => {
       let pathArray =  pathName.split("/");
       pathArray.shift();
@@ -24,7 +25,7 @@ export default function DashboardLayout({ children }) {
       });
   
       setBreadcrumbs(breadcrumbs);
-    }, [router.asPath]);
+    }, [pathName]);
 
     return (
         <>
