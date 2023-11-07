@@ -1,5 +1,6 @@
 import { Children } from "react";
 import { Fragment } from "react";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 const Breadcrumb = ({ children }) => {
   const childrenArray = Children.toArray(children);
@@ -8,7 +9,7 @@ const Breadcrumb = ({ children }) => {
       return (
         <Fragment key={index}>
           {child}
-          <span>/</span>
+          <span><ChevronRightIcon className="text-gray-600 h-4 w-4"></ChevronRightIcon></span>
         </Fragment>
       );
     }
@@ -16,8 +17,8 @@ const Breadcrumb = ({ children }) => {
   });
 
   return (
-    <nav className="mx-8 md:mx-16 lg:mx-32 mt-8">
-      <ol className="flex items-center space-x-4">{childrenWtihSeperator}</ol>
+    <nav className="bg-transparent px-24">
+      <ol className="flex items-center space-x-2">{childrenWtihSeperator}</ol>
     </nav>
   );
 };
