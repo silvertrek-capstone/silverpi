@@ -71,6 +71,8 @@ export async function POST(request) {
       last_name: signupData.last,
       role_id: signupData.custNum ? 2 : null, // If we got a valid customer number, set their role to customer off the bat.
     })
+  
+  console.log(response3)
 
   if (response3.error) {
     console.log('error3', response3.error)
