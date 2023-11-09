@@ -11,21 +11,30 @@ export async function makeQuery(query, variables) {
     try {
         // First, get all the stuff we will need for making requests, api keys, urls, etc.
         const apiKey = process.env.VISTA_DB_API_KEY;
+        const apiId = process.env.VISTA_DB_API_ID;
         const port = process.env.VISTA_DB_PORT;
         const url = process.env.VISTA_DB_URL;
         const apiLocation = process.env.VISTA_DB_GRAPHQL_LOCATION;
         const tokenLocation = process.env.VISTA_DB_TOKEN_LOCATION;
 
+        // Create the basic auth header key (just a base64 encoded id and api key)
+        const auth = btoa(`${apiId}:${apiKey}`);
+        const fullUrl = `https://${url}:${port}/${tokenLocation}`
+        console.log(fullUrl)
         // Make a request to get the token.
-        const tokenResponse = await fetch(`https://${url}/${tokenLocation}`, {
+        const tokenResponse = await fetch(fullUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-            }
+                'Authorization': `Basic ${auth}`
+            },
         });
+        console.log('test')
+        console.log(tokenResponse);
 
 
     } catch(e) {
+        console.log(e)
         return {
             error: e,
             data: null,
