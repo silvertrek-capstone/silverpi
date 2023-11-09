@@ -2,7 +2,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { gql } from 'graphql-request'
-import { makeQuery } from '../../helpers/graphApi.js'
+import { makeQuery } from '@/helpers/graphApi.js'
 
 export async function POST(request) {
     const cookieStore = cookies()
@@ -31,14 +31,16 @@ export async function POST(request) {
 
     const variables = {
         filter: {
-            custGroup: {
+            customer: {
                 "eq": 1
             }
         }
     }
 
     // Make the request
-    const response = await makeQuery(query, variables)
+    const {data, error} = await makeQuery(query, variables)
+    let status = 200
+    if (error) status = 500
 
-    return NextResponse.json({ data: null, error: null }, { status: 200 })
+    return NextResponse.json({ data, error }, { status: 200 })
 }

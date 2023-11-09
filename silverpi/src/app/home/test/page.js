@@ -1,11 +1,9 @@
-
+import {POST} from '@/api/test/route.js'
 
 export default async function testCall() {
-    const res = await import('../../api/test/route.js')
-    const response = await res.POST()
-    // console.log(response);
-
-    const customers = response.data
+    const response = await POST()
+    const jsonData = await response.json();
+    const customers = jsonData.data
     return (
         <pre>{JSON.stringify(customers, null, 2)}</pre>
     )
