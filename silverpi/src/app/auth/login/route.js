@@ -16,6 +16,7 @@ export async function POST(request) {
   })
 
 
+
   return NextResponse.redirect(`${requestUrl.origin}/home`, {
     status: 301,
   })
