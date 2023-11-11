@@ -1,17 +1,9 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
 
 export async function POST(request) {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
 
-    const session = supabase.auth.getSession();
-    if (!session) { // Unauthenticated
-        return NextResponse.json({ error: 'Unauthenticated' }, { status: 500 })
-    }
 
     const query = gql`
     query($filter: bARCMFilterInput){

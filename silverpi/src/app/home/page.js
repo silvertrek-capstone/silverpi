@@ -56,13 +56,7 @@ export default function Home() {
     
     return (
     <div>
-        {/* Dashboard + cust_name */}
-        <div className="px-6 py-24 sm:py-32 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-8xl font-bold tracking-tight text-gray-900 ">Dashboard</h1>
-            <h2 className ="mt-10 text-2xl font-bold tracking-tight text-gray-900 "> {cust_name} </h2>
-            </div>
-        </div>  {/*End of Dashboard + cust_name */}
+
 
       {/* Tables  Agreements Work Orders Invoices*/}
       
