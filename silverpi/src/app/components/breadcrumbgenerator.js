@@ -36,7 +36,7 @@ export default function BreadcrumbGenerator () {
             breadcrumbs &&
             breadcrumbs.map((breadcrumb) => (
                 <BreadcrumbItem key={breadcrumb.href} href={breadcrumb.href}>
-                <span className = "text-black hover:underline">{breadcrumb.label}</span>
+                <span className = "text-gray-700 text-lg hover:font-medium hover:underline">{breadcrumb.label}</span>
                 </BreadcrumbItem>
             ))}
         </Breadcrumb>
