@@ -6,18 +6,14 @@ import Breadcrumb from "../components/breadcrumbs.js";
 import BreadcrumbItem from "../components/breadcrumbitem.js";
 
 export default function DashboardLayout({ children }) {
-    const router = useRouter();
     const [breadcrumbs, setBreadcrumbs] = useState();
     var pathName = usePathname()
 
     useEffect(() => {
       let pathArray =  pathName.split("/");
-      console.log(pathArray);      
       if(pathArray.length <= 2) {
         var breadcrumbs = []
         setBreadcrumbs(breadcrumbs);
-        console.log("hello");
-        console.log(breadcrumbs);
       } else {
         pathArray.shift();
 
@@ -31,8 +27,6 @@ export default function DashboardLayout({ children }) {
         };
         });
         setBreadcrumbs(breadcrumbs);
-        console.log("hello2");
-        console.log(breadcrumbs);
       }
       
     }, [pathName]);
