@@ -1,3 +1,4 @@
+"use client"
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -134,7 +135,7 @@ export default function Navbar() {
                   )}
                 </Menu>
               </div>
-              <div className="flex items-center text-xl text-gray-400 sm:hidden">
+              <div className="flex items-center text-xl text-gray-600 sm:hidden">
                 Hello, Company
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
