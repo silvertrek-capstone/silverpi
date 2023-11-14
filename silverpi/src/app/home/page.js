@@ -51,13 +51,9 @@ export default function Home() {
       setIds(idsCopy);
       setIsSorted(!isSorted); // Toggle sorting state
     };
-      
-
     
     return (
-    <div>
-
-
+    <>
       {/* Tables  Agreements Work Orders Invoices*/}
       
         <div className="px-4 sm:px-6 lg:px-8">
@@ -210,21 +206,28 @@ export default function Home() {
                         <tbody>
                             {/* iterate through data  */}
                           {ids.map((id, index) => ( 
-                                <tr key={index}>
-                                     <td key={index} className="px-6 py-3.5 text-left font-medium text-gray-900">
-                                        <Link href={`/home/invoices/${id}`}>
-                                            <div className="hover:underline">
+                                <tr key={index} className="hover:bg-gray-100">
+                                    <td key={index} className="text-left font-medium text-gray-900">
+                                        <Link className="block pl-6 py-3" href={`/home/invoices/${id}`}>
+                                            <div>
                                                 {id}
                                             </div>
                                         </Link>
                                     </td>
-                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
-                                        {data2[index]} </td>
-                                        <td className="px-3 py-3.5 text-left font-medium text-gray-900">
-                                        {data3[index]} </td>
+                                    <td className=" text-left font-medium text-gray-900">
+                                        <Link className="block py-3" href={`/home/invoices/${id}`}>
+                                            {data2[index]}
+                                        </Link>
+                                    </td>
+                                    <td className=" text-left font-medium text-gray-900">
+                                        <Link className="block py-3" href={`/home/invoices/${id}`}>
+                                            {data3[index]}
+                                        </Link>
+                                    </td>
+                                    
                                 </tr>
                           ))}
-               </tbody>
+                        </tbody>
                     </table>
                     <Link href="./home/invoices">
                          <button type="button"
@@ -243,8 +246,7 @@ export default function Home() {
             </div>
                             
         </div> {/* End of Tables  Agreements Work Orders Invoices*/}
-   
-    </div>
+    </>
     )
   }
 
