@@ -109,23 +109,27 @@ const DataTable = (props) => {
             {headerGroups.map((headerGroup, i) => (
               <tr key= {i} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column, j) => (
-                  <th key = {j} {...column.getHeaderProps(column.getSortByToggleProps())} 
+                  // <th key = {j} {...column.getHeaderProps(column.sortable ? column.getSortByToggleProps() : column.render("Header"))} 
+                  <th key = {j} {...column.getHeaderProps(column.getSortByToggleProps() )} 
                     scope="col"
                     className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
                   >
                     <a className="group inline-flex">
                       {column.render("Header")}
-                      <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                        { (
+                        <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
 
-                        {column.isSorted ? 
-                          (column.isSortedDesc ? 
-                              (<ChevronDownIcon className='h-5 w-5' aria-hidden='true' />): 
-                              (<ChevronDownIcon className='h-5 w-5 rotate-180' aria-hidden='true' />) ): 
-                              ""}
-                        </span>
+                          {column.isSorted ? 
+                            (column.isSortedDesc ? 
+                                (<ChevronDownIcon className='h-5 w-5' aria-hidden='true' />): 
+                                (<ChevronDownIcon className='h-5 w-5 rotate-180' aria-hidden='true' />) ): 
+                                ""}
+                          </span>
+                        )}
                     </a>
                     {/* simply use for filtering */}
-                    <div>{column.canFilter ? column.render('Filter') : null}</div>
+                    <div>{ (column.canFilter ? column.render('Filter') : null) }</div>
+                    {/* <div>{column.filterable && (column.canFilter ? column.render('Filter') : null) }</div> */}
                   </th>
                 ))}
               </tr>
