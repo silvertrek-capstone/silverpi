@@ -9,6 +9,17 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 //   then the sort is undone and the initial order is shown can be sorted 
 //   after search will fix at least look for fixes later if needed
 
+/*
+    Notes: potential additions need more info so check later
+      so stacked columns for mobile bascialy choose which columsn important
+      idk maybe id and status dont implement till then for now ignore jsut touch upon  the
+      idea later to see what do and how to handle functionality if needed
+
+      also how to handle links and stuff wat do for now? check later 
+
+      do i need title or just a table?
+*/
+
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -87,11 +98,6 @@ const DataTable = (props) => {
   );
 
   return (
-    // <div className="px-4 sm:px-6 lg:px-8"> dont know how height:100% position:absolute absense will change table ghieght if ommited 
-    // if all other prnt hieghts are changed 
-
-
-    
       <div className="bg-white -mx-4 mt-10 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg height:100% position:absolute">
       <GlobalFilter
                 preGlobalFilteredRows={preGlobalFilteredRows}
@@ -103,13 +109,17 @@ const DataTable = (props) => {
             {headerGroups.map((headerGroup, i) => (
               <tr key= {i} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column, j) => (
-                  <th key = {j} {...column.getHeaderProps(column.getSortByToggleProps())} scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+                  <th key = {j} {...column.getHeaderProps(column.getSortByToggleProps())} 
+                    scope="col"
+                    className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
+                  >
                     <a className="group inline-flex">
                       {column.render("Header")}
-                      <span>
+                      <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+
                         {column.isSorted ? 
                           (column.isSortedDesc ? 
-                              (<ChevronDownIcon className='h-5 w-5' aria-hidden='true' />) :
+                              (<ChevronDownIcon className='h-5 w-5' aria-hidden='true' />): 
                               (<ChevronDownIcon className='h-5 w-5 rotate-180' aria-hidden='true' />) ): 
                               ""}
                         </span>
@@ -135,7 +145,7 @@ const DataTable = (props) => {
              alright so change later to using id of some kind should be fine with input data cause they will id talk to team later 
              about it  
              
-             Special thot how does vars affect outside of the {} should be doing anything right? ask someone later or google*/}
+             Special thought how does vars affect outside of the {} should be doing anything right? ask someone later or google*/}
             {rows.map((row, i) => {
               prepareRow(row);
               return (
