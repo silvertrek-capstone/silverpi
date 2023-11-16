@@ -17,39 +17,44 @@ const DataTableMemoized = React.memo(DataTable);
 
 const testone = () => {     
      
-    const props = {
-        columns: [
-          {
-            Header: 'Column1',
-            accessor: 'column1',
-            sortable: "true",
-          },
-          {
-            Header: 'Column2',
-            accessor: 'column2',
-          },
-          {
-            Header: 'Column3',
-            accessor: 'column3',
-          }
-        ],
-        data: [
-          {
-            column1: 'data1',
-            column2: 'data2',
-            column3: 'data3',
-          },
-          {
-            column1: 'data1',
-            column2: 'data2',
-            column3: 'data3',
-          }
-        ]
-      };      
+  const props = {
+    columns: [
+      {
+        Header: 'Column1',
+        accessor: 'column1', 
+      },
+      {
+        Header: 'Column2',
+        accessor: 'column2',
+      },
+      {
+        Header: 'Column3',
+        accessor: 'column3',
+      }
+    ],
+    data: generateDummyData(100)
+  };
+  
+  function generateDummyData(count) {
+    const dummyData = [];
+    for (let i = 1; i <= count; i++) {
+      dummyData.push({
+        column1: `data${i}`,
+        column2: `data${i}`,
+        column3: `data${i}`,
+      });
+    }
+    return dummyData;
+  }
 
 //  div stuff
     return (
-            <DataTableMemoized {...props} />
+
+      <div class="parent h-full bg-gray-300 "> 
+            <div class="child h-full bg-blue-500 ">
+              <DataTableMemoized {...props} />
+            </div> 
+        </div> 
     )
 
 };
