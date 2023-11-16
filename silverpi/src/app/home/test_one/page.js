@@ -21,15 +21,21 @@ const testone = () => {
     columns: [
       {
         Header: 'Column1',
-        accessor: 'column1', 
+        accessor: 'column1',
+        sortable: false,
+        filterable: true,
       },
       {
         Header: 'Column2',
         accessor: 'column2',
+        sortable: true,
+        filterable: true,
       },
       {
         Header: 'Column3',
         accessor: 'column3',
+        sortable: false,
+        filterable: false,
       }
     ],
     data: generateDummyData(100)
@@ -50,8 +56,8 @@ const testone = () => {
 //  div stuff
     return (
 
-      <div class="parent h-full bg-gray-300 "> 
-            <div class="child h-full bg-blue-500 ">
+      <div className="parent h-full bg-gray-300 "> 
+            <div className="child h-full bg-blue-500 ">
               <DataTableMemoized {...props} />
             </div> 
         </div> 
