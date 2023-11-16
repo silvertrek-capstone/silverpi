@@ -1,61 +1,25 @@
-'use client'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link';
-import { useState, useEffect } from 'react'
+import { gql, GraphQLClient, request } from 'graphql-request'
+import { POST } from "@/api/home/getAllTables.js"
 
-export default function Home() {
+export default async function Home() {
+    const response = await POST();
+    const jsonData =  await response.json()
+    console.log(JSON.stringify(jsonData, null, 2));
+    const workorders = jsonData.data;
+    console.log(workorders);
 
-//  sim getting data for user comp name and user name 
-    const [comp_name, setcomp] = useState('');
-    const [cust_name, setcust] = useState('');
-
-    useEffect(() => {
-        const comp_name = getCompanyName()
-        const cust_name = getCustomer()  
-        setcomp(comp_name) 
-        setcust(cust_name)     
-      }, []); 
-
-//  sim getting data for tables 
-    const [ids, setIds] = useState([]);
-    const [data2, setData2] = useState([]);
-    const [data3, setData3] = useState([]);
-
-    useEffect(() => {
-        // Simulate fetching data from db 
-        const idData = databaseIds(); 
-        const data2Data = databaseData2();
-        const data3Data = databaseData3();
-
-        // Update state of fetched data
-        setIds(idData);
-        setData2(data2Data);
-        setData3(data3Data);
-    }, []);
-
-    const [isSorted, setIsSorted] = useState(false);
-
-    const sortColumn = () => {
-      const idsCopy = [...ids];
-      
-      if (isSorted) {
-        idsCopy.reverse();
-      } else {
-        itemsArray.sort(function(a, b){  
-            return sortingArr.indexOf(a) - sortingArr.indexOf(b);
-        });
-        
-        idsCopy.sort((a, b) => a - b);
-      }
-  
-      setIds(idsCopy);
-      setIsSorted(!isSorted); // Toggle sorting state
-    };
+    const ids = [1, 2, 3, 4, 5];
+    const data2 = ['2023-10-01', '2023-10-05', '2023-10-10', '2023-10-15', '2023-10-20'];
+    const data3 = ['blank_desc1', 'blank_desc2', 'blank_desc3', 'blank_desc4', 'blank_desc5'];
+    const comp_name = "GENERIC_COMPANY_NAME";
+    const cust_name = "GENERIC_CUSTOMER_NAME";
     
     return (
     <>
+    <pre>{JSON.stringify(workorders, null, 2)}</pre>
       {/* Tables  Agreements Work Orders Invoices*/}
-      
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center position: relative">
                 <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg mb-20">
@@ -67,8 +31,7 @@ export default function Home() {
                                 <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                 <a className="group inline-flex">
                                     ID
-                                    <span onClick={sortColumn} className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-                                    {isSorted ? 'Sort IDs (Desc)' : 'Sort IDs (Asc)'}
+                                    <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                                     <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                                     </span>
 
@@ -175,7 +138,6 @@ export default function Home() {
                     </Link>
                 </div>
             </div> {/*End of Tables  Workorders*/}
-
             <div className="mx-auto max-w-2xl text-center position: relative">
                 <div className="bg-white -mx-4 mt-10 pt-11 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg mb-20">
                     <h2 className="position absolute top-0 mt-3 ml-3 text-2xl font-semibold leading-6 text-gray-900">
@@ -223,8 +185,7 @@ export default function Home() {
                                         <Link className="block py-3" href={`/home/invoices/${id}`}>
                                             {data3[index]}
                                         </Link>
-                                    </td>
-                                    
+                                    </td>   
                                 </tr>
                           ))}
                         </tbody>

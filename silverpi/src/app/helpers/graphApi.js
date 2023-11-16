@@ -32,6 +32,7 @@ export async function makeQuery(query, variables) {
 
         // Get the json of the response
         const tokenData = await tokenResponse.json()
+        
         // Check if theres an error, if yes, throw the error
         if (tokenData.error) {
             throw new Error(tokenData.error)
@@ -39,6 +40,9 @@ export async function makeQuery(query, variables) {
 
         // If not, we got the token, and we are good to make a request.
         const { access_token, token_type } = tokenData // Get the access token and token type
+        console.log("Access Token: " + access_token)
+        console.log("Token Type: " + token_type)
+
         const graphUrl = `${apiLoc}/${apiLocation}`
         // Create a graphql client for us to make the request. Client is made with auth headers
         const gqClient = new GraphQLClient(graphUrl, {
@@ -47,6 +51,8 @@ export async function makeQuery(query, variables) {
             },
         })
         const apiResponse = await gqClient.request(query, variables)
+        console.log("hello")
+        console.log("ApiResponse: " + apiResponse)
         // Above will throw a client error on error
 
         // console.log(Object.keys(apiResponse))
@@ -56,6 +62,7 @@ export async function makeQuery(query, variables) {
         }
 
     } catch (e) {
+        console.log(e)
         return {
             error: e.message,
             data: null,

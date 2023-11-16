@@ -19,8 +19,6 @@ export default function Navbar() {
 
   useEffect(() => {
     let pathArray =  pathName.split("/");
-    console.log("pathname: " + pathName);
-    console.log("pathArray: " + pathArray);
     setCurrentPage(pathArray[pathArray.length - 1]);
   }, [pathName]);
 
