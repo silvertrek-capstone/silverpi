@@ -15,6 +15,17 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link';
+import {POST} from '@/api/agreements/getActiveAgreements/route.js'
+
+export default async function agreementCall() {
+    const response = await POST()
+    const jsonData = await response.json();
+    const customers = jsonData.data
+    return (
+        <pre>{JSON.stringify(customers, null, 2)}</pre>
+    )
+}
+
 
 const homeButtonStyles = {
     position: 'absolute',
@@ -175,80 +186,3 @@ function agreementsData(){
         }
     ]
 }
-
-
-
-/*function agreementsData(){
-    return [
-        {
-            id: 1,
-            title: 'ALPHA Agreement',
-            content: `
-                This is the content of Agreement 1. You have agreed that you are a super super 
-                super super super super super super super super super super super super super super super 
-                super super super super super super super super super super super super super super super 
-                super super super super super super super super super super super super super super super 
-                super super super super super super super super super super super super super super super 
-                super super super super super super super super super super super super super super super 
-                super super super super super super super super super super super super super super super 
-                super super super super super super super super cool customer.
-            `
-        },
-        {
-            id: 2,
-            title: 'Equipment Checkout Agreement',
-            content: `
-                <pre>
-                This Equipment Checkout Agreement ("Agreement") is entered into on [Date], by and between:
-
-                Lender:
-                Name of Lending Organization/Individual: [Name of Lender]
-                Address: [Address of Lender]
-                Contact Information: [Phone number and email address of Lender]
-            
-                Borrower:
-                Name of Borrower: [Name of Borrower]
-                Affiliation (if applicable): [Affiliation, e.g., school, company]
-                Address: [Address of Borrower]
-                Contact Information: [Phone number and email address of Borrower]
-            
-                Collectively, the Lender and Borrower may be referred to as the "Parties."
-            
-                Equipment Details:
-            
-                Description of Equipment: [Provide a detailed description of the equipment, including make, model, and any unique identifiers]
-            
-                Serial/ID Number: [If applicable, provide the serial number or identification number]
-            
-                Terms and Conditions:
-            
-                Checkout Date: The Lender hereby loans the described equipment to the Borrower, and the Borrower acknowledges receiving the equipment on [Date].
-            
-                Duration: The Borrower is granted permission to use the equipment for a specific period starting from the Checkout Date and ending on [Return Date]. The Borrower is responsible for returning the equipment promptly and in the same condition it was received.
-            
-                Care and Responsibility: The Borrower agrees to use the equipment with care and take reasonable precautions to prevent damage, loss, or theft. The Borrower will be responsible for any damage or loss beyond normal wear and tear.
-            
-                Return of Equipment: The Borrower agrees to return the equipment in good working condition on or before the specified Return Date. If an extension or delay in return is necessary, the Borrower must obtain prior consent from the Lender.
-            
-                Late Return: In the event of late return without prior approval, the Borrower may be subject to penalties, including fees and/or restrictions on future equipment loans.
-            
-                Liability: The Borrower understands that they are liable for any damages, losses, or theft of the equipment during the loan period and shall be responsible for the repair or replacement costs.
-            
-                Use Restrictions: The Borrower agrees to use the equipment only for its intended purpose and in compliance with all applicable laws and regulations.
-            
-                Indemnification: The Borrower shall indemnify and hold the Lender harmless from any claims, losses, damages, or liabilities arising out of the Borrower's use of the equipment.
-                </pre>
-            `,
-        },
-        {
-            id: 3,
-            title: 'Reminder Agreement',
-            content: `
-                This another ridiculous that you agreed to. You can not take it back right now. You are held
-                responsible for anything that will happen to your equipement. Better take care of your 
-                equipement better next time.
-            `
-        }
-    ];
-}
-*/
