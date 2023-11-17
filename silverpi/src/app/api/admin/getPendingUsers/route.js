@@ -31,7 +31,7 @@ export async function POST(request) {
         }
 
         const filteredUsers = users.filter(user => 
-            sqlTab.some(customer => customer.user_id === user.id)
+            !sqlTab.some(customer => customer.user_id === user.id)
         );
 
         return NextResponse.json({ data: filteredUsers, error }, { status: 200 })

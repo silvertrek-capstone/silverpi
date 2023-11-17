@@ -8,10 +8,12 @@ import { useState, useEffect } from 'react';
 export default function AdminPanel() {
   const router = useRouter();
   const [users, setUsers] = useState([]);
+  const [pendingUsers, setPendingUsers] = useState([]);
 
   useEffect(() => {
     async function loadUsers() {
       try {
+        
         const response = await fetch('/api/admin/getAllUsers', { // Contact route file and make post command
           method: "POST"
         });
@@ -21,6 +23,17 @@ export default function AdminPanel() {
         }
         console.log(data);
         setUsers(data.data); // Set users with data fetched from route file
+
+        const secondResponse = await fetch('/api/admin/getPendingUsers', { // Contact route file and make post command
+          method: "POST"
+        });
+        const data2 = await secondResponse.json();
+        if (data2.error){
+          throw new Error(data2.error);
+        }
+        console.log(data2);
+        setPendingUsers(data2.data); // Set users with data fetched from route file
+
       } catch (error) {
         console.error('Failed to load users:', error);
       }
@@ -33,8 +46,6 @@ export default function AdminPanel() {
 
   console.log("1")                         // Debug Prints
   console.log(users)
-
-  const pendingUsers = users; 
     
   const adminName = "Admin Name"; // ADmin Name Placeholder
 
