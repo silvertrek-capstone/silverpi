@@ -1,14 +1,25 @@
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link';
 import { gql, GraphQLClient, request } from 'graphql-request'
-import { POST } from "@/api/home/getAllTables.js"
+import { POST as workOrdersPOST} from "@/api/workorders/getActiveWorkorders.js"
+import { POST as agreementsPOST} from "@/api/agreements/getActiveAgreements.js"
+import { POST as invoicesPOST} from "@/api/invoices/getUnpaidInvoices.js"
 
 export default async function Home() {
-    const response = await POST();
-    const jsonData =  await response.json()
-    console.log(JSON.stringify(jsonData, null, 2));
-    const workorders = jsonData.data;
-    console.log(workorders);
+    // loading agreements
+    // const agResponse = await agreementsPOST();
+    // const agJsonData =  await agResponse.json();
+    // const agreements = agJsonData.data;
+
+    // loading workorders
+    const woResponse = await workOrdersPOST(10044);
+    const woJsonData =  await woResponse.json();
+    const workorders = woJsonData.data;
+    
+    // loading invoices
+    // const inResponse = await invoicesPOST();
+    // const inJsonData =  await inResponse.json()
+    // const invoices = inJsonData.data;
 
     const ids = [1, 2, 3, 4, 5];
     const data2 = ['2023-10-01', '2023-10-05', '2023-10-10', '2023-10-15', '2023-10-20'];
@@ -16,6 +27,32 @@ export default async function Home() {
     const comp_name = "GENERIC_COMPANY_NAME";
     const cust_name = "GENERIC_CUSTOMER_NAME";
     
+    var woColumns = [
+        {
+            header: "ID",
+            accessor: "id", 
+            sortable: true 
+        },
+        {
+            header: "sMCo",
+            accessor: "smco", 
+            sortable: false 
+        },
+        {
+            header: "Description",
+            accessor: "description", 
+            sortable: false
+        },
+    ]
+    var woRows = []
+
+    var flag = 0; // flag will tell us that we no longer need to store column info
+    workorders["vSMWorkOrder"].forEach(function (value){
+        for( let key in value) {
+            woRows.push("hello");
+        }
+    });
+    console.log(woRows);
     return (
     <>
     <pre>{JSON.stringify(workorders, null, 2)}</pre>

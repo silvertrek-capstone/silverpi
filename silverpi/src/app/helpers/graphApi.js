@@ -27,6 +27,7 @@ export async function makeQuery(query, variables) {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Basic ${auth}`
             },
+            cache: 'no-cache',
             body: "grant_type=client_credentials"
         })
 
@@ -40,8 +41,6 @@ export async function makeQuery(query, variables) {
 
         // If not, we got the token, and we are good to make a request.
         const { access_token, token_type } = tokenData // Get the access token and token type
-        console.log("Access Token: " + access_token)
-        console.log("Token Type: " + token_type)
 
         const graphUrl = `${apiLoc}/${apiLocation}`
         // Create a graphql client for us to make the request. Client is made with auth headers
@@ -51,8 +50,6 @@ export async function makeQuery(query, variables) {
             },
         })
         const apiResponse = await gqClient.request(query, variables)
-        console.log("hello")
-        console.log("ApiResponse: " + apiResponse)
         // Above will throw a client error on error
 
         // console.log(Object.keys(apiResponse))

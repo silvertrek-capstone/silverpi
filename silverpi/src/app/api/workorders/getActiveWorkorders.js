@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
 
 // This function will get all agreements, 
-export async function POST(request) {
+export async function POST(customerNum) {
 
 
     const query = gql`
@@ -11,24 +11,18 @@ export async function POST(request) {
         vSMWorkOrder(where: $filter){
             sMCo
             workOrder
-            custGroup
-            customer
             description
-            notes
             wOStatus
         }
     }`
 
     const variables = {
         filter: {
-            sMCo: {
+            wOStatus: {
                 "eq": 1
             },
-            wOStatus: {
-                "eq": 0
-            },
             customer: {
-                "eq": 10044
+                "eq": customerNum
             }
         }
     }
