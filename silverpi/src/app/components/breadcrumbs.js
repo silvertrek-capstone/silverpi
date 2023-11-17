@@ -17,8 +17,8 @@ const Breadcrumb = ({ children }) => {
   });
 
   return (
-    <nav className="bg-transparent px-24">
-      <ol className="flex items-center space-x-2">{childrenWtihSeperator}</ol>
+    <nav className="flex justify-center mt-5 bg-transparent md:ml-40 md:justify-start ">
+      <ol className="flex items-center space-x-3">{childrenWtihSeperator}</ol>
     </nav>
   );
 };
