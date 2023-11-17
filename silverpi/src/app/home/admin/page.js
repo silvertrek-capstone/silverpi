@@ -51,15 +51,9 @@ export default function AdminPanel() {
 
   return (
     <div className="min-h-screen bg-transparent p-8 pt-20 flex flex-col items-center">
-      <img
-        className="mx-auto h-12 w-auto -mt-10"
-        src="/login.png"
-        alt="Silver Trek Progress Inquiries"
-      />
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 p-8 -mt-4">Admin Panel</h1> 
-          <p className="text-gray-600 p-2">Signed in as: {adminName}</p>
+          <h1 className="text-4xl font-regular text-gray-800 p-2 -mt-8">Admin Panel</h1> 
         </div>
         <div className="mb-6">
           <h2 className="mb-2 text-xl font-semibold text-gray-700">Pending Users</h2>
