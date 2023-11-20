@@ -56,6 +56,7 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
   
     // return filter box and set val 
     return (
+        <div className="flex justify-end">
         <div className="relative">
             <input
                 name="globalsearchInput"
@@ -72,6 +73,7 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
                     <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path>
                 </svg>
             </div>
+        </div>
         </div>
     ); 
   }
@@ -115,6 +117,7 @@ const DataTable = ({ columnsInput, dataInput }) => {
     const defaultColumn = React.useMemo(() => ({Filter: DefaultColumnFilter,}),[]); 
     const rowTotalCount = data.length;
     const minRowCount = 5; 
+    const tableName = "SampleTable";
 
   // Use the state and functions returned from useTable to build your UI
     const {
@@ -140,6 +143,9 @@ const DataTable = ({ columnsInput, dataInput }) => {
     return (
         <div className="bg-white ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg height:100% position:absolute py-8
         ">
+        <div className=" position: absolute bottom: 0px">
+          <h1 className="mx-7 text-xl font-semibold leading-6 text-gray-900">{tableName}</h1>
+        </div>
         <div className="mx-5">
             {rowTotalCount > minRowCount ? (
                 <GlobalFilter
@@ -195,7 +201,7 @@ const DataTable = ({ columnsInput, dataInput }) => {
                                             <ChevronDownIcon className="h-5 w-5 rotate-180" aria-hidden="true" />
                                         </span>) ): 
                                          (<span className=" ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
-                                            <ChevronUpDownIcon className="h-5 w-5 rotate-180" aria-hidden="true" />
+                                            <ChevronUpDownIcon className="h-5 w-5 " aria-hidden="true" />
                                         </span>)
                                 }
                             </div>
