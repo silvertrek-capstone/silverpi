@@ -1,179 +1,235 @@
 "use client"
 import React from "react";
-import 'regenerator-runtime/runtime';
+import 'regenerator-runtime/runtime'; 
 import { useTable, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-
-// Notes: sorting and filtering 
-//   So i do not know if this matters but once the search box is clicked 
-//   then the sort is undone and the initial order is shown can be sorted 
-//   after search will fix at least look for fixes later if needed
+import { ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 /*
-    Notes: potential additions need more info so check later
-      so stacked columns for mobile bascialy choose which columsn important
-      idk maybe id and status dont implement till then for now ignore jsut touch upon  the
-      idea later to see what do and how to handle functionality if needed
+    Notes: How to use table_gen
+        items: An array of objects, the keys in the objects will match “value” in the given headers. Each object represents a row in the table
+        headers: An array of objects, each object representing the header of a column in the table. Each object should contain the following:
+        text: The name of the header (what the user sees)
+        value: the key to match in the object
+        sortable: whether or not the column should be sortable
+        disable-search; a boolean value that turns off the search bars for each column, smaller tables will not need search.
+*/
 
-      also how to handle links and stuff wat do for now? check later 
 
-      do i need title or just a table?
+/*
+    Notes: things need to be done 
+    - need to make search function disappear if table is smaller than a number of rows
+    - just general stylizing 
+    - option to show how many rows to appear in general if need be
+    - option to change how many rows to return when searching 
+*/
+
+/*
+    Notes: troubleshooting stuff will remove this after resolved same with many comments in this file
+    Remade the table step by step and pointing out potentially where the prop 
+    spreading issue is detected I might keep a normal react-table without all the 
+    effort to remove the props from the things such as <th> 
+
+    import 'regenerator-runtime/runtime'; was needed for asyncdebounce there are other 
+    solutions i do not know which is preferable deal with later 
+
+    going to add comments to make getting help for debugging easier if needed later
+    for potential changes 
+
+    two issues mainly warnings about 
+    - props being spread
+    - key attributes being numbers 
+    - pass in name of table so that global search has it in the name?
 */
 
 
 // Define a default UI for filtering
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}) {
-  const count = preGlobalFilteredRows.length
-  const [value, setValue] = React.useState(globalFilter)
-  const onChange = useAsyncDebounce(value => {
-      setGlobalFilter(value || undefined)
-  }, 200)
+// start of functions for table filtering
+function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
+    const count = preGlobalFilteredRows.length
+    const [value, setValue] = React.useState(globalFilter)
+    
+    // debounce time is 200ms
+    // if empty undefined else user input in filter
+    const onChange = useAsyncDebounce(value => {
+        setGlobalFilter(value || undefined)
+    }, 200)
+  
+    // return filter box and set val 
+    return (
+        <div className="relative">
+            <input
+                name="globalsearchInput"
+                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
+                value={value || ""}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                    onChange(e.target.value);
+                }}
+                placeholder={`Search table records...`}
+            />
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path>
+                </svg>
+            </div>
+        </div>
+    )
+  }
+  
 
-  return (
-      <span>
-          Search:{' '}
-          <input
-              className="form-control"
-              value={value || ""}
-              onChange={e => {
-                  setValue(e.target.value);
-                  onChange(e.target.value);
-              }}
-              placeholder={`${count} records...`}
-          />
-      </span>
-  )
-}
+/*
+    Note: I dont use debounce here and it is not needed 
+    in for the Global filter its just helpful to not make so         
+    many changesif expecting long input values 
+*/ 
+  function DefaultColumnFilter({column: { filterValue, preFilteredRows, setFilter },}) {
+    const count = preFilteredRows.length
+    // return filter box for a column 
+    return (
+        <div className="relative">
+            <input
+                name="globalsearchInput"
+                className="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
+                value={filterValue || ''}
+                onChange={e => {
+                    setFilter(e.target.value || undefined)
+                }}
+                placeholder={`Search ${count} records...`}
+        />
+         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path>
+                </svg>
+            </div>
+        </div>
+    )
+  }
+// end of functions for table filtering
+// ====================================
 
-function DefaultColumnFilter({
-  column: { filterValue, preFilteredRows, setFilter },
-}) {
-  const count = preFilteredRows.length
+const DataTable = ({ columnsInput, dataInput }) => {
 
-  return (
-      <input
-          className="form-control"
-          value={filterValue || ''}
-          onChange={e => {
-              setFilter(e.target.value || undefined)
-          }}
-          placeholder={`Search ${count} records...`}
-      />
-  )
-}
-
-const DataTable = (props) => {
-  // Memos
-  const data = React.useMemo(() => props.data, [props.data]);
-  const columns = React.useMemo(() => props.columns, [props.columns]);
-  const defaultColumn = React.useMemo(() => ({
-        // Default Filter UI
-        Filter: DefaultColumnFilter,
-    }),[])
-
+    // For sorting/filtering things need to be memoized
+    const data = React.useMemo(() => dataInput, [dataInput]);
+    const columns = React.useMemo(() => columnsInput, [columnsInput]);
+    const defaultColumn = React.useMemo(() => ({Filter: DefaultColumnFilter,}),[]); 
 
   // Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-    preGlobalFilteredRows,
-    setGlobalFilter,
-    } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn
-    },
-    useFilters, 
-    useGlobalFilter,
-    useSortBy
-  );
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+        state,
+        preGlobalFilteredRows,
+        setGlobalFilter,
+        } = useTable(
+        {
+        columns,
+        data,
+        defaultColumn
+        },
+        useFilters, 
+        useGlobalFilter,
+        useSortBy
+    );
 
-  return (
-      <div className="bg-white -mx-4 mt-10 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg height:100% position:absolute">
-      <GlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={state.globalFilter}
-                setGlobalFilter={setGlobalFilter}
-            /> 
-        <table {...getTableProps()} className="min-w-full min-h-full divide-gray-300">
-          <thead>
-            {headerGroups.map((headerGroup, i) => (
-              <tr key= {i} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, j) => (
-                  // <th key = {j} {...column.getHeaderProps(column.sortable ? column.getSortByToggleProps() : column.render("Header"))} 
-                  <th key = {j} {...column.getHeaderProps(column.getSortByToggleProps() )} 
-                    scope="col"
-                    className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
-                  >
-                    <a className="group inline-flex">
-                      {column.render("Header")}
-                        { (
-                        <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-
-                          {column.isSorted ? 
-                            (column.isSortedDesc ? 
-                                (<ChevronDownIcon className='h-5 w-5' aria-hidden='true' />): 
-                                (<ChevronDownIcon className='h-5 w-5 rotate-180' aria-hidden='true' />) ): 
-                                ""}
-                          </span>
-                        )}
-                    </a>
-                    {/* simply use for filtering */}
-                    <div>{ (column.canFilter ? column.render('Filter') : null) }</div>
-                    {/* <div>{column.filterable && (column.canFilter ? column.render('Filter') : null) }</div> */}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead> 
-          <tbody {...getTableBodyProps()}>
-            {/* Notes: mapping and using index
-             for Stability: the order of the items can change so it can lead to undefined behavior 
-             if an item in the middle table is removed could cause table to rerender more items than needed
-             ** should not be an issue unless we do real time data which would cause an issue something to look back to if this happens
-            
-             for component state: if the items are react component with local state then this(indexes using them anyways) could cause for example
-             react uses keys to determine whether or not remoount or update 
-             if the keys change react could see it as a diff component 
-             this could be an issue do to sorting 
-
-             alright so change later to using id of some kind should be fine with input data cause they will id talk to team later 
-             about it  
-             
-             Special thought how does vars affect outside of the {} should be doing anything right? ask someone later or google*/}
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr key={i}{...row.getRowProps()} >
-                  {row.cells.map((cell, j) => {
-                    return  <td key = {j} className="px-6 py-3.5 text-left font-medium text-gray-900" 
-                              {...cell.getCellProps()}>{cell.render("Cell")}
-                            </td>;
-                  })} 
-                </tr>
-              );
-            })}
-          </tbody>
-          </table>
-            <br />
-            <div>Showing the first 20 results of {rows.length} rows</div>
-            {/* Notes: figure out why this is not outputting corect info  */}
-            {/* <div>
-                <pre>
-                    <code>{JSON.stringify(state.filters, null, 2)}</code>
-                </pre>
-            </div> */}
+    return (
+        <div className="bg-white ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg height:100% position:absolute py-8
+        ">
+        <div className="mx-5">
+            <GlobalFilter
+                  preGlobalFilteredRows={preGlobalFilteredRows}
+                  globalFilter={state.globalFilter}
+                  setGlobalFilter={setGlobalFilter}/> 
         </div>
-  );
+        {/*props spreading  */}
+          <table className="min-w-full min-h-full divide-gray-300"
+                {...getTableProps()}>
+            <thead>
+                {/* Note MAPPING JSX: if any value in your mapped thing is a number then 
+                it will be seen as a key which will raise a warning as JSX wants a string 
+                key = {JSON.stringify(headerGroup.values)} will play around with this later*/}
+                {headerGroups.map((headerGroup, index_headergroup) => (
+                //  prop spreading
+                <tr key = {index_headergroup} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column, index_column) => (
+                    
+                    //  prop spreading *check bug hello company dropdown not going over my hover headers 
+                    <th 
+                        scope="col"
+                        className="sticky top-0 z-10 hidden border-b border-gray-300
+                         bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold
+                         text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
+
+                        key = {index_column} {...column.getHeaderProps(column.sortable ?column.getSortByToggleProps(): "")}
+                    >
+                    <div className="group inline-flex items-center space-x-2">
+                        {/* header */}
+                        <div className="flex-none">
+                            {column.render("Header")} 
+                        </div>
+
+                        {/* filtering box */}
+                        {column.filterable && (
+                            <div className="relative">
+                                <br/>
+                                {column.canFilter ? column.render('Filter') : null}
+                            </div>
+                        )}
+                                
+                        {/* arrows for sorting */}
+
+                        {column.sortable && (
+                            <div className="ml-2 flex-none">
+                                {column.isSorted ? 
+                                    (column.isSortedDesc ? 
+                                        <span className="ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                                            <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                        </span>: 
+                                        (<span className=" ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                                            <ChevronDownIcon className="h-5 w-5 rotate-180" aria-hidden="true" />
+                                        </span>) ): 
+                                         (<span className=" ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                                            <ChevronUpDownIcon className="h-5 w-5 rotate-180" aria-hidden="true" />
+                                        </span>)
+                                }
+                            </div>
+                        )}
+                    </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead> 
+            {/* //  prop spreading */}
+            <tbody className="divide-y divide-gray-200 bg-white"
+                {...getTableBodyProps()}>
+              {rows.map((row, index_row) => {
+                prepareRow(row);
+                return (
+                    //  prop spreading
+                    <tr key = {index_row} {...row.getRowProps()} >
+                        {row.cells.map((cell, index_cell) => {
+                            return (
+                                //  prop spreading
+                                <td className="px-6 py-3.5 text-left font-medium text-gray-900" 
+                                key = {index_cell} {...cell.getCellProps()}>{cell.render("Cell")} </td>
+                        );
+                    })} 
+                  </tr>
+                );
+              })}
+            </tbody>
+            </table>
+              <br />
+                <div 
+                    className="px-6 py-3.5 text-left font-medium text-gray-900">
+                    Showing the first 20 results of {rows.length} rows
+                </div>
+          </div>
+    );
 };
 
 export default DataTable;
