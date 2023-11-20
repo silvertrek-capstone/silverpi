@@ -73,7 +73,7 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
                 </svg>
             </div>
         </div>
-    )
+    ); 
   }
   
 
@@ -87,23 +87,23 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
     // return filter box for a column 
     return (
         <div className="relative">
-            <input
-                name="globalsearchInput"
-                className="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
-                value={filterValue || ''}
-                onChange={e => {
-                    setFilter(e.target.value || undefined)
-                }}
-                placeholder={`Search ${count} records...`}
-        />
-         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path>
-                </svg>
+                <input
+                    name="defsearchInput"
+                    className="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
+                    value={filterValue || ''}
+                    onChange={e => {
+                        setFilter(e.target.value || undefined)
+                    }}
+                    placeholder={`Search ${count} records...`}
+            />
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path>
+                    </svg>
+                </div>
             </div>
-        </div>
-    )
-  }
+        ); 
+  } 
 // end of functions for table filtering
 // ====================================
 
@@ -113,6 +113,8 @@ const DataTable = ({ columnsInput, dataInput }) => {
     const data = React.useMemo(() => dataInput, [dataInput]);
     const columns = React.useMemo(() => columnsInput, [columnsInput]);
     const defaultColumn = React.useMemo(() => ({Filter: DefaultColumnFilter,}),[]); 
+    const rowTotalCount = data.length;
+    const minRowCount = 5; 
 
   // Use the state and functions returned from useTable to build your UI
     const {
@@ -139,10 +141,12 @@ const DataTable = ({ columnsInput, dataInput }) => {
         <div className="bg-white ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg height:100% position:absolute py-8
         ">
         <div className="mx-5">
-            <GlobalFilter
+            {rowTotalCount > minRowCount ? (
+                <GlobalFilter
                   preGlobalFilteredRows={preGlobalFilteredRows}
                   globalFilter={state.globalFilter}
-                  setGlobalFilter={setGlobalFilter}/> 
+                  setGlobalFilter={setGlobalFilter}/>) :
+                null}
         </div>
         {/*props spreading  */}
           <table className="min-w-full min-h-full divide-gray-300"
@@ -167,17 +171,16 @@ const DataTable = ({ columnsInput, dataInput }) => {
                     >
                     <div className="group inline-flex items-center space-x-2">
                         {/* header */}
-                        <div className="flex-none">
+                        <div className="mt-5">
                             {column.render("Header")} 
                         </div>
-
                         {/* filtering box */}
-                        {column.filterable && (
+                        {column.filterable && (rowTotalCount > minRowCount) ? (
                             <div className="relative">
                                 <br/>
                                 {column.canFilter ? column.render('Filter') : null}
                             </div>
-                        )}
+                        ): null}
                                 
                         {/* arrows for sorting */}
 
