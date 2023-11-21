@@ -5,40 +5,36 @@ import { useTable, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } fr
 import { ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 /*
-    Notes: How to use table_gen
-        items: An array of objects, the keys in the objects will match “value” in the given headers. Each object represents a row in the table
-        headers: An array of objects, each object representing the header of a column in the table. Each object should contain the following:
-        text: The name of the header (what the user sees)
-        value: the key to match in the object
-        sortable: whether or not the column should be sortable
-        disable-search; a boolean value that turns off the search bars for each column, smaller tables will not need search.
+    Notes: How to use table_gen 
+    
+    For the column names 
+        - Header:'youcolumnName'
+    For the accessor to each item in row of your dataset 
+        - accessor="your item identifier"
+    For giving sort (sortable) and (search) filterable to the column 
+        - sortable: true or false
+        - filterable: true or false
+
+    For dataInput the column accessor will be used to know what item goes to what column 
+    as well as whether or not to have sort or search for the column below is an example what 
+    the columns and data props look like...
+
+        const columns = [
+            {
+                Header: 'Column1',
+                accessor: 'column1',
+                sortable: true,
+                filterable: true,
+            }
+        ]
+
+        const data = [{ column1: "1-2-2023", column2: "john", column3: "cashier" }]
 */
 
-
 /*
-    Notes: things need to be done 
-    - need to make search function disappear if table is smaller than a number of rows
-    - just general stylizing 
-    - option to show how many rows to appear in general if need be
-    - option to change how many rows to return when searching 
-*/
-
-/*
-    Notes: troubleshooting stuff will remove this after resolved same with many comments in this file
-    Remade the table step by step and pointing out potentially where the prop 
-    spreading issue is detected I might keep a normal react-table without all the 
-    effort to remove the props from the things such as <th> 
-
+    Notes:
     import 'regenerator-runtime/runtime'; was needed for asyncdebounce there are other 
     solutions i do not know which is preferable deal with later 
-
-    going to add comments to make getting help for debugging easier if needed later
-    for potential changes 
-
-    two issues mainly warnings about 
-    - props being spread
-    - key attributes being numbers 
-    - pass in name of table so that global search has it in the name?
 */
 
 
@@ -140,6 +136,8 @@ const DataTable = ({ columnsInput, dataInput }) => {
         useSortBy
     );
 
+    // to deal with prop spreading basically break the prop apart from its key and then use the key
+    // on the table piece such as <th> 
     return (
         <div className="bg-white ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg height:100% position:absolute py-8
         ">
@@ -154,82 +152,81 @@ const DataTable = ({ columnsInput, dataInput }) => {
                   setGlobalFilter={setGlobalFilter}/>) :
                 null}
         </div>
-        {/*props spreading  */}
           <table className="min-w-full min-h-full divide-gray-300"
                 {...getTableProps()}>
-            <thead>
-                {/* Note MAPPING JSX: if any value in your mapped thing is a number then 
-                it will be seen as a key which will raise a warning as JSX wants a string 
-                key = {JSON.stringify(headerGroup.values)} will play around with this later*/}
-                {headerGroups.map((headerGroup, index_headergroup) => (
-                //  prop spreading
-                <tr key = {index_headergroup} {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column, index_column) => (
-                    
-                    //  prop spreading *check bug hello company dropdown not going over my hover headers 
-                    <th 
-                        scope="col"
-                        className="sticky top-0 z-10 hidden border-b border-gray-300
-                         bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold
-                         text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
+                <thead>
+                {headerGroups.map((headerGroup) => {
+                const { key, ...restHeaderGroupProps } =
+                    headerGroup.getHeaderGroupProps();
+                return (
+                    <tr key={key} {...restHeaderGroupProps}>
+                    {headerGroup.headers.map((column) => {
+                        const { key, ...restColumn } = column.getHeaderProps(column.sortable ?column.getSortByToggleProps(): "");
+                        return (
+                            <th 
+                            scope="col"
+                            className="sticky top-0 z-10 hidden border-b border-gray-300
+                            bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold
+                            text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
 
-                        key = {index_column} {...column.getHeaderProps(column.sortable ?column.getSortByToggleProps(): "")}
-                    >
-                    <div className="group inline-flex items-center space-x-2">
-                        {/* header */}
-                        <div className="mt-5">
-                            {column.render("Header")} 
+                            key = {key} {...restColumn}
+                        >
+                        <div className="group inline-flex items-center space-x-2">
+                            {/* header */}
+                            <div className="mt-5">
+                                {column.render("Header")} 
+                            </div>
+
+                            {/* filtering box */}
+                            {column.filterable && (rowTotalCount > minRowCount) ? (
+                                <div className="relative">
+                                    <br/>
+                                    {column.canFilter ? column.render('Filter') : null}
+                                </div>
+                            ): null}
+                                    
+                            {/* arrows for sorting */}
+                            {column.sortable && (
+                                <div className="ml-2 flex-none">
+                                    {column.isSorted ? 
+                                        (column.isSortedDesc ? 
+                                            <span className="ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                                                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                            </span>: 
+                                            (<span className=" ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                                                <ChevronDownIcon className="h-5 w-5 rotate-180" aria-hidden="true" />
+                                            </span>) ): 
+                                            (<span className=" ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                                                <ChevronUpDownIcon className="h-5 w-5 " aria-hidden="true" />
+                                            </span>)
+                                    }
+                                </div>
+                            )}
                         </div>
-                        {/* filtering box */}
-                        {column.filterable && (rowTotalCount > minRowCount) ? (
-                            <div className="relative">
-                                <br/>
-                                {column.canFilter ? column.render('Filter') : null}
-                            </div>
-                        ): null}
-                                
-                        {/* arrows for sorting */}
-
-                        {column.sortable && (
-                            <div className="ml-2 flex-none">
-                                {column.isSorted ? 
-                                    (column.isSortedDesc ? 
-                                        <span className="ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
-                                            <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
-                                        </span>: 
-                                        (<span className=" ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
-                                            <ChevronDownIcon className="h-5 w-5 rotate-180" aria-hidden="true" />
-                                        </span>) ): 
-                                         (<span className=" ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
-                                            <ChevronUpDownIcon className="h-5 w-5 " aria-hidden="true" />
-                                        </span>)
-                                }
-                            </div>
-                        )}
-                    </div>
-                    </th>
-                  ))}
-                </tr>
-              ))}
+                        </th>
+                        );
+                    })}
+                    </tr>
+                );
+                })}
             </thead> 
-            {/* //  prop spreading */}
             <tbody className="divide-y divide-gray-200 bg-white"
                 {...getTableBodyProps()}>
-              {rows.map((row, index_row) => {
+                {rows.map((row) => {
                 prepareRow(row);
+                const { key, ...restRowProps } = row.getRowProps();
                 return (
-                    //  prop spreading
-                    <tr key = {index_row} {...row.getRowProps()} >
-                        {row.cells.map((cell, index_cell) => {
-                            return (
-                                //  prop spreading
-                                <td className="px-6 py-3.5 text-left font-medium text-gray-900" 
-                                key = {index_cell} {...cell.getCellProps()}>{cell.render("Cell")} </td>
+                    <tr key={key} {...restRowProps}>
+                    {row.cells.map((cell) => {
+                        const { key, ...restCellProps } = cell.getCellProps();
+                        return (
+                            <td className="px-6 py-3.5 text-left font-medium text-gray-900" 
+                            key = {key} {...restCellProps}>{cell.render("Cell")} </td>
                         );
-                    })} 
-                  </tr>
+                    })}
+                    </tr>
                 );
-              })}
+                })}
             </tbody>
             </table>
               <br />
