@@ -6,18 +6,24 @@ import { ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 /*
     Notes: How to use table_gen 
+    table_gen takes in 3 props columnsInput, dataInput, tableNameInput
     
-    For the column names 
-        - Header:'youcolumnName'
-    For the accessor to each item in row of your dataset 
-        - accessor="your item identifier"
-    For giving sort (sortable) and (search) filterable to the column 
-        - sortable: true or false
-        - filterable: true or false
+    tableNameInput:
+        simply pass in a string that you want your table name to be 
+        if no string passed will result in no name on the table 
 
-    For dataInput the column accessor will be used to know what item goes to what column 
-    as well as whether or not to have sort or search for the column below is an example what 
-    the columns and data props look like...
+    columnsInput: 
+        For the column names 
+            - Header:'youcolumnName'
+        For the accessor to each item in row of your dataset 
+            - accessor="your item identifier"
+        For giving sort (sortable) and (search) filterable to the column 
+            - sortable: true or false
+            - filterable: true or false
+    dataInput:
+        For dataInput the column accessor will be used to know what item goes to what column 
+        as well as whether or not to have sort or search for the column below is an example what 
+        the columns and data props look like...
 
         const columns = [
             {
@@ -62,7 +68,7 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
                     setValue(e.target.value);
                     onChange(e.target.value);
                 }}
-                placeholder={`Search table records...`}
+                placeholder={`Search ${count} records...`}
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +111,7 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
 // end of functions for table filtering
 // ====================================
 
-const DataTable = ({ columnsInput, dataInput }) => {
+const DataTable = ({ columnsInput, dataInput, tableNameInput }) => {
 
     // For sorting/filtering things need to be memoized
     const data = React.useMemo(() => dataInput, [dataInput]);
@@ -113,7 +119,7 @@ const DataTable = ({ columnsInput, dataInput }) => {
     const defaultColumn = React.useMemo(() => ({Filter: DefaultColumnFilter,}),[]); 
     const rowTotalCount = data.length;
     const minRowCount = 5; 
-    const tableName = "SampleTable";
+    const tableName = tableNameInput;
 
   // Use the state and functions returned from useTable to build your UI
     const {
@@ -232,7 +238,7 @@ const DataTable = ({ columnsInput, dataInput }) => {
               <br />
                 <div 
                     className="px-6 py-3.5 text-left font-medium text-gray-900">
-                    Showing the first 20 results of {rows.length} rows
+                    Showing {rows.length} of {rowTotalCount} rows
                 </div>
           </div>
     );
