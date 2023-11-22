@@ -3,11 +3,11 @@ import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
 
 export async function POST(request){
-    const query = gpl`
-    query($filter: vSMAgreementAmrtBatch){
-        bARCM(where: $filter){
+    const query = gql`
+    query ($filter: vSMAgreementAmrtBatchFilterInput){
+        vSMAgreementAmrtBatch(where: $filter) {
             sMAgreementAmrtBatchID
-            mth
+            service
             agreement
         }
     }`
@@ -15,7 +15,7 @@ export async function POST(request){
 
     const variables = {
         filter: {
-            customer: {
+            sMAgreementAmrtBatchID: {
                 "eq": 1
             }
         }

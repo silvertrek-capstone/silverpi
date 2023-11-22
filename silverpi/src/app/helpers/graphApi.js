@@ -7,6 +7,8 @@ import 'dotenv/config' // Import the .env
  * @param {object} variables Object containing any variables, ie: {customer: 1} would be an example
  * 
  */
+cache: 'no-cache'
+
 export async function makeQuery(query, variables) {
     try {
         // First, get all the stuff we will need for making requests, api keys, urls, etc.

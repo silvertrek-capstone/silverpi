@@ -1,30 +1,8 @@
 'use client'
-import {
-    Bars3Icon,
-    BellIcon,
-    CalendarIcon,
-    ChartPieIcon,
-    Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
-    HomeIcon,
-    UsersIcon,
-    XMarkIcon,
-  } from '@heroicons/react/24/outline'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 import {POST} from '@/api/agreements/getActiveAgreements/route.js'
 
-export default async function agreementCall() {
-    const response = await POST()
-    const jsonData = await response.json();
-    const customers = jsonData.data
-    return (
-        <pre>{JSON.stringify(customers, null, 2)}</pre>
-    )
-}
 
 
 const homeButtonStyles = {
@@ -34,29 +12,56 @@ const homeButtonStyles = {
   };
 
 
-//const navigation = [
-//    {name 'Dashboard', href: '/home', icon: HomeIcon} 
-//]
-
-/*function AgreementComponent({ agreements }) {
-    return (
-        <div>
-            <h1>Agreements</h1>
-            {agreements.map((agreement) => (
-                <div key={agreement.id}>
-                    <h2>{agreement.title}</h2>
-                    <pre style={{ whiteSpace: 'pre-wrap' }}>{agreement.content}</pre>
-                </div>
-            ))}
-        </div>
-    );
-}
-*/
-
-
 
 
 export default function Agreements() {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/agreements/getActiveAgreements', {
+                method: 'POST',
+                // You can add headers and body if needed
+            });
+  
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+  
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Invalid content type. Expected JSON.');
+            }
+  
+            const result = await response.json();
+  
+            if (result.error) {
+                throw new Error(result.error);
+            }
+  
+            setData(result.data);
+            } catch (error) {
+                setError(error);
+            }
+        }
+  
+        fetchData();
+        }, []);
+  
+    if (error) {
+        return <div>Error loading data: {error.message}</div>;
+    }
+  
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+  
+    // Map over the data and display each item
+    return (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+    );
     const agreements = agreementsData();
     return (
         <div className="bg-grey">
