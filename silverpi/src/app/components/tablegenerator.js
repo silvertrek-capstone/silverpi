@@ -5,40 +5,29 @@ import { useTable, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } fr
 import { ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 /*
-    Notes: How to use table_gen 
-    table_gen takes in 4 props columnsInput, dataInput, tableNameInput, globalFilterEnabled
+    How to use tablegenerator:  
+    DataTable takes in 4 props columnsInput, dataInput, tableNameInput, globalFilterEnabled
     and disables search if less than 5 rows are passed in
 
-    globalFilterEnabled: 
-        enables global search simply pass in globalFilterEnabled: true/false 
-
-    tableNameInput:
-        simply pass in a string that you want your table name to be 
-        if no string passed will result in no name on the table 
-
-    columnsInput: 
-        For the column names 
-            - Header:'youcolumnName'
-        For the accessor to each item in row of your dataset 
-            - accessor="your item identifier"
-        For giving sort (sortable) and (search) filterable to the column 
-            - sortable: true or false
-            - filterable: true or false
-    dataInput:
-        For dataInput the column accessor will be used to know what item goes to what column 
-        as well as whether or not to have sort or search for the column below is an example what 
-        the columns and data props look like...
-
+    globalFilterEnabled: Enables global search, pass in globalFilterEnabled: true/false 
+    tableNameInput: Pass in a string that you want your table name to be, if no string provided, table will not have a name 
+    dataInput: sortable enables sort on the column and filterable enables search on the column
         const columns = [
             {
-                Header: 'Column1',
-                accessor: 'column1',
-                sortable: true,
-                filterable: true,
-            }
+                Header: 'yourColumnName',
+                accessor: 'yourItemName',
+                sortable: true or false, 
+                filterable: true or false, 
+            }, 
+        ]
+    dataInput: the item will go in the right column which it know based on the accessor 
+        const data = [
+            { yourItemName_1: "1-2-2023", yourItemName_2: "john", yourItemName_3: "cashier" }, 
         ]
 
-        const data = [{ column1: "1-2-2023", column2: "john", column3: "cashier" }]
+    Example how to call it in a page.js
+    <DataTable columnsInput={columns} dataInput={data} globalFilterEnabled = {true}/>
+       
 */
 
 /*
@@ -46,9 +35,9 @@ import { ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
     import 'regenerator-runtime/runtime'; was needed for asyncdebounce there are other 
     solutions i do not know which is preferable deal with later 
 */
-function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
-    const count = preGlobalFilteredRows.length
-    const [value, setValue] = React.useState(globalFilter)
+function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter}) {
+    const count = preGlobalFilteredRows.length; 
+    const [value, setValue] = React.useState(globalFilter); 
     
     // debounce time is 200ms
     // if empty undefined else user input in filter
@@ -85,8 +74,8 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter, }) {
     in for the Global filter its just helpful to not make so         
     many changesif expecting long input values 
 */ 
-  function DefaultColumnFilter({column: { filterValue, preFilteredRows, setFilter },}) {
-    const count = preFilteredRows.length
+  function ColumnFilter({column: { filterValue, preFilteredRows, setFilter }}) {
+    const count = preFilteredRows.length; 
     return (
         <div className="relative">
                 <input
@@ -112,7 +101,7 @@ const DataTable = ({ columnsInput, dataInput, tableNameInput, globalFilterEnable
     // For sorting/filtering things need to be memoized
     const data = React.useMemo(() => dataInput, [dataInput]);
     const columns = React.useMemo(() => columnsInput, [columnsInput]);
-    const defaultColumn = React.useMemo(() => ({Filter: DefaultColumnFilter,}),[]); 
+    const defaultColumn = React.useMemo(() => ({Filter: ColumnFilter,}),[]); 
     const rowTotalCount = data.length;
     const minRowCount = 5; 
     const tableName = tableNameInput;
