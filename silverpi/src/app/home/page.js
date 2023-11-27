@@ -1,7 +1,9 @@
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link';
 import { gql, GraphQLClient, request } from 'graphql-request'
-import { POST as workOrdersPOST} from "@/api/workorders/getActiveWorkorders.js"
+import { POST as workOrdersPOST} from "@/api/workorders/getWorkOrders.js"
+import { POST as workOrdersScopePOST} from "@/api/workorders/getWorkOrderScope.js"
+import { POST as workCompletedPOST} from "@/api/workorders/getWorkCompleted.js"
 import { POST as agreementsPOST} from "@/api/agreements/getActiveAgreements.js"
 import { POST as invoicesPOST} from "@/api/invoices/getUnpaidInvoices.js"
 
@@ -12,9 +14,17 @@ export default async function Home() {
     // const agreements = agJsonData.data;
 
     // loading workorders
-    const woResponse = await workOrdersPOST(10044);
+    const woResponse = await workOrdersPOST(1);
     const woJsonData =  await woResponse.json();
     const workorders = woJsonData.data;
+
+    const woResponse2 = await workOrdersScopePOST(1);
+    const woJsonData2 =  await woResponse2.json();
+    const workordersScope = woJsonData2.data;
+
+    const woResponse3 = await workCompletedPOST(1);
+    const woJsonData3 =  await woResponse3.json();
+    const workordersCompleted = woJsonData3.data;
     
     // loading invoices
     // const inResponse = await invoicesPOST();
@@ -30,29 +40,47 @@ export default async function Home() {
     var woColumns = [
         {
             header: "ID",
-            accessor: "id", 
-            sortable: true 
+            accessor: "workOrder", 
+            sortable: true,
+            filterable: true
         },
         {
-            header: "sMCo",
-            accessor: "smco", 
-            sortable: false 
+            header: "Status",
+            accessor: "status", 
+            sortable: false, 
+            filterable: true
+        },
+        {
+            header: "Date",
+            accessor: "date", 
+            sortable: false, 
+            filterable: true
         },
         {
             header: "Description",
             accessor: "description", 
-            sortable: false
-        },
-    ]
-    var woRows = []
+            sortable: false,
+            filterable: true
+        }
+    ];
+    var woRows = [];
 
     var flag = 0; // flag will tell us that we no longer need to store column info
-    workorders["vSMWorkOrder"].forEach(function (value){
-        for( let key in value) {
-            woRows.push("hello");
-        }
-    });
-    console.log(woRows);
+    var rowsDict = {};
+    if(workorders["vSMWorkOrder"] != null) {
+            workorders["vSMWorkOrder"].forEach(function (value){
+            if(!flag) {
+                for( let key in value) {
+                    rowsDict[key] = 1;
+                }
+                console.log(rowsDict);
+                flag = 1;
+            }  
+        });
+        console.log(woRows);
+    }
+    
+
     return (
     <>
     <pre>{JSON.stringify(workorders, null, 2)}</pre>

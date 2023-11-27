@@ -11,19 +11,17 @@ export async function POST(customerNum) {
         vSMWorkOrder(where: $filter){
             sMCo
             workOrder
+            custGroup
+            customer
             description
+            notes
             wOStatus
         }
     }`
 
     const variables = {
         filter: {
-            wOStatus: {
-                "eq": 1
-            },
-            customer: {
-                "eq": customerNum
-            }
+            sMCo: { "eq": customerNum }
         }
     }
 
