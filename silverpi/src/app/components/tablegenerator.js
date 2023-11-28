@@ -1,13 +1,16 @@
 "use client"
 import React from "react";
 import 'regenerator-runtime/runtime'; 
+import Link from 'next/link';
 import { useTable, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 /*
     How to use tablegenerator:  
-    DataTable takes in 4 props columnsInput, dataInput, tableNameInput, globalFilterEnabled
-    and disables search if less than 5 rows are passed in
+    DataTable takes in 7 props columnsInput, dataInput, tableNameInput, globalFilterEnabled, 
+        routingColumn, routingLocation, routingEnabled
+    
+    sideNote: auto disables search if less than 5 rows are passed in
 
     globalFilterEnabled: Enables global search, pass in globalFilterEnabled: true/false 
     tableNameInput: Pass in a string that you want your table name to be, if no string provided, table will not have a name 
@@ -24,9 +27,26 @@ import { ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
         const data = [
             { yourItemName_1: "1-2-2023", yourItemName_2: "john", yourItemName_3: "cashier" }, 
         ]
+    
+    routingColumn, routingLocation, routingEnabled
 
+    routingEnabled: enables routing
+        true or false
+
+    routingColumn: only takes one argument, the accessor of the column that you want to generate routing for
+        "yourItemName"
+
+    routingLocation: the location
+        "location/components"
+        This will result in the routing to go from the local dir to the location provided + the cell name
+            for example:
+                If you are in the home directory and use "location/components" then the route will be
+                    http://localhost:3000/home/location/components/${cell} 
+
+    
     Example how to call it in a page.js
-    <DataTable columnsInput={columns} dataInput={data} globalFilterEnabled = {true}/>
+                <DataTable columnsInput={columns} dataInput={data} globalFilterEnabled = {true} 
+                       routingLocation={"test1/test2"}  routingEnabled={true} routingColumn={"yourItemName_2"}/> 
        
 */
 
@@ -96,7 +116,7 @@ function GlobalFilter({preGlobalFilteredRows,globalFilter,setGlobalFilter}) {
         ); 
   } 
 
-const DataTable = ({ columnsInput, dataInput, tableNameInput, globalFilterEnabled }) => {
+const DataTable = ({ columnsInput, dataInput, tableNameInput, globalFilterEnabled, routingColumn, routingLocation, routingEnabled}) => {
 
     // For sorting/filtering things need to be memoized
     const data = React.useMemo(() => dataInput, [dataInput]);
@@ -106,6 +126,9 @@ const DataTable = ({ columnsInput, dataInput, tableNameInput, globalFilterEnable
     const minRowCount = 5; 
     const tableName = tableNameInput;
     const globalfilterEnabled = globalFilterEnabled; 
+    const routingColumnInput = routingColumn;
+    const routingLocationInput = routingLocation;
+    const routingEnabledInput = routingEnabled;  
 
     const {
         getTableProps,
@@ -206,9 +229,19 @@ const DataTable = ({ columnsInput, dataInput, tableNameInput, globalFilterEnable
                             <tr key={key} {...keyRemovedRowProps}>
                             {row.cells.map((cell) => {
                                 const { key, ...keyRemovedCellProps } = cell.getCellProps();
+                                // might have to change routing for now its .slug
                                 return (
                                     <td className="px-6 py-3.5 text-left font-medium text-gray-900" 
-                                    key = {key} {...keyRemovedCellProps}>{cell.render("Cell")} </td>
+                                        key = {key} {...keyRemovedCellProps}>
+                                            {routingEnabledInput == true ? (key.includes(routingColumnInput) == true ? (
+                                                 <Link href={`./${routingLocationInput}/${(cell.value).slug}`}>
+                                                     <div className="hover:underline">
+                                                        {cell.render("Cell")}
+                                                    </div>
+                                                </Link>)
+                                                : (cell.render("Cell")
+                                            )): cell.render("Cell")} 
+                                    </td>
                                 );
                             })}
                             </tr>
