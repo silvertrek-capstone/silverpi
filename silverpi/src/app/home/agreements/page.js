@@ -1,48 +1,4 @@
-'use client'
-import {
-    Bars3Icon,
-    BellIcon,
-    CalendarIcon,
-    ChartPieIcon,
-    Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
-    HomeIcon,
-    UsersIcon,
-    XMarkIcon,
-  } from '@heroicons/react/24/outline'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import Link from 'next/link';
-
-const homeButtonStyles = {
-    position: 'absolute',
-    top: '40px', // Adjust the top position as needed
-    right: '60px', // Adjust the right position as needed
-  };
-
-
-//const navigation = [
-//    {name 'Dashboard', href: '/home', icon: HomeIcon} 
-//]
-
-/*function AgreementComponent({ agreements }) {
-    return (
-        <div>
-            <h1>Agreements</h1>
-            {agreements.map((agreement) => (
-                <div key={agreement.id}>
-                    <h2>{agreement.title}</h2>
-                    <pre style={{ whiteSpace: 'pre-wrap' }}>{agreement.content}</pre>
-                </div>
-            ))}
-        </div>
-    );
-}
-*/
-
-
 
 
 export default function Agreements() {

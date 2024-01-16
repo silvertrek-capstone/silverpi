@@ -5,6 +5,7 @@ import "dotenv/config"
 
 export async function POST(request) {
 
+    console.log(request)
     const cookieStore = cookies()                                      // Setup client with Cookies Auth for security
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore }, { supabaseKey: process.env.SUPABASE_SERVICE_KEY })
     try {
@@ -32,14 +33,14 @@ export async function POST(request) {
                 if (userProfile) {
 
                     let fullName = userProfile.first_name + ' ' + userProfile.last_name;    // Found, Combine first and last name into one var
-                    
+
                     // Spread syntax for pushing all data from:
                     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
 
                     fullUsers.push({ ...users[i], name: fullName });    // Add user with the full name to the array
 
                 } else {
-    
+
                     fullUsers.push({ ...users[i], name: 'N/A' });       // User not found, can print N/A
                 }
             }
@@ -55,7 +56,7 @@ export async function POST(request) {
 
         // Get SQL table data from customer / user relaton
         const { data: sqlTab, error: sqlErr } = await supabase.from('customer_to_user').select()
-    
+
         // Err check
         if (sqlErr) {
             console.log(sqlErr)
@@ -69,12 +70,12 @@ export async function POST(request) {
         //       https://stackoverflow.com/questions/46185327/how-to-filter-items-by-category-queryparams-in-angular-2-or-4?noredirect=1&lq=1
         const filteredUsers = getName(data.users.filter(user =>
             sqlTab.some(pendingUser => pendingUser.user_id === user.id))
-            );
+        );
 
         // Send Valid Response
         return NextResponse.json({ data: filteredUsers, error }, { status: 200 })
     } catch (error) {
-        
+
         // Print Error and send Invalid Response
         console.log(error)
         return NextResponse.json({ data: null, error }, { status: 500 })

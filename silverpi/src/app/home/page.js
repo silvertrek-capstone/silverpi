@@ -237,10 +237,6 @@ export default function Home() {
                 </div>
             </div> 
             {/*End of Tables  Invoices*/}
-
-            <div>
-                <h1 className="margin-block-end: 20px">footer</h1>
-            </div>
                             
         </div> {/* End of Tables  Agreements Work Orders Invoices*/}
    

@@ -1,26 +1,30 @@
 "use client"
-import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import Link from 'next/link'
-import { useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronUpIcon } from '@heroicons/react/20/solid'
+import { useState, useEffect, Fragment } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar() {
+export default async function Navbar() {
   const [currentPage, setCurrentPage] = useState();
-  var pathName = usePathname();
+  const pathName = usePathname();
 
-  useEffect(() => {
+  useEffect(async () => {
+    
+      console.log('test')
+      const supabase = createClientComponentClient()
+    
+      // // Initial setup, get user data
+      const user = await getUserData(supabase);
+      console.log(user)
     let pathArray =  pathName.split("/");
-    console.log("pathname: " + pathName);
-    console.log("pathArray: " + pathArray);
     setCurrentPage(pathArray[pathArray.length - 1]);
   }, [pathName]);
 
@@ -72,7 +76,7 @@ export default function Navbar() {
                   {({ open }) => (
                     <>
                       <div>
-                        <Menu.Button className="relative flex rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-blue-400">
+                        <Menu.Button className="relative flex rounded hover:bg-gray-200">
                           <span className="flex px-3 py-2 text-xl text-gray-500 hover:text-gray-700">
                             Hello, Company
                             <ChevronUpIcon className={`mt-1 ml-1 h-6 w-6 ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
@@ -215,4 +219,14 @@ export default function Navbar() {
       )}
     </Disclosure>
   )
+}
+
+// Get all the data related to the current user
+async function getUserData(supabase) {
+  const {data, error} = await supabase.auth.getUser()
+  console.log(data)
+  if (!error) {
+    return data
+  }
+  return null
 }
