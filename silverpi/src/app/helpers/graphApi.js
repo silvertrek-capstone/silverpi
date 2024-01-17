@@ -27,7 +27,7 @@ export async function makeQuery(query, variables) {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Basic ${auth}`
             },
-            cache: 'no-cache'
+            cache: 'no-cache',
             body: "grant_type=client_credentials"
         })
 
