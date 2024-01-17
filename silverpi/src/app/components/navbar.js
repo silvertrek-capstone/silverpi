@@ -1,26 +1,31 @@
 "use client"
-import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import Link from 'next/link'
-import { useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronUpIcon } from '@heroicons/react/20/solid'
+import { useState, useEffect, Fragment } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect } from 'react'
+import Select from "@/components/select"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar() {
+export default function Navbar({ user, customers, profile }) {
   const [currentPage, setCurrentPage] = useState();
-  var pathName = usePathname();
+  const pathName = usePathname();
+
+  // Customer select stuff starts here
+
+  // Generate the items for the dropdown
+  const customerSelect = customers.map((e) => {
+    return { text: e.name, value: e.cust_num }
+  })
+
 
   useEffect(() => {
-    let pathArray =  pathName.split("/");
-    console.log("pathname: " + pathName);
-    console.log("pathArray: " + pathArray);
+    let pathArray = pathName.split("/");
     setCurrentPage(pathArray[pathArray.length - 1]);
   }, [pathName]);
 
@@ -67,14 +72,15 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                <Select id="customer-select" handleChange={onCustomerChange} items={customerSelect} value={customerSelect[0].value} />
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   {({ open }) => (
                     <>
                       <div>
-                        <Menu.Button className="relative flex rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-blue-400">
+                        <Menu.Button className="relative flex rounded hover:bg-gray-200">
                           <span className="flex px-3 py-2 text-xl text-gray-500 hover:text-gray-700">
-                            Hello, Company
+                            Hello, {profile.first_name}
                             <ChevronUpIcon className={`mt-1 ml-1 h-6 w-6 ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
                           </span>
                         </Menu.Button>
@@ -136,7 +142,7 @@ export default function Navbar() {
                 </Menu>
               </div>
               <div className="flex items-center text-xl text-gray-600 sm:hidden">
-                Hello, Company
+                Hello, {profile.first_name}
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
@@ -215,4 +221,23 @@ export default function Navbar() {
       )}
     </Disclosure>
   )
+}
+
+
+// "e" should be the value (customer number)
+async function onCustomerChange(e) {
+  console.log(e)
+  const supabase = createClientComponentClient();
+  // Two step process, set using to false for all your customers.
+  const { error } = await supabase
+    .from('customer_to_user')
+    .update({ using: false })
+    .eq('using', true);
+
+  // Now, set using to true where cust_num is equal to e
+  const {error: error2} = await supabase
+    .from('customer_to_user')
+    .update({using: true})
+    .eq('cust_num', e);
+
 }
