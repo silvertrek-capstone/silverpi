@@ -19,6 +19,10 @@ export default async function DashboardLayout({ children }) {
         redirect('/login')
     }
     const customers = await getAllCustomersForUser(supabase, session);
+    // Can't do anything if you don't have any customers, logout.
+    if (!customers.length) {
+        redirect('/login')
+    }
 
     return (
         <>

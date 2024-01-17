@@ -20,7 +20,6 @@ export default function Table({ headers, items, mainkey, compact }) {
     const [tableItems, setTableItems] = useState(items)
 
     const handleSort = (colName) => {
-        console.log('test', colName)
         if (sortBy === colName && sortDesc) {
             setSortDesc(false)
         } else if (sortBy === colName) {

@@ -16,7 +16,6 @@ export default function Agreements() {
                 title="Agreements"
                 mainkey="id"
             >
-
             </Table>
         </div>
     );
