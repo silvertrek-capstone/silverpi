@@ -1,4 +1,5 @@
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import DataTable from "../components/tablegenerator.js"
 import Link from 'next/link';
 import { gql, GraphQLClient, request } from 'graphql-request'
 import { POST as workOrdersPOST} from "@/api/workorders/getWorkOrders.js"
@@ -37,7 +38,7 @@ export default async function Home() {
     const comp_name = "GENERIC_COMPANY_NAME";
     const cust_name = "GENERIC_CUSTOMER_NAME";
     
-    var woColumns = [
+    var wOColumns = [
         {
             header: "ID",
             accessor: "workOrder", 
@@ -46,13 +47,7 @@ export default async function Home() {
         },
         {
             header: "Status",
-            accessor: "status", 
-            sortable: false, 
-            filterable: true
-        },
-        {
-            header: "Date",
-            accessor: "date", 
+            accessor: "wOStatus", 
             sortable: false, 
             filterable: true
         },
@@ -63,27 +58,38 @@ export default async function Home() {
             filterable: true
         }
     ];
-    var woRows = [];
 
+    var wORows = [];
+    var allAccessors = wOColumns.map(column => column.accessor);
     var flag = 0; // flag will tell us that we no longer need to store column info
-    var rowsDict = {};
-    if(workorders["vSMWorkOrder"] != null) {
-            workorders["vSMWorkOrder"].forEach(function (value){
-            if(!flag) {
-                for( let key in value) {
-                    rowsDict[key] = 1;
-                }
-                console.log(rowsDict);
-                flag = 1;
-            }  
-        });
-        console.log(woRows);
-    }
     
+    if(workorders["vSMWorkOrder"] != null) {
+            workorders["vSMWorkOrder"].forEach(function (value){    // Looping through everything returned in vSMWOrkOrder
+                let rowsDict = {};
+                for( let key in value) {    // Looping through every key in each object returned. Value will be something like {sMCo, workorder, etc...} and key will be something like just sMCo
+                    if(allAccessors.includes(key)) {  // checking if the key is an accessor in the woColumns dictionary 
+                      rowsDict[key] = value[key]; 
+                    } 
+                }
+                wORows.push(rowsDict);
+        });
+        console.log("WOROWS:")
+        console.log(wORows);
+    }
 
     return (
     <>
-    <pre>{JSON.stringify(workorders, null, 2)}</pre>
+    <DataTable
+        columnsInput={wOColumns}
+        dataInput={wORows}
+        globalFilterEnabled={true}
+        routingLocation={"test1/test2"}
+        routingEnabled={true}
+        routingColumn={"yourItemName_2"}
+      />
+     {/* <pre>{JSON.stringify(workorders, null, 2)}</pre> */}
+     {/* <pre>{JSON.stringify(workordersScope, null, 2)}</pre> */}
+     {/* <pre>{JSON.stringify(workordersCompleted, null, 2)}</pre> */}
       {/* Tables  Agreements Work Orders Invoices*/}
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center position: relative">
