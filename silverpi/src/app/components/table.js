@@ -37,7 +37,6 @@ export default function Table({ headers, items, mainkey, link }) {
         if (!sortBy && sortDesc) { // default state
             setTableItems(items) // Original Sort
         } else {
-            console.log(sortBy, sortDesc)
             const newSort = sortByKey(tableItems, sortBy, sortDesc)
             // Set new table items
             setTableItems(newSort)
@@ -135,7 +134,6 @@ function sortByKey(arr, key, desc) {
         // Check if floats
         const afloat = Number(aval)
         const bfloat = Number(bval)
-        console.log(afloat, bfloat)
         if (!isNaN(afloat) && !isNaN(bfloat)) {
             return desc ? bfloat - afloat : afloat - bfloat
         }
