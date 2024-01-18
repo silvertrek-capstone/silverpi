@@ -72,7 +72,7 @@ export default function Navbar({ user, customers, profile }) {
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                <Select id="customer-select" handleChange={onCustomerChange} items={customerSelect} value={customerSelect[0].value} />
+                <Select id="customer-select" handleChange={onCustomerChange} items={customerSelect} value={customerSelect[0]?.value} />
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   {({ open }) => (
