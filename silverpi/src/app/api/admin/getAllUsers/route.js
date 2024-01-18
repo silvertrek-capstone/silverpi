@@ -3,9 +3,8 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import "dotenv/config"
 
-export async function POST(request) {
+export async function handler(request) {
 
-    console.log(request)
     const cookieStore = cookies()                                      // Setup client with Cookies Auth for security
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore }, { supabaseKey: process.env.SUPABASE_SERVICE_KEY })
     try {
@@ -15,7 +14,7 @@ export async function POST(request) {
             throw new Error(error);                                    // err check
         }
 
-        console.log(data)                                              // Debug print
+        // console.log(data)                                              // Debug print
         const users = data.users;
 
         const { data: profilesData, error: profilesError } = await supabase.from('profiles').select('*'); // Get profiles to match IDS and get names
