@@ -4,8 +4,6 @@ import { makeQuery } from '@/helpers/graphApi.js'
 
 // This function will get all agreements, 
 export async function POST(customerNum) {
-
-
     const query = gql`
     query($filter: vSMWorkOrderFilterInput){
         vSMWorkOrder(where: $filter){
