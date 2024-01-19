@@ -5,7 +5,7 @@ import { handler as handleActiveUsers } from "@/api/admin/getActiveUsers/route"
 export default async function AdminPanel() {
   const headers = [
     { text: 'ID', value: 'id' },
-    { text: 'Name', value: 'name' },
+    // { text: 'Name', value: 'name' },
     { text: 'Email', value: 'email' },
   ]
 

@@ -6,6 +6,7 @@ import { getCustNum } from '@/helpers/usingCustomer'
 // This function will get all agreements, 
 export async function POST() {
     try {
+        // IMPORTANT, this is how you get the current customer number for the user.
         const {data: customer, error: custerror} =  await getCustNum();
         if (custerror) {
             throw new Error(custerror)
