@@ -30,7 +30,7 @@ export default function Navbar({ user, customers, profile }) {
   }, [pathName]);
 
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="bg-white shadow sm:sticky sm:top-0 sm:z-10">
       {({ open }) => (
         <>
           <div className="mx-auto px-4 sm:px-6 lg:px-8">

@@ -2,30 +2,27 @@ import { NextResponse } from 'next/server'
 import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
 
-export async function POST(request) {
+// This function will get all agreements, 
+export async function POST(customerNum) {
 
 
     const query = gql`
-    query($filter: bARCMFilterInput){
-        bARCM(where: $filter){
-            custGroup
-            customer
-            name
-            phone
-            fax
-            eMail
-            address
-            city
-            state
-            zip
+    query{
+        sMWorkCompleted(where: {
+            sMCo: { eq: 1 }
+        }){
+            keyID
+            workOrder	
+            status 
+            date
+            invoice
+            agreement
+            description
         }
     }`
 
     const variables = {
         filter: {
-            customer: {
-                "eq": 1
-            }
         }
     }
 
