@@ -15,6 +15,7 @@ export async function getCustNum() {
         if (error) {
             throw new Error(error)
         }
+        // TODO: Causes error when user not logged in?
         const customer = data.cust_num;
         return {data: customer, error: null}
     } catch(e) {

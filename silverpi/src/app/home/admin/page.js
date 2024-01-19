@@ -1,6 +1,6 @@
 import Table from "@/components/table"
 import { handler as handlePendingUsers } from "@/api/admin/getPendingUsers/route"
-import { handler as handleActiveUsers } from "@/api/admin/getAllUsers/route"
+import { handler as handleActiveUsers } from "@/api/admin/getActiveUsers/route"
 
 export default async function AdminPanel() {
   const headers = [
@@ -19,21 +19,19 @@ export default async function AdminPanel() {
           <h1 className="text-4xl font-regular text-gray-800 p-2 -mt-8">Admin Panel</h1>
         </div>
         <div className="mb-6">
-          <h2 className="mb-2 text-xl font-semibold text-gray-700">Pending Users</h2>
           <Table
             headers={headers}
             items={pendingUsers}
-            title="active users"
+            title="Pending Users"
           >
 
           </Table>
         </div>
         <div>
-          <h2 className="mb-2 text-xl font-semibold text-gray-700">All Users</h2>
           <Table
             headers={headers}
             items={activeUsers}
-            title="active users"
+            title="Active Users"
           >
 
           </Table>

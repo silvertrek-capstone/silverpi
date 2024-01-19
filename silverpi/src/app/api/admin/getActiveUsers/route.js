@@ -37,7 +37,7 @@ export async function POST(request, sParams) {
         // Filter out users that don't have customer numbers
         let users = usersData.users
         users = users.filter((user) => {
-            return !customers.includes(user.id)
+            return customers.includes(user.id)
         })
 
         return NextResponse.json({ data: users, error: null }, { status: 200 })

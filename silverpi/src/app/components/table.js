@@ -15,7 +15,7 @@ import dayjs from 'dayjs' // Date calculator
     link - string that we will append mainKey to to link
 */
 
-export default function Table({ headers, items, mainkey, link }) {
+export default function Table({ headers, items, mainkey, link, title }) {
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
 
@@ -47,7 +47,13 @@ export default function Table({ headers, items, mainkey, link }) {
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="overflow-hidden ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                <div className="overflow-hidden ring-1 ring-black ring-opacity-5 sm:rounded-lg divide-y divide-gray-300">
+                    {
+                        title &&
+                        <div className='min-w-full bg-gray-50 py-2 px-2'>
+                            <h1>{title}</h1>
+                        </div>
+                    }
                     <table className="min-w-full divide-y divide-gray-300 table-auto overflow-scroll w-full">
                         <thead className="bg-gray-50">
                             <tr>
