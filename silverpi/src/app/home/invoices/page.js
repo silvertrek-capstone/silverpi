@@ -1,11 +1,8 @@
-'use client'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import Link from 'next/link';
 
 export default function Invoices() {
     const invoices = InvoicesData();
+    console.log('test')
     return (
         <div className="bg-grey">
             <div className="bg-grey px-6 py-24 sm:py-32 lg:px-8">
