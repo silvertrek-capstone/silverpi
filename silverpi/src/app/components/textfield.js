@@ -21,9 +21,9 @@ export default function TextField({limit, label, clearable, disabled, onInput, o
     const [input, setInput] = useState(""); 
     const [debounceTimei, setDebounceTime] = useState(debounceTime); 
     
-    const handleOnChange = (e) => {
+    const handleOnInput = (e) => {
         setInput(e.target.value);
-        onChange && onChange(e);// call onChange and pass event
+        onInput && onInput(e.target.value);
     }
 
     const handleClear = (e) => {
@@ -33,7 +33,9 @@ export default function TextField({limit, label, clearable, disabled, onInput, o
     // debounceTimei included in case potential change to debounceTime during run time is made 
     // ensures changes go through
     useEffect(() => {
-        const debounceFunc = setTimeout(() => {}, {debounceTimei});
+        const debounceFunc = setTimeout(() => {
+            onChange && onChange(input);// call onChange and pass event
+        }, {debounceTimei});
         return () => clearTimeout(debounceFunc);
       }, [input, debounceTimei]);
 
@@ -43,8 +45,7 @@ export default function TextField({limit, label, clearable, disabled, onInput, o
                     class = "w-full"
                     className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     disabled = {disabled}
-                    onInput = {onInput}
-                    onChange = {handleOnChange}
+                    onInput = {handleOnInput}
                     maxlength= {limit} // only does so client side 
                     value = {input}
                     placeholder = {label}
