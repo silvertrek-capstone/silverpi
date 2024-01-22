@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react'
+import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/solid'
 
 /*
     TextField Component: 
@@ -16,27 +17,21 @@ import { useEffect, useState } from 'react'
 */
 
 export default function TextField({limit, label, clearable, disabled, onInput, onChange, debounceTime}) {
-// limit xxxx ask about it did u want placeholder within the text or literally label ?
-//  label xxxxxx idk do i have to stylize it somehow ask
-// clearable  xxx need to clean up css
-// debounceTime ask again idk might just keep useEffect
 
     const [input, setInput] = useState(""); 
     const [debounceTimei, setDebounceTime] = useState(debounceTime); 
+    
     const handleOnChange = (e) => {
         setInput(e.target.value);
         onChange && onChange(e);// call onChange and pass event
-        
-        /// does the debounce but i dont know if this is the way that they want it handled need to know expected behavior
-        // setTimeout(() => {
-        // }, {debounceTime});
     }
 
     const handleClear = (e) => {
         setInput(""); 
     };
-    
-    // technically debounceTimei not needed but if changed for some reason during runtime it wont update to new val
+
+    // debounceTimei included in case potential change to debounceTime during run time is made 
+    // ensures changes go through
     useEffect(() => {
         const debounceFunc = setTimeout(() => {}, {debounceTimei});
         return () => clearTimeout(debounceFunc);
@@ -44,21 +39,23 @@ export default function TextField({limit, label, clearable, disabled, onInput, o
 
     return(
         <div class = "position relative">
-            <label>
-                {label}
                 <input
                     class = "w-full"
+                    className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     disabled = {disabled}
                     onInput = {onInput}
                     onChange = {handleOnChange}
                     maxlength= {limit} // only does so client side 
                     value = {input}
+                    placeholder = {label}
+
                 >
                 </input>
-                { true && input && (
-                    <button class = "position absolute top-0 right-0" onClick={handleClear} >clear</button>
+                { clearable && input && (
+                    <button class = "position absolute inset-y-0 right-5 flex items-center rounded-r-md px-2" onClick={handleClear}> 
+                        <XMarkIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    </button>
                 )}
-            </label>
         </div>
     ); 
 }
