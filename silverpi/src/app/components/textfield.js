@@ -35,25 +35,24 @@ export default function TextField({limit, label, clearable, disabled, onInput, o
     useEffect(() => {
         const debounceFunc = setTimeout(() => {
             onChange && onChange(input);// call onChange and pass event
-        }, {debounceTimei});
+        }, debounceTimei);
         return () => clearTimeout(debounceFunc);
       }, [input, debounceTimei]);
 
     return(
-        <div class = "position relative">
+        <div className = "position relative">
                 <input
-                    class = "w-full"
                     className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     disabled = {disabled}
                     onInput = {handleOnInput}
-                    maxlength= {limit} // only does so client side 
+                    maxLength= {limit} // only does so client side 
                     value = {input}
                     placeholder = {label}
 
                 >
                 </input>
-                { clearable && input && (
-                    <button class = "position absolute inset-y-0 right-5 flex items-center rounded-r-md px-2" onClick={handleClear}> 
+                { !disabled && clearable && input && (
+                    <button className = "position absolute inset-y-0 right-5 flex items-center rounded-r-md px-2" onClick={handleClear}> 
                         <XMarkIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                     </button>
                 )}
