@@ -26,8 +26,8 @@ export default async function DashboardLayout({ children }) {
 
     return (
         <>
-            <section>
                 <Navbar profile={profile} user={session.user} customers={customers} />
+            <section className='flex justify-center h-full mx-20'>
                 {children}
             </section>
 
