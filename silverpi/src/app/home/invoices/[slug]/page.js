@@ -1,3 +1,4 @@
+// app/home/admin/[slug]/page.js
 import React from 'react';
 
 // Static Data for demo
@@ -29,7 +30,7 @@ const invoiceDetails = {
   ],
 };
 
-const InvoicePage = () => {
+const InvoicePage = ({ params }) => {
       
     // Cost calculation for totals
     let totalDue = 0;
@@ -90,4 +91,13 @@ const InvoicePage = () => {
     );
 };
 
-export default InvoicePage;
+export default InvoicePage;        // Assign default export for Next.js to recognize and render component
+
+export async function getStaticPaths() {
+    return {
+      paths: [
+        { params: { slug: '1' } }, // Static assignment for slug value | will get from invoice later
+      ],
+      fallback: false,
+    };
+  }
