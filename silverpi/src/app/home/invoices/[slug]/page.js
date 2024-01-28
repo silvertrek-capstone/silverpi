@@ -30,28 +30,21 @@ const invoiceDetails = {
 };
 
 const InvoicePage = () => {
-    
-    // Cost calculation for totals
-    let totalDue = 0;
-
-    for (let i = 0; i < invoiceDetails.tableFields.length; i++) {  // For each item within the table, take the total from each job
-        totalDue = totalDue + invoiceDetails.tableFields[i].total; // Increment to total
-    }
-    totalDue = totalDue.toFixed(2);                                // Format to two decimal places for aesthetics
+    let totalDue = invoiceDetails.tableFields.reduce((acc, item) => acc + item.total, 0).toFixed(2);
     
     return (
-      <div className="min-h-screen bg-blue-100 p-8">
-        <div className="container mx-auto">
-          <div className="bg-white p-6 rounded-md shadow-md">
-            <h1 className="text-2xl font-bold mb-4">Invoice #{invoiceDetails.invoiceNum}</h1>
-            <div className="mb-6">
-              <p>Status: <span className="font-semibold">{invoiceDetails.payStatus}</span></p>
-              <p>Date Created: {invoiceDetails.createdDate}</p>
-              <p>Due Date: {invoiceDetails.dueDate}</p>
-              <p>Terms: {invoiceDetails.termSize}</p>
-            </div>
-            <div className="mb-6">
-              <div className="overflow-x-auto">
+      <div className="flex flex-col h-screen bg-white-100">
+        <div className="flex-grow p-6 pb-20">
+          <div className="bg-white p-12 rounded-md shadow-md h-full flex flex-col justify-between">
+            <div>
+              <h1 className="text-2xl font-bold mb-4">Invoice #{invoiceDetails.invoiceNum}</h1>
+              <div className="mb-6">
+                <p>Status: <span className="font-semibold">{invoiceDetails.payStatus}</span></p>
+                <p>Date Created: {invoiceDetails.createdDate}</p>
+                <p>Due Date: {invoiceDetails.dueDate}</p>
+                <p>Terms: {invoiceDetails.termSize}</p>
+              </div>
+              <div className="mb-6 overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="text-sm font-medium text-gray-700 bg-blue-200">
@@ -88,6 +81,6 @@ const InvoicePage = () => {
         </div>
       </div>
     );
-  };
-  
-  export default InvoicePage;
+};
+
+export default InvoicePage;
