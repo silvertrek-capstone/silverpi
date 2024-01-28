@@ -30,7 +30,14 @@ const invoiceDetails = {
 };
 
 const InvoicePage = () => {
-    let totalDue = invoiceDetails.tableFields.reduce((acc, item) => acc + item.total, 0).toFixed(2);
+      
+    // Cost calculation for totals
+    let totalDue = 0;
+
+    for (let i = 0; i < invoiceDetails.tableFields.length; i++) {  // For each item within the table, take the total from each job
+        totalDue = totalDue + invoiceDetails.tableFields[i].total; // Increment to total
+    }
+    totalDue = totalDue.toFixed(2);                                // Format to two decimal places for aesthetics
     
     return (
       <div className="flex flex-col h-screen bg-white-100">
