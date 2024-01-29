@@ -51,19 +51,19 @@ export default function Navbar({ user, customers, profile }) {
                   {/* Current: "border-blue-400 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link
                     href="/home"
-                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "home" ? "border-primary text-primary" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
+                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "home" ? "border-primary text-primary" : "border-transparent hover:border-gray-300"}`}
                   >
                     Dashboard
                   </Link>
                   <Link
                     href="/home/workorders"
-                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "workorders" ? "border-primary text-primary" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
+                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "workorders" ? "border-primary text-primary" : "border-transparent hover:border-gray-300"}`}
                   >
                     Workorders
                   </Link>
                   <Link
                     href="/home/invoices"
-                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "invoices" ? "border-primary text-primary" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
+                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "invoices" ? "border-primary text-primary" : "border-transparent hover:border-gray-300"}`}
                   >
                     Invoices
                   </Link>
@@ -76,7 +76,7 @@ export default function Navbar({ user, customers, profile }) {
                   {({ open }) => (
                     <>
                       <div>
-                        <Menu.Button className="relative flex rounded hover:bg-gray-200">
+                        <Menu.Button className="relative flex rounded hover:text-neutral2">
                           <span className="flex px-3 py-2">
                             {profile.first_name} {profile.last_name}
                             {/* <ChevronUpIcon className={`mt-1 ml-1 h-6 w-6 ${open ? 'rotate-180' : ''}`} aria-hidden="true" /> */}
@@ -98,8 +98,8 @@ export default function Navbar({ user, customers, profile }) {
                               <Link
                                 href="#"
                                 className={classNames(
-                                  active ? 'bg-primary' : '',
-                                  'block px-4 py-2 text-sm text-gray'
+                                  active ? 'text-primary' : '',
+                                  'block px-4 py-2 text-sm text-greytxt'
                                 )}
                               >
                                 Your Profile
@@ -111,8 +111,8 @@ export default function Navbar({ user, customers, profile }) {
                               <Link
                                 href="/home/admin"
                                 className={classNames(
-                                  active ? 'bg-primary' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  active ? 'text-primary' : '',
+                                  'block px-4 py-2 text-sm text-greytxt'
                                 )}
                               >
                                 Admin
@@ -125,8 +125,8 @@ export default function Navbar({ user, customers, profile }) {
                               <Link
                                 href="/auth/logout"
                                 className={classNames(
-                                  active ? 'bg-primary' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  active ? 'text-primary' : '',
+                                  'block px-4 py-2 text-sm text-greytxt'
                                 )}
                               >
                                 Sign out

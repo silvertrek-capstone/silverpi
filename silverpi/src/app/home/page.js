@@ -2,7 +2,7 @@ import Table from "@/components/table"
 import Link from 'next/link';
 import { POST as workOrdersPOST } from "@/api/workorders/getActiveWorkOrders.js"
 
-export default async function Home() {
+export default async function Home({ profile }) {
 
     const wos = await getActiveWorkOrders()
     const woHeaders = [
@@ -15,13 +15,13 @@ export default async function Home() {
 
     return (
         <>
-            <div class="grid gap-8 grid-cols-2">
+            <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
+            <div className="grid gap-8 grid-cols-2 my-5">
                 <div>
-                <h2>Hello Judah,</h2>
-
+        
                 </div>
 
-                <div class="grid grid-rows-2 grid-flow-col">
+                <div className="grid grid-rows-2 grid-flow-col">
                     <div>
                         <Table
                             headers={woHeaders}
@@ -36,7 +36,7 @@ export default async function Home() {
                             see more
                         </Link>
                     </div> {/*End of Tables  Workorders*/}
-                    <div className="max-w-2xl">
+                    <div>
                         <Table
                             headers={woHeaders}
                             items={[]}
@@ -51,14 +51,6 @@ export default async function Home() {
                         </Link>
                     </div>
                 </div>
-            </div>
-            <div className="mx-20 inline-flex h-full">
-                <div className="mx-auto"></div>
-                <div className="mx-auto h-full">
-
-                    {/*End of Tables  Invoices*/}
-
-                </div >
             </div>
 
         </>

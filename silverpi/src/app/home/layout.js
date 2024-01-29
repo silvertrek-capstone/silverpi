@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import Navbar from "@/components/navbar.js"
 import { redirect } from 'next/navigation.js'
-import {handler} from "@/api/user/getCustomersForNums/route"
+import { handler } from "@/api/user/getCustomersForNums/route"
 
 export default async function DashboardLayout({ children }) {
     const cookieStore = cookies()
@@ -26,8 +26,8 @@ export default async function DashboardLayout({ children }) {
 
     return (
         <>
-                <Navbar profile={profile} user={session.user} customers={customers} />
-            <section className='flex justify-center h-full mx-20'>
+            <Navbar profile={profile} user={session.user} customers={customers} />
+            <section className='h-full mx-12'>
                 {children}
             </section>
 
@@ -67,7 +67,7 @@ async function getAllCustomersForUser(supabase) {
     joined.sort((a, b) => {
         return b.using - a.using
     });
-    
+
     return joined
 
 }
