@@ -61,7 +61,7 @@ async function getAllCustomersForUser(supabase) {
     const realCustomers = await res.json();
 
     // Left join the customer to user data on the real customers data.
-    const joined = leftJoin(data, realCustomers.data, 'cust_num', 'customer')
+    const joined = leftJoin(data, realCustomers.data || [], 'cust_num', 'customer')
 
     // Now, sort by the "using" column, so that the one being used is in first
     joined.sort((a, b) => {
