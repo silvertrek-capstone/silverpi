@@ -1,6 +1,7 @@
 "use client"
 import Tabs from '@/components/tabs'
 import Table from '@/components/table'
+import TextField from '@/components/textfield'
 import { useState } from 'react';
 
 export default function Invoices() {
@@ -21,7 +22,7 @@ export default function Invoices() {
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Invoices</h1>
-            <div className="my-5">
+            <div className="my-5 border px-4 py-4 rounded-md">
                 <Tabs
                     value={tab}
                     items={tabs}
@@ -29,6 +30,15 @@ export default function Invoices() {
                 >
 
                 </Tabs>
+            </div>
+            <div className="my-4 w-1/5">
+            <TextField
+                label="Search"
+                clearable={true}
+                onChange={(e) => setSearch(e)}
+                debounceTime={500}
+            >
+            </TextField>
             </div>
             <Table
                 headers={headers}

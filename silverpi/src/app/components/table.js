@@ -50,7 +50,7 @@ export default function Table({ headers, items, mainkey, link, title }) {
                 <div className="overflow-hidden divide-y divide-neutral2">
                     {
                         title &&
-                        <div className='min-w-full bg-gray-50 py-2 px-2'>
+                        <div className='text-txt min-w-full bg-gray-50 py-2 px-2'>
                             <h1>{title}</h1>
                         </div>
                     }
@@ -61,7 +61,7 @@ export default function Table({ headers, items, mainkey, link, title }) {
                                     <th
                                         key={`header-${i}-${header.value}`}
                                         scope="col"
-                                        className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-neutral4 sm:pl-6"
+                                        className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt sm:pl-6"
                                     >
                                         <a href='#' onClick={() => { handleSort(header.value) }} className="group inline-flex">
                                             {header.text}
@@ -100,7 +100,7 @@ export default function Table({ headers, items, mainkey, link, title }) {
                                 >
                                     {headers.map((header, j) => (
                                         <td
-                                            className="whitespace-nowrap py-2 pl-4 pr-3 text-sm"
+                                            className="text-txt whitespace-nowrap py-2 pl-4 pr-3 text-sm"
                                             key={`cell-${j}-${item[header.value]}`}
 
                                         >

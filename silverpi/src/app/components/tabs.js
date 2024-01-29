@@ -42,7 +42,7 @@ import Select from '@/components/select'
                   className={classNames(
                     tab.value === value
                       ? 'border-primary text-primary'
-                      : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-greytxt',
+                      : 'border-transparent text-greytxt hover:border-gray-200 hover:text-primary',
                     'flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
                   )}
                 >
