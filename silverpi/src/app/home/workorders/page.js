@@ -39,9 +39,9 @@ export default function WorkOrders() {
                                 {orders.map((orders) => (
                                     <tr key={orders.id}>
                                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-left font-medium text-gray-900 sm:pl-6">
-                                            <Link href={`/home/workorders/${orders.id}`} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                                                {orders.id}
-                                            </Link>
+                                        <Link href={`/home/workorders/${orders.id}`} legacyBehavior>
+                                            <a className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">{orders.id}</a>
+                                        </Link>
                                         </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-left text-gray-500">
                                             {orders.title}
