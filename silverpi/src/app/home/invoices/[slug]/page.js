@@ -95,9 +95,7 @@ export default InvoicePage;        // Assign default export for Next.js to recog
 
 export async function getStaticPaths() {
     return {
-      paths: [
-        { params: { slug: '1' } }, // Static assignment for slug value | will get from invoice later
-      ],
-      fallback: false,
-    };
+      paths: [], fallback: true,   // Set no paths and fallback to true so any URL will generate the page
+    };                             // Note: this will change later once API data is accessible
   }
+  
