@@ -12,11 +12,13 @@ export default function Invoices() {
         { text: 'Description', value: 'description' },
         { text: 'Due Date', value: 'due_date' },
         { text: 'Total Due', value: 'total_due' },
-        { text: 'Status', value: 'State' },
+        { text: 'Status', value: 'state' },
     ]
     const tabs = [
-        { text: 'Open', value: '0', count: 50 },
-        { text: 'Closed', value: '1', count: 200 }
+        { text: 'All Invoices', value: '0', count: 3 },
+        { text: 'Unpaid', value: '1', count: 0 },
+        { text: 'Overdue', value: '2', count: 0 },
+        { text: 'Paid', value: '3', count: 3 },
     ]
     const [tab, setTab] = useState('0');
     return (

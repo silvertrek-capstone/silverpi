@@ -42,12 +42,12 @@ import Select from '@/components/select'
                   className={classNames(
                     tab.value === value
                       ? 'border-primary text-primary'
-                      : 'border-transparent text-greytxt hover:border-gray-200 hover:text-primary',
+                      : 'border-transparent text-greytxt hover:border-gray-200 hover:text-secondary',
                     'flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
                   )}
                 >
                   {tab.text}
-                  {tab.count ? (
+                  {tab.count !== null || tab.count !== undefined ? (
                     <span
                       className='bg-neutral2 text-neutral4 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block'
                     >
