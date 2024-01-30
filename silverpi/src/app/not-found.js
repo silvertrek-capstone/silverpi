@@ -2,14 +2,6 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full">
-        <body class="h-full">
-        ```
-      */}
       <main className="flex items-center justify-center min-h-full place-items-center bg-secondary px-6 py-24 sm:py-32 lg:px-8">
          <h1 className="absolute mb-20 opacity-10 font-black text-15xl md:text-25xl lg:text-30xl text-neutral1">404</h1>
          <div className="relative text-center">
@@ -18,7 +10,7 @@ export default function NotFound() {
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
               href="/home"
-              className="z-1 rounded-md bg-neutral1 px-3.5 py-2.5 text-lg font-semibold text-secondary shadow-sm hover:bg-accent1 transition-colors duration-400 ease-in-out hover:neutral1"
+              className="z-1 rounded-md bg-neutral1 px-3.5 py-2.5 text-lg font-semibold text-secondary shadow-sm hover:bg-neutral2 transition-colors duration-400 ease-in-out hover:text-neutral1"
             >
               Go back home
             </Link>

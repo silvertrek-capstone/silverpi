@@ -21,7 +21,7 @@ module.exports = {
         accent2: '#03D1FF',
         neutral1: '#FFFFFF',
         neutral2: '#B5BFCF',
-        neutral3: '#B5BFCF',
+        neutral3: '#1A213B',
         neutral4: '#000000',
       },
       fontSize: {
