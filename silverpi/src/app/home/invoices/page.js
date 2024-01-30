@@ -12,7 +12,7 @@ export default function Invoices() {
         { text: 'Description', value: 'description' },
         { text: 'Due Date', value: 'due_date' },
         { text: 'Total Due', value: 'total_due' },
-        { text: 'Status', value: 'state' },
+        { text: 'Status', value: 'status' },
     ]
     const tabs = [
         { text: 'All Invoices', value: '0', count: 3 },
@@ -21,6 +21,7 @@ export default function Invoices() {
         { text: 'Paid', value: '3', count: 3 },
     ]
     const [tab, setTab] = useState('0');
+    const [search, setSearch] = useState('')
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Invoices</h1>
@@ -34,13 +35,14 @@ export default function Invoices() {
                 </Tabs>
             </div>
             <div className="my-4 w-1/5">
-            <TextField
-                label="Search"
-                clearable={true}
-                onChange={(e) => setSearch(e)}
-                debounceTime={500}
-            >
-            </TextField>
+                <TextField
+                    value={search}
+                    label="Search"
+                    clearable={true}
+                    onChange={(e) => setSearch(e)}
+                    debounceTime={500}
+                >
+                </TextField>
             </div>
             <Table
                 headers={headers}
