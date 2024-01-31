@@ -10,7 +10,7 @@ export default function Workorders() {
         { text: 'WO Number', value: 'wo_num' },
         { text: 'Date Created', value: 'date_created' },
         { text: 'Description', value: 'description' },
-        { text: 'Status', value: 'state' },
+        { text: 'Status', value: 'status' },
     ]
     const tabs = [
         { text: 'All Work Orders', value: '0', count: 3 },
@@ -42,7 +42,7 @@ export default function Workorders() {
             <Table
                 headers={headers}
                 items={workorders}
-                mainkey="inv_num"
+                mainkey="wo_num"
                 link="/home/workorders/"
             >
 

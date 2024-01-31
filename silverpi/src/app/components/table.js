@@ -93,7 +93,7 @@ export default function Table({ headers, items, mainkey, link, title }) {
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className='overflow-y-scroll'>
+                        <tbody className='divide-y divide-gray-200'>
                             {tableItems.map((item, i) => (
                                 <tr
                                     key={`row-${i}`}
