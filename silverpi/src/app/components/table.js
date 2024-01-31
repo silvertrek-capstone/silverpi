@@ -56,7 +56,7 @@ export default function Table({ headers, items, mainkey, link, title }) {
                     }
                     <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
                         <thead className="bg-gray-50">
-                            <tr className='block'>
+                            <tr>
                                 {headers.map((header, i) => (
                                     <th
                                         key={`header-${i}-${header.value}`}
@@ -93,7 +93,7 @@ export default function Table({ headers, items, mainkey, link, title }) {
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className='overflow-y-scroll block' style={{height: '30vh'}}>
+                        <tbody className='overflow-y-scroll'>
                             {tableItems.map((item, i) => (
                                 <tr
                                     key={`row-${i}`}

@@ -21,7 +21,7 @@ export default function Invoices() {
         { text: 'Paid', value: '3', count: 3 },
     ]
     const [tab, setTab] = useState('0');
-    const [search, setSearch] = useState('search')
+    const [search, setSearch] = useState('');
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Invoices</h1>
