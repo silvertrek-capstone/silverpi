@@ -1,10 +1,11 @@
 import Table from "@/components/table"
 import Link from 'next/link';
-import { POST as workOrdersPOST } from "@/api/workorders/getActiveWorkOrders.js"
+import { getActiveWorkOrders } from "@/api/workorders/getActiveWorkOrders.js"
 
 export default async function Home({ profile }) {
 
-    const wos = await getActiveWorkOrders()
+    const {data, error} = await getActiveWorkOrders()
+    const wos = data || [];
     const woHeaders = [
         { text: "ID", value: "workOrder" },
         { text: "Status", value: "wOStatus" },
@@ -55,12 +56,4 @@ export default async function Home({ profile }) {
 
         </>
     )
-}
-
-
-async function getActiveWorkOrders() {
-    const res = await workOrdersPOST();
-    const jsonData = await res.json();
-    const { data, error } = jsonData;
-    return data || [];
 }

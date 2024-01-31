@@ -18,6 +18,7 @@ export default function Workorders() {
         { text: 'Closed', value: '2', count: 0 }
     ]
     const [tab, setTab] = useState('0');
+    const [search, setSearch] = useState('')
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Work Orders</h1>
