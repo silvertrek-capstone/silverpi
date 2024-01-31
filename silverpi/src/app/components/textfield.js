@@ -18,8 +18,7 @@ import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/sol
 
 export default function TextField({value, limit, label, clearable, disabled, onInput, onChange, debounceTime}) {
 
-    const [input, setInput] = useState(""); 
-    const [debounceTimei, setDebounceTime] = useState(debounceTime); 
+    const [input, setInput] = useState(value); 
     
     const handleOnInput = (e) => {
         setInput(e.target.value);
@@ -35,9 +34,9 @@ export default function TextField({value, limit, label, clearable, disabled, onI
     useEffect(() => {
         const debounceFunc = setTimeout(() => {
             onChange && onChange(input);// call onChange and pass event
-        }, debounceTimei);
+        }, debounceTime);
         return () => clearTimeout(debounceFunc);
-      }, [input, debounceTimei]);
+      }, [input, debounceTime]);
 
     return(
         <div className = "position relative">
@@ -47,7 +46,6 @@ export default function TextField({value, limit, label, clearable, disabled, onI
                     onInput = {handleOnInput}
                     maxLength= {limit} // only does so client side 
                     value = {input}
-                    defaultValue={value}
                     placeholder = {label}
 
                 >

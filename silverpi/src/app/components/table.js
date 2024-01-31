@@ -54,14 +54,14 @@ export default function Table({ headers, items, mainkey, link, title }) {
                             <h1>{title}</h1>
                         </div>
                     }
-                    <table className="min-w-full divide-y divide-neutral2 table-auto overflow-scroll w-full">
+                    <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
                         <thead className="bg-gray-50">
-                            <tr>
+                            <tr className='block'>
                                 {headers.map((header, i) => (
                                     <th
                                         key={`header-${i}-${header.value}`}
                                         scope="col"
-                                        className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt sm:pl-6"
+                                        className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt "
                                     >
                                         <a href='#' onClick={() => { handleSort(header.value) }} className="group inline-flex">
                                             {header.text}
@@ -93,7 +93,7 @@ export default function Table({ headers, items, mainkey, link, title }) {
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className="">
+                        <tbody className='overflow-y-scroll block' style={{height: '30vh'}}>
                             {tableItems.map((item, i) => (
                                 <tr
                                     key={`row-${i}`}

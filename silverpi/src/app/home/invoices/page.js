@@ -21,7 +21,7 @@ export default function Invoices() {
         { text: 'Paid', value: '3', count: 3 },
     ]
     const [tab, setTab] = useState('0');
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState('search')
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Invoices</h1>
@@ -63,6 +63,48 @@ function InvoicesData() {
             inv_num: 12,
             description: 'Cement',
             date_created: '12-13-2003',
+            status: 'Paid',
+            total_due: '8000.00'
+        },
+        {
+            inv_num: 32,
+            description: 'Bricks',
+            date_created: '12-1-2022',
+            status: 'Paid',
+            total_due: '8000.00'
+        },
+        {
+            inv_num: 32,
+            description: 'Bricks',
+            date_created: '12-1-2022',
+            status: 'Paid',
+            total_due: '8000.00'
+        },
+        {
+            inv_num: 32,
+            description: 'Bricks',
+            date_created: '12-1-2022',
+            status: 'Paid',
+            total_due: '8000.00'
+        },
+        {
+            inv_num: 32,
+            description: 'Bricks',
+            date_created: '12-1-2022',
+            status: 'Paid',
+            total_due: '8000.00'
+        },
+        {
+            inv_num: 32,
+            description: 'Bricks',
+            date_created: '12-1-2022',
+            status: 'Paid',
+            total_due: '8000.00'
+        },
+        {
+            inv_num: 32,
+            description: 'Bricks',
+            date_created: '12-1-2022',
             status: 'Paid',
             total_due: '8000.00'
         },
