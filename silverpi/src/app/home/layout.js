@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import Navbar from "@/components/navbar.js"
 import { redirect } from 'next/navigation.js'
-import {handler} from "@/api/user/getCustomersForNums/route"
+import { handler } from "@/api/user/getCustomersForNums/route"
 
 export default async function DashboardLayout({ children }) {
     const cookieStore = cookies()
@@ -26,9 +26,13 @@ export default async function DashboardLayout({ children }) {
 
     return (
         <>
-            <section>
+            <section className='h-full'>
                 <Navbar profile={profile} user={session.user} customers={customers} />
-                {children}
+                <div className='flex'>
+                    <div className='flex-1 mx-12 w-full'>
+                        {children}
+                    </div>
+                </div>
             </section>
 
         </>
@@ -61,13 +65,13 @@ async function getAllCustomersForUser(supabase) {
     const realCustomers = await res.json();
 
     // Left join the customer to user data on the real customers data.
-    const joined = leftJoin(data, realCustomers.data, 'cust_num', 'customer')
+    const joined = leftJoin(data, realCustomers.data || [], 'cust_num', 'customer')
 
     // Now, sort by the "using" column, so that the one being used is in first
     joined.sort((a, b) => {
         return b.using - a.using
     });
-    
+
     return joined
 
 }

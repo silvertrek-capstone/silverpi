@@ -13,31 +13,27 @@ export default async function AdminPanel() {
   const activeUsers = await getAllActive()
 
   return (
-    <div className="min-h-screen bg-transparent p-8 pt-20 flex flex-col items-center">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-regular text-gray-800 p-2 -mt-8">Admin Panel</h1>
-        </div>
-        <div className="mb-6">
-          <Table
-            headers={headers}
-            items={pendingUsers}
-            title="Pending Users"
-          >
+    <>
+      <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Admin Panel</h1>
+      <div className="mb-6">
+        <Table
+          headers={headers}
+          items={pendingUsers}
+          title="Pending Users"
+        >
 
-          </Table>
-        </div>
-        <div>
-          <Table
-            headers={headers}
-            items={activeUsers}
-            title="Active Users"
-          >
-
-          </Table>
-        </div>
+        </Table>
       </div>
-    </div>
+      <div>
+        <Table
+          headers={headers}
+          items={activeUsers}
+          title="Active Users"
+        >
+
+        </Table>
+      </div>
+    </>
   );
 }
 

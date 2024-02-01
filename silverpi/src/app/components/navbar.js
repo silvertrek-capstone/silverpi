@@ -30,58 +30,56 @@ export default function Navbar({ user, customers, profile }) {
   }, [pathName]);
 
   return (
-    <Disclosure as="nav" className="bg-white shadow sm:sticky sm:top-0 sm:z-10">
+    <Disclosure as="nav" className="bg-secondary shadow sm:sticky sm:top-0 sm:z-10 text-neutral1">
       {({ open }) => (
         <>
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 justify-between">
+            <div className="flex h-12 justify-between">
               <div className="flex">
-                <div className="flex flex-shrink-0 items-center">
+                {/* <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-8 w-auto"
                     src="/login.png"
                     alt="Your Company"
                   />
-                </div>
+                </div> */}
+
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                <div className="flex items-center text-xl mr-10">
+                  Silver PI
+                </div>
                   {/* Current: "border-blue-400 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link
                     href="/home"
-                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "home" ? "border-blue-400 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
+                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "home" ? "border-primary text-primary" : "border-transparent hover:border-gray-300"}`}
                   >
-                    Home
-                  </Link>
-                  <Link
-                    href="/home/agreements"
-                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "agreements" ? "border-blue-400 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
-                  >
-                    Agreements
+                    Dashboard
                   </Link>
                   <Link
                     href="/home/workorders"
-                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "workorders" ? "border-blue-400 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
+                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "workorders" ? "border-primary text-primary" : "border-transparent hover:border-gray-300"}`}
                   >
                     Workorders
                   </Link>
                   <Link
                     href="/home/invoices"
-                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "invoices" ? "border-blue-400 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
+                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${currentPage == "invoices" ? "border-primary text-primary" : "border-transparent hover:border-gray-300"}`}
                   >
                     Invoices
                   </Link>
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                <Select id="customer-select" handleChange={onCustomerChange} items={customerSelect} value={customerSelect[0]?.value} />
+                {/* <Select id="customer-select" handleChange={onCustomerChange} items={customerSelect} value={customerSelect[0]?.value} /> */}
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   {({ open }) => (
                     <>
                       <div>
-                        <Menu.Button className="relative flex rounded hover:bg-gray-200">
-                          <span className="flex px-3 py-2 text-xl text-gray-500 hover:text-gray-700">
-                            Hello, {profile.first_name}
-                            <ChevronUpIcon className={`mt-1 ml-1 h-6 w-6 ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+                        <Menu.Button className="relative flex rounded hover:text-neutral2">
+                          <span className="flex px-3 py-2">
+                            {profile.first_name} {profile.last_name}
+                            {/* <ChevronUpIcon className={`mt-1 ml-1 h-6 w-6 ${open ? 'rotate-180' : ''}`} aria-hidden="true" /> */}
                           </span>
                         </Menu.Button>
                       </div>
@@ -94,14 +92,14 @@ export default function Navbar({ user, customers, profile }) {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-neutral1 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-neutral4">
                           <Menu.Item>
                             {({ active }) => (
                               <Link
                                 href="#"
                                 className={classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  active ? 'text-primary' : '',
+                                  'block px-4 py-2 text-sm text-greytxt'
                                 )}
                               >
                                 Your Profile
@@ -113,8 +111,8 @@ export default function Navbar({ user, customers, profile }) {
                               <Link
                                 href="/home/admin"
                                 className={classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  active ? 'text-primary' : '',
+                                  'block px-4 py-2 text-sm text-greytxt'
                                 )}
                               >
                                 Admin
@@ -127,8 +125,8 @@ export default function Navbar({ user, customers, profile }) {
                               <Link
                                 href="/auth/logout"
                                 className={classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  active ? 'text-primary' : '',
+                                  'block px-4 py-2 text-sm text-greytxt'
                                 )}
                               >
                                 Sign out
@@ -141,8 +139,8 @@ export default function Navbar({ user, customers, profile }) {
                   )}
                 </Menu>
               </div>
-              <div className="flex items-center text-xl text-gray-600 sm:hidden">
-                Hello, {profile.first_name}
+              <div className="flex items-center sm:hidden">
+                {profile.first_name} {profile.last_name}
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
@@ -167,14 +165,7 @@ export default function Navbar({ user, customers, profile }) {
                 href="/home"
                 className={`block border-l-4 py-2 pl-3 pr-4 text-base font-medium ${currentPage == "home" ? "border-blue-400 bg-indigo-50 text-blue-400" : "text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"}`}
               >
-                Home
-              </Disclosure.Button>
-              <Disclosure.Button
-                as={Link}
-                href="/home/agreements"
-                className={`block border-l-4 py-2 pl-3 pr-4 text-base font-medium ${currentPage == "agreements" ? "border-blue-400 bg-indigo-50 text-blue-400" : "text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"}`}
-              >
-                Agreements
+                Dashboard
               </Disclosure.Button>
               <Disclosure.Button
                 as={Link}
@@ -196,9 +187,9 @@ export default function Navbar({ user, customers, profile }) {
                 <Disclosure.Button
                   as={Link}
                   href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                  className="block px-4 py-2 text-base font-medium hover:bg-gray-100 hover:text-gray-800"
                 >
-                  Your Profile
+                  {profile.first_name} {profile.last_name}
                 </Disclosure.Button>
                 <Disclosure.Button
                   as={Link}
@@ -235,9 +226,9 @@ async function onCustomerChange(e) {
     .eq('using', true);
 
   // Now, set using to true where cust_num is equal to e
-  const {error: error2} = await supabase
+  const { error: error2 } = await supabase
     .from('customer_to_user')
-    .update({using: true})
+    .update({ using: true })
     .eq('cust_num', e);
 
 }

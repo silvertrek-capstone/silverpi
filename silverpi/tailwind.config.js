@@ -7,11 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // backgroundImage: {
-      //   'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-      //   'gradient-conic':
-      //     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      // },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
@@ -23,12 +18,14 @@ module.exports = {
         neutral2: '#B5BFCF',
         neutral3: '#1A213B',
         neutral4: '#000000',
+        txt: '#111827',
+        greytxt: '#374151',
       },
-      fontSize: {
-        '15xl': '15rem',
-        '25xl': '25rem', // custom text size for 404 page
-        '30xl': '30rem',
-      },
+      // backgroundImage: {
+      //   'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      //   'gradient-conic':
+      //     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      // },
     },
   },
   plugins: [
