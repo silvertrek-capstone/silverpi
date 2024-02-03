@@ -1,5 +1,6 @@
 // app/home/admin/[slug]/page.js
 import React from 'react';
+import Table from '@/components/table';
 
 // Static Data for demo
 // Later, data will be grabbed from API
@@ -30,72 +31,58 @@ const invoiceDetails = {
   ],
 };
 
-const InvoicePage = ({ params }) => {
-      
-    // Cost calculation for totals
-    let totalDue = 0;
+const headers = [
+  { text: 'Line', value: 'line' },
+  { text: 'Technician', value: 'technician' },
+  { text: 'Description', value: 'description' },
+  { text: 'Quantity', value: 'quantity' },
+  { text: 'Unit Price', value: 'unitPrice' },
+  { text: 'Total', value: 'total' },
+]
 
-    for (let i = 0; i < invoiceDetails.tableFields.length; i++) {  // For each item within the table, take the total from each job
-        totalDue = totalDue + invoiceDetails.tableFields[i].total; // Increment to total
-    }
-    totalDue = totalDue.toFixed(2);                                // Format to two decimal places for aesthetics
-    
-    return (
-      <div className="flex flex-col h-screen bg-white-100">
-        <div className="flex-grow p-6 pb-20">
-          <div className="bg-white p-12 rounded-md shadow-md h-full flex flex-col justify-between">
-            <div>
-              <h1 className="text-2xl font-bold mb-4">Invoice #{invoiceDetails.invoiceNum}</h1>
-              <div className="mb-6">
-                <p>Status: <span className="font-semibold">{invoiceDetails.payStatus}</span></p>
-                <p>Date Created: {invoiceDetails.createdDate}</p>
-                <p>Due Date: {invoiceDetails.dueDate}</p>
-                <p>Terms: {invoiceDetails.termSize}</p>
-              </div>
-              <div className="mb-6 overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="text-sm font-medium text-gray-700 bg-blue-200">
-                      <th className="px-4 py-2">Line</th>
-                      <th className="px-4 py-2">Technician</th>
-                      <th className="px-4 py-2">Description</th>
-                      <th className="px-4 py-2">Quantity</th>
-                      <th className="px-4 py-2">Unit Price</th>
-                      <th className="px-4 py-2">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-700">
-                    {invoiceDetails.tableFields.map((item) => (
-                      <tr className="border-b border-gray-200">
-                        <td className="px-4 py-2">{item.line}</td>
-                        <td className="px-4 py-2">{item.technician}</td>
-                        <td className="px-4 py-2">{item.description}</td>
-                        <td className="px-4 py-2">{item.quantity}</td>
-                        <td className="px-4 py-2">${item.unitPrice.toFixed(2)}</td>
-                        <td className="px-4 py-2">${item.total.toFixed(2)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="flex justify-end items-center">
-              <div className="flex flex-col">
-                <h2 className="text-xl font-bold mb-2">Total Due</h2>
-                <p className="text-3xl font-bold">${totalDue}</p>
-              </div>
-            </div>
-          </div>
+const InvoicePage = ({ params }) => {
+
+  // Cost calculation for totals
+  let totalDue = 0;
+  for (let i = 0; i < invoiceDetails.tableFields.length; i++) {  // For each item within the table, take the total from each job
+    totalDue = totalDue + invoiceDetails.tableFields[i].total; // Increment to total
+  }
+  totalDue = totalDue.toFixed(2);                                // Format to two decimal places for aesthetics
+
+  return (
+    <>
+      <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Invoice #{params.slug}</h1>
+
+      <div>
+        <div className="mb-6">
+          <p><span className="font-semibold">Status:</span> {invoiceDetails.payStatus}</p>
+          <p><span className="font-semibold">Date Created: </span> {invoiceDetails.createdDate}</p>
+          <p><span className="font-semibold">Due Date: </span> {invoiceDetails.dueDate}</p>
+          <p><span className="font-semibold">Terms: </span> {invoiceDetails.termSize}</p>
+        </div>
+        <div className="mb-6 overflow-x-auto">
+          <Table
+            headers={headers}
+            items={invoiceDetails.tableFields}
+          >
+
+          </Table>
         </div>
       </div>
-    );
+      <div className="flex justify-end items-center">
+        <div className="flex flex-col">
+          <h2 className="text-xl font-bold mb-2">Total Due</h2>
+          <p className="text-3xl font-bold">${totalDue}</p>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default InvoicePage;        // Assign default export for Next.js to recognize and render component
 
 export async function getStaticPaths() {
-    return {
-      paths: [], fallback: true,   // Set no paths and fallback to true so any URL will generate the page
-    };                             // Note: this will change later once API data is accessible
-  }
-  
+  return {
+    paths: [], fallback: true,   // Set no paths and fallback to true so any URL will generate the page
+  };                             // Note: this will change later once API data is accessible
+}

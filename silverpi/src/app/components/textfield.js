@@ -16,10 +16,9 @@ import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/sol
         debounceTime - The time to debounce the input before calling onChange. It determines the delay after the user stops typing before the final input is processed.
 */
 
-export default function TextField({limit, label, clearable, disabled, onInput, onChange, debounceTime}) {
+export default function TextField({value, limit, label, clearable, disabled, onInput, onChange, debounceTime}) {
 
-    const [input, setInput] = useState(""); 
-    const [debounceTimei, setDebounceTime] = useState(debounceTime); 
+    const [input, setInput] = useState(value); 
     
     const handleOnInput = (e) => {
         setInput(e.target.value);
@@ -35,14 +34,14 @@ export default function TextField({limit, label, clearable, disabled, onInput, o
     useEffect(() => {
         const debounceFunc = setTimeout(() => {
             onChange && onChange(input);// call onChange and pass event
-        }, debounceTimei);
+        }, debounceTime);
         return () => clearTimeout(debounceFunc);
-      }, [input, debounceTimei]);
+      }, [input, debounceTime]);
 
     return(
         <div className = "position relative">
                 <input
-                    className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
                     disabled = {disabled}
                     onInput = {handleOnInput}
                     maxLength= {limit} // only does so client side 

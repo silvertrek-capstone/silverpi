@@ -1,10 +1,8 @@
-import { NextResponse } from 'next/server'
 import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
 import { getCustNum } from '@/helpers/usingCustomer'
 
-// This function will get all agreements, 
-export async function POST() {
+export async function getActiveWorkOrders() {
     try {
         // IMPORTANT, this is how you get the current customer number for the user.
         const {data: customer, error: custerror} =  await getCustNum();
@@ -40,15 +38,13 @@ export async function POST() {
         // Make the request
         const { data, error } = await makeQuery(query, variables)
         if (error) {
-            return NextResponse.json({ data, error }, { status: 500 })
+            return {data, error}
         }
 
         // If no error, format data a little to get nice response
         const tableRows = data.vSMWorkOrder
-
-        return NextResponse.json({ data: tableRows, error }, { status: 200 })
+        return {data: tableRows, error};
     } catch(e) {
-        return NextResponse.json({ data: null, error: e }, { status: 500 })
+        return {data: null, error: e};
     }
-
 }

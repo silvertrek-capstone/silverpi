@@ -11,11 +11,11 @@ import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/sol
     items - Array of values that the select will use to generate the value list.
         - Should be an array of objects in the following form: {text: What the user sees, value: A value used to find the option used, can be the same as text}
     label - autocomplete label
-    handleChange - function that is called when a change is made in the select (new option selected)
+    onChange - function that is called when a change is made in the select (new option selected)
 */
 
 
-export default function Autocomplete({ id, value, items, label, handleChange }) {
+export default function Autocomplete({ id, value, items, label, onChange }) {
     const [query, setQuery] = useState('')
     const filteredItems =
         query === ''
@@ -25,7 +25,7 @@ export default function Autocomplete({ id, value, items, label, handleChange }) 
             })
 
     return (
-        <Combobox id={id} as="div" nullable value={value} onChange={(e) => {setQuery(''); handleChange(e)}}>
+        <Combobox id={id} as="div" nullable value={value} onChange={(e) => {setQuery(''); onChange(e)}}>
             <div className="relative mt-2">
                 <Combobox.Input
                     className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -35,7 +35,7 @@ export default function Autocomplete({ id, value, items, label, handleChange }) 
                 {!query && !value &&
                     <span className='absolute left-3 text-gray-400 top-1'>{label}</span>
                 }
-                <Combobox.Button onClick={() => {setQuery(''); handleChange(null)}} className="absolute inset-y-0 right-5 flex items-center rounded-r-md px-2">
+                <Combobox.Button onClick={() => {setQuery(''); onChange(null)}} className="absolute inset-y-0 right-5 flex items-center rounded-r-md px-2">
                     <XMarkIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </Combobox.Button>
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
