@@ -1,32 +1,46 @@
-import { NextResponse } from 'next/server'
 import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
+import { getCustNum } from '@/helpers/usingCustomer'
 
-// This function will get all agreements, 
-export async function POST(customerNum) {
-    const query = gql`
-    query($filter: vSMWorkOrderFilterInput){
-        vSMWorkOrder(where: $filter){
-            sMCo
-            workOrder
-            custGroup
-            customer
-            description
-            notes
-            wOStatus
+export async function getWorkOrders() {
+    try {
+        console.log(status)
+        // IMPORTANT, this is how you get the current customer number for the user.
+        const {data: customer, error: custerror} =  await getCustNum();
+        if (custerror) {
+            throw new Error(custerror)
         }
-    }`
+        const query = gql`
+        query($filter: vSMWorkOrderFilterInput){
+            vSMWorkOrder(where: $filter){
+                sMCo
+                workOrder
+                custGroup
+                customer
+                description
+                notes
+                wOStatus
+            }
+        }`
+    
+        const variables = {
+            filter: {
+                customer: { "eq": customer }
+            }
+        }
+    
+        // Make the request
+        const {data, error} = await makeQuery(query, variables)
+        if (error) {
+            return {data, error};
+        }
+        // If no error, format the data a bit to return just the rows
+        const tableRows = data.vSMWorkOrder;
+        return {data: tableRows, error};
 
-    const variables = {
-        filter: {
-            sMCo: { "eq": customerNum }
-        }
+    } catch(e) {
+        console.log(e)
+
+        return {data: null, error: e};
     }
-
-    // Make the request
-    const {data, error} = await makeQuery(query, variables)
-    let status = 200
-    if (error) status = 500
-
-    return NextResponse.json({ data, error }, { status: status })
 }

@@ -16,6 +16,7 @@ import dayjs from 'dayjs' // Date calculator
 */
 
 export default function Table({ headers, items, mainkey, link, title }) {
+    console.log(items)
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
 
@@ -32,6 +33,10 @@ export default function Table({ headers, items, mainkey, link, title }) {
             setSortDesc(true)
         }
     }
+
+    useEffect(() => {
+        setTableItems(items)
+    }, [items]);
 
     useEffect(() => {
         if (!sortBy && sortDesc) { // default state
