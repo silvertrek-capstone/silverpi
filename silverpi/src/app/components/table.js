@@ -15,10 +15,14 @@ import dayjs from 'dayjs' // Date calculator
     link - string that we will append mainKey to to link
 */
 
-export default function Table({ headers, items, mainkey, link, title }) {
+// added onClick - pass value of mainkey on click
+//  - hovering over row changes val to loading cursor
+
+// added dloading - if dloading is true, horizontal loading bar displayed
+export default function Table({ headers, items, mainkey, link, title, onRowClick, loading }) {
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
-
+    
     const [tableItems, setTableItems] = useState(items)
 
     const handleSort = (colName) => {
@@ -41,122 +45,96 @@ export default function Table({ headers, items, mainkey, link, title }) {
             // Set new table items
             setTableItems(newSort)
         }
-    }, [sortBy, sortDesc])
+    }, [sortBy, sortDesc, items]) // Added items var to dependency list
 
 
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="overflow-hidden divide-y divide-neutral2">
-                    {
-                        title &&
+                    {title &&
                         <div className='text-txt min-w-full bg-gray-50 py-2 px-2'>
                             <h1>{title}</h1>
                         </div>
                     }
-                    <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                {headers.map((header, i) => (
-                                    <th
-                                        key={`header-${i}-${header.value}`}
-                                        scope="col"
-                                        className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt "
-                                    >
-                                        <a href='#' onClick={() => { handleSort(header.value) }} className="group inline-flex">
-                                            {header.text}
-                                            {
-                                                (() => {
-                                                    if (sortBy === header.value && sortDesc) {
-                                                        return (
-                                                            <span className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
-                                                                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
-                                                            </span>
-                                                        )
-                                                    } else if (sortBy === header.value) {
-                                                        return (
-                                                            <span className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
-                                                                <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
-                                                            </span>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <span className="invisible ml-2 flex-none rounded group-hover:visible group-focus:visible">
-                                                                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
-                                                            </span>
-                                                        )
-                                                    }
-                                                })()
-                                            }
-                                        </a>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody className='divide-y divide-gray-200'>
-                            {tableItems.map((item, i) => (
-                                <tr
-                                    key={`row-${i}`}
-                                >
-                                    {headers.map((header, j) => (
-                                        <td
-                                            className="text-txt whitespace-nowrap py-2 pl-4 pr-3 text-sm"
-                                            key={`cell-${j}-${item[header.value]}`}
-
+                    {loading ? (
+                        <div className="w-full h-2 bg-gray-200 relative overflow-hidden">
+                            <div className="w-full h-full absolute left-0 top-0 animate-pulse bg-blue-500"></div>
+                        </div>
+                    ) : (
+                        <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    {headers.map((header, i) => (
+                                        <th
+                                            key={`header-${i}-${header.value}`}
+                                            scope="col"
+                                            className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt cursor-pointer"
+                                            onClick={() => { handleSort(header.value) }}
                                         >
-                                            {link && header.value === mainkey
-                                                ? <Link href={`${link}${item[mainkey]}`} className="font-semibold leading-6 text-primary ">
-                                                    {item[header.value]}
-                                                </Link>
-                                                : item[header.value]
-                                            }
-                                        </td>
+                                            {header.text}
+                                            {sortBy === header.value && (sortDesc ? <ChevronDownIcon className="h-5 w-5 inline" aria-hidden="true" /> : <ChevronUpIcon className="h-5 w-5 inline" aria-hidden="true" />)}
+                                        </th>
                                     ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className={`divide-y divide-gray-200 ${onRowClick ? 'cursor-pointer' : ''}`}>
+                                {tableItems.length > 0 ? (
+                                    tableItems.map((item, i) => (
+                                        <tr
+                                            key={`row-${i}`}
+                                            className="even:bg-gray-50 hover:bg-gray-100"
+                                            onClick={() => onRowClick && onRowClick(item[mainkey])}
+                                        >
+                                            {headers.map((header, j) => (
+                                                <td
+                                                    className="text-txt whitespace-nowrap py-2 pl-4 pr-3 text-sm"
+                                                    key={`cell-${j}-${item[header.value]}`}
+                                                >
+                                                    {link && header.value === mainkey
+                                                        ? <Link href={`${link}${item[mainkey]}`}>{item[header.value]}</Link>
+                                                        : item[header.value]
+                                                    }
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={headers.length} className="text-center py-4">No data available</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </div>
     )
 }
 
-
-// Takes in an array and a key and returns a sorted array
-// Supports the following sorts:
-/*
-    - alphabetical
-    - numerical
-    - date
-*/
 function sortByKey(arr, key, desc) {
     const sorting = structuredClone(arr) // Deep clone of array
-    // Big sort function
     sorting.sort((a, b) => {
         const aval = a[key]
         const bval = b[key]
 
-        // Check if floats
+        // For floats
         const afloat = Number(aval)
         const bfloat = Number(bval)
         if (!isNaN(afloat) && !isNaN(bfloat)) {
             return desc ? bfloat - afloat : afloat - bfloat
         }
 
-        // Check if dates
+        // For dates
         const adate = dayjs(aval)
         const bdate = dayjs(bval)
         if (adate.isValid() && bdate.isValid()) {
-            return desc ? bdate - adate : adate - bdate
+            return desc ? bdate.unix() - adate.unix() : adate.unix() - bdate.unix()
         }
 
-
-
-        if (desc) {
-            return aval < bval;
-        }
-        return aval >= bval;
+        // For strings
+        return desc ? (aval < bval ? 1 : -1) : (aval > bval ? 1 : -1)
     })
     return sorting
 }
