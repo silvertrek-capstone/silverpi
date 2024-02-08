@@ -24,6 +24,8 @@ export default function Table({ headers, items, mainkey, link, title, loading })
     const [sortDesc, setSortDesc] = useState(true);
 
     const [tableItems, setTableItems] = useState(items);
+    const [isLoading, setIsLoading] = useState(true);
+
 
     // Universal click handler for export to other tables
     const handleRowClick = (item) => {
@@ -34,9 +36,9 @@ export default function Table({ headers, items, mainkey, link, title, loading })
     };
 
     const handleSort = (colName) => {
-        if (sortBy === colName && sortDesc) {
+        if (sortBy === colName && sortDesc){ // default state
             setSortDesc(false);
-        } else if (sortBy === colName) {
+        } else if (sortBy === colName){
             setSortBy('');
             setSortDesc(true);
         } else {
@@ -46,13 +48,22 @@ export default function Table({ headers, items, mainkey, link, title, loading })
     };
 
     useEffect(() => {
-        if (!sortBy && sortDesc) {  // default state
-            setTableItems(items); // Original Sort
-        } else {
-            const newSort = sortByKey(tableItems, sortBy, sortDesc);
-            setTableItems(newSort);
+        if (items) {
+            setTableItems(items);           // Original Sort
+            setIsLoading(false);            // loading var set to false upon page being loaded
         }
-    }, [sortBy, sortDesc, items]); // Added items var to dependency list
+    }, [items]);                            // loading items dependency in separate use effect
+
+    useEffect(() => {
+        if (sortBy) {
+            const sortedItems = sortByKey(tableItems, sortBy, sortDesc);
+            setTableItems(sortedItems);
+        } else {                            // Sorting not specified, table unsorted
+            setTableItems(items);
+        }
+    }, [sortBy, sortDesc]);                 // Table sorting dependencies
+
+    const loadingAnimation = `slideRight 1.5s ease-in-out infinite`;
 
     return (
         <div className="px-4 sm:px-6 lg:px-8">
@@ -63,9 +74,12 @@ export default function Table({ headers, items, mainkey, link, title, loading })
                             <h1>{title}</h1>
                         </div>
                     )}
-                    {loading ? (
+                    {isLoading ? (
                         <div className="w-full h-2 bg-gray-200 relative overflow-hidden">
-                            <div className="w-full h-full absolute left-0 top-0 animate-pulse bg-blue-500"></div>
+                            <div 
+                                className="absolute h-full bg-blue-500 left-0 top-0 w-full"
+                                style={{ animation: 'slideRight 1s ease-in-out infinite' }} // Animation time low and ease-in added for dynamic loading effect
+                            ></div>
                         </div>
                     ) : (
                         <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
