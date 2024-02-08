@@ -26,6 +26,11 @@ module.exports = {
       //   'gradient-conic':
       //     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       // },
+      fontSize: {
+        '15xl': '15rem',
+        '25xl': '25rem', // custom text size for 404 page
+        '30xl': '30rem',
+      },
     },
   },
   plugins: [
