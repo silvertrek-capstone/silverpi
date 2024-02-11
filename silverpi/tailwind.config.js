@@ -31,7 +31,7 @@ module.exports = {
         '25xl': '25rem', // custom text size for 404 page
         '30xl': '30rem',
       },
-    },
+    }
   },
   plugins: [
     require('@tailwindcss/forms'),

@@ -7,8 +7,9 @@ import {
     Button, Dialog, DialogActions,
     DialogContent, DialogContentText, DialogTitle,
 } from '@mui/material';
+import WarningIcon from '@mui/icons-material/Warning';
 
-const useConfirm = (title, content) => {
+const useConfirm = (alert, title, content) => {
   const [promise, setPromise] = useState(null);
 
   const confirm = () => new Promise((resolve, reject) => {
@@ -30,33 +31,50 @@ const useConfirm = (title, content) => {
   };
 
   const ConfirmationDialog = () => (
-    <Dialog
-      open={promise !== null}
-      fullWidth
-    >
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{content}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleConfirm}>Yes</Button>
-        <Button onClick={handleCancel}>Cancel</Button>
-      </DialogActions>
+    <Dialog 
+      open={promise !== null} 
+      fullWidth={alert ? (false):(true)}>
+      
+      {alert ? (
+        <>
+          <DialogTitle className="bg-secondary text-white text-center">
+            <WarningIcon className="pb-1 pr-2 text-accent1"></WarningIcon>
+            Alert
+            <WarningIcon className="pb-1 pl-2 text-accent1"></WarningIcon>
+          </DialogTitle>
+          <DialogContent className="bg-secondary text-white text-center">
+            <DialogContentText className="text-white">{content}</DialogContentText>
+          </DialogContent>
+          <DialogActions className="bg-secondary flex justify-center">
+            <button className="text-white border-2 border-white rounded-md hover:bg-white hover:bg-opacity-20 transition-colors duration-400 ease-in-out px-5 py-2" onClick={handleConfirm}>
+              Ok
+            </button>
+          </DialogActions>
+        </>
+      ) : (
+        <>
+          <DialogTitle className="bg-secondary text-white">{title}</DialogTitle>
+          <DialogContent className="bg-secondary text-white">
+            <DialogContentText className="text-white">{content}</DialogContentText>
+          </DialogContent>
+          <DialogActions className="bg-secondary">
+            <button className="text-white rounded-md hover:bg-white hover:bg-opacity-20 transition-colors duration-400 ease-in-out px-5 py-2" onClick={handleConfirm}>
+              Yes
+            </button>
+            <button className="text-white border-2 border-white rounded-md hover:bg-white hover:bg-opacity-20 mr-2 transition-colors duration-400 ease-in-out px-5 py-2" onClick={handleCancel}>
+              Cancel
+            </button>
+            {/* <Button className="text-white border-white hover:bg-white hover:bg-opacity-20" onClick={handleConfirm}>Yes</Button>
+            <Button variant="outlined" className="text-white border-1 border-white hover:bg-white hover:bg-opacity-20" onClick={handleCancel}>Cancel</Button> */}
+          </DialogActions>
+        </>
+        
+      )}
     </Dialog>
   );
   return [ConfirmationDialog, confirm];
 };
 
-
-/*
-    Popup Component: 
-        A reusable text field component for input with additional features.
-
-    props: 
-        alert: Set this to either true or false. True if it's an alert, false if it's a Confirmation. Alerts will have only one button saying ok, confirmations will have 2 buttons, a confirm or cancel button and will have side effects. 
-        title: The title of the card
-        content: The actual content of the card
-*/
 
 // export default function Popup({alert, title, content, trueFunction, falseFunction, isVisible}) {
 //   const [Dialog, confirmDelete] = useConfirm(

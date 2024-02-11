@@ -18,14 +18,16 @@ export default async function Home({ profile }) {
             
             <div className="grid gap-8 grid-cols-2 my-5">
                 <div className="">
-                    <ParentComponent />
-                    {/* <Popup 
-                        alert={false}
-                        title="Example Title"
-                        content="This is an example message"
-                        trueFunction={null}
-                        falseFunction={null}
-                    ></Popup> */}
+                    <ParentComponent 
+                    alert={true}
+                    title="Example Title"
+                    content="Lorem ipsum dolor sit amet"
+                    buttonText="Alert"/>
+                    <ParentComponent 
+                    alert={false}
+                    title="Example Title"
+                    content="Lorem ipsum dolor sit amet"
+                    buttonText="Confirm"/>
                 </div>
 
                 <div className="grid grid-rows-2 grid-flow-col">
