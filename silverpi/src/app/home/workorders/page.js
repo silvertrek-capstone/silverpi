@@ -3,20 +3,21 @@ import {getWorkOrders} from '@/api/workorders/getWorkOrders'
 
 export default async function Workorders() {
 
-    console.log('initial');
-    const {data, error} = await getWorkOrders(null);
+    const {data, error} = await getWorkOrders();
     const workorders = data || [];
     
-    async function getWorkOrdersAction(status) {
+
+    async function refreshWorkOrders() {
         "use server"
-        const {data, error} = await getWorkOrders(status);
+        const {data, error} = await getWorkOrders();
+        // Below must be parsed because only simple objects can be passed.
         return JSON.parse(JSON.stringify({data, error}));
     }
 
     return (
         <ClientWorkOrders
             workorders={workorders}
-            getWorkOrders={getWorkOrdersAction}
+            getWorkOrders={refreshWorkOrders}
         >
 
         </ClientWorkOrders>

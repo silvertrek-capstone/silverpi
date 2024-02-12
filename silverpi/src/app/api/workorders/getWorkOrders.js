@@ -4,7 +4,6 @@ import { getCustNum } from '@/helpers/usingCustomer'
 
 export async function getWorkOrders() {
     try {
-        console.log(status)
         // IMPORTANT, this is how you get the current customer number for the user.
         const {data: customer, error: custerror} =  await getCustNum();
         if (custerror) {
@@ -40,7 +39,6 @@ export async function getWorkOrders() {
 
     } catch(e) {
         console.log(e)
-
         return {data: null, error: e};
     }
 }

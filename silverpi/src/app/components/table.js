@@ -16,11 +16,10 @@ import dayjs from 'dayjs' // Date calculator
 */
 
 export default function Table({ headers, items, mainkey, link, title }) {
-    console.log(items)
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
 
-    const [tableItems, setTableItems] = useState(items)
+    const [tableItems, setTableItems] = useState(items || [])
 
     const handleSort = (colName) => {
         if (sortBy === colName && sortDesc) {
@@ -35,7 +34,9 @@ export default function Table({ headers, items, mainkey, link, title }) {
     }
 
     useEffect(() => {
-        setTableItems(items)
+        if (items !== tableItems) {
+            setTableItems(items)
+        }
     }, [items]);
 
     useEffect(() => {
