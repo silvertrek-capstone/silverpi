@@ -75,19 +75,19 @@ export default function Table({ headers, items, mainkey, link, title }) {
                                                 (() => {
                                                     if (sortBy === header.value && sortDesc) {
                                                         return (
-                                                            <span className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                            <span title="Sort Asc" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
                                                                 <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                                                             </span>
                                                         )
                                                     } else if (sortBy === header.value) {
                                                         return (
-                                                            <span className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                            <span title="Clear Sort" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
                                                                 <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
                                                             </span>
                                                         )
                                                     } else {
                                                         return (
-                                                            <span className="invisible ml-2 flex-none rounded group-hover:visible group-focus:visible">
+                                                            <span title="Sort Desc" className="invisible ml-2 flex-none rounded group-hover:visible group-focus:visible">
                                                                 <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                                                             </span>
                                                         )
