@@ -6,36 +6,34 @@ import { useEffect, useState } from 'react';
 
 // INFORMATION NEEDED FOR COMPONENTS
 const headers = [
-    { text: 'WO Number', value: 'wo_num' },
-    { text: 'Date Created', value: 'date_created' },
+    { text: 'WO Number', value: 'workOrder' },
+    { text: 'Date Created', value: 'enteredDateTime' },
     { text: 'Description', value: 'description' },
     { text: 'Status', value: 'status' },
 ];
 const tabs = [
-    { text: 'All Work Orders', value: null, count: 3 },
-    { text: 'Open', value: 0, count: 3 },
-    { text: 'Closed', value: 1, count: 0 }
+    { text: 'All Work Orders', value: null, count: null },
+    { text: 'Open', value: 0, count: null },
+    { text: 'Closed', value: 1, count: null }
 ];
 
 
 export default function ClientWorkOrders({workorders, getWorkOrders}) {
     // Defaults to "all" workorders, can just set wos to all workorders.
     const [wos, setWos] = useState(workorders); // Setwos to be used only when getting new data.
-    const [tab, setTab] = useState(0);
+    const [tab, setTab] = useState(null);
     const [search, setSearch] = useState('');
     const [rows, setRows] = useState(workorders); // Rows after search & status filter. Used by the table
+    const [cntTabs, setCntTabs] = useState(tabs);
 
-
-    // Add an interval that refreshes data every minute
-    // setInterval(async () => {
-    //     const {data, error} = await getWorkOrders();
-    //     // Check for error once we get toast stuff.
-    //     setWos(data || []);
-    // })
+    // Use effect for calculating the tab counts when the workorders change
+    useEffect(() => {
+        const newTabs = addCountsToTabs(wos, tabs);
+        setCntTabs(newTabs);
+    }, [wos]);
     
     // Whenever wos, tab, or search is changed, search it and status filter it to get the table rows
     useEffect(() => {
-        console.log('filtering')
         const tabbed = applyStatusFilter(wos, tab);
         const searched = applySearch(tabbed, search);
         // Now the data should be good to show to the user
@@ -48,7 +46,7 @@ export default function ClientWorkOrders({workorders, getWorkOrders}) {
             <div className="my-5 border px-4 py-4 rounded-md">
                 <Tabs
                     value={tab}
-                    items={tabs}
+                    items={cntTabs}
                     onChange={(e) => setTab(e)}
                 >
 
@@ -67,12 +65,27 @@ export default function ClientWorkOrders({workorders, getWorkOrders}) {
             <Table
                 headers={headers}
                 items={rows}
-                mainkey="wo_num"
+                mainkey="workOrder"
                 link="/home/workorders/"
             >
             </Table>
         </>
     );
+}
+
+// Adds the counts to the tabs
+function addCountsToTabs(data, items) {
+    const tabs = structuredClone(items);
+    // Loop over each tab, calculate the number of items where the woStatus is equal to the value
+    // If value is null, its the "all" tab, so all items match it
+    for (let i = 0; i < tabs.length; i++) {
+        const tab = tabs[i];
+        const dataForTab = data.filter((e) => {
+            return tab.value === null || tab.value === e.wOStatus;
+        });
+        tabs[i].count = dataForTab.length; // Get number of items
+    }
+    return tabs;
 }
 
 // Ad hoc function for filtering on status.

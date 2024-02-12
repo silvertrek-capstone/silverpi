@@ -15,6 +15,7 @@ export async function getWorkOrders() {
                 sMCo
                 workOrder
                 custGroup
+                enteredDateTime
                 customer
                 description
                 notes
