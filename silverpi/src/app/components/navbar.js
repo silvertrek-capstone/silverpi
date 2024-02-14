@@ -1,10 +1,9 @@
 "use client"
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronUpIcon } from '@heroicons/react/20/solid'
 import { useState, useEffect, Fragment } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Select from "@/components/select"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
@@ -18,11 +17,25 @@ export default function Navbar({ user, customers, profile }) {
 
   // Customer select stuff starts here
 
+  // Set the current customer to the first item in the list. (Should be right due to sorting)
+  
   // Generate the items for the dropdown
-  const customerSelect = customers.map((e) => {
+  const customerSelectItems = customers.map((e) => {
     return { text: e.name, value: e.cust_num }
   })
+  const [currentCustomer, setCurrentCustomer] = useState(customerSelectItems[0]?.value);
 
+  // Function for handling a customer change
+  async function handleCustomerChange(e) {
+    // Set current customer for the select
+    setCurrentCustomer(e);
+    // Handle updating the db
+    await updateUsingCustomer(e);
+    // Does not refresh currently, which causes bugs.
+    // // Refresh everything, because almost everything is customer based, its easier to just refresh it all
+    // const router = useRouter();
+    // router.reload();
+  }
 
   useEffect(() => {
     let pathArray = pathName.split("/");
@@ -45,9 +58,9 @@ export default function Navbar({ user, customers, profile }) {
                 </div> */}
 
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <div className="flex items-center text-xl mr-10">
-                  Silver PI
-                </div>
+                  <div className="flex items-center text-xl mr-10">
+                    Silver PI
+                  </div>
                   {/* Current: "border-blue-400 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link
                     href="/home"
@@ -70,7 +83,12 @@ export default function Navbar({ user, customers, profile }) {
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                {/* <Select id="customer-select" handleChange={onCustomerChange} items={customerSelect} value={customerSelect[0]?.value} /> */}
+                <Select
+                  id="customer-select"
+                  onChange={handleCustomerChange}
+                  items={customerSelectItems}
+                  value={currentCustomer}
+                />
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   {({ open }) => (
@@ -216,8 +234,7 @@ export default function Navbar({ user, customers, profile }) {
 
 
 // "e" should be the value (customer number)
-async function onCustomerChange(e) {
-  console.log(e)
+async function updateUsingCustomer(custNum) {
   const supabase = createClientComponentClient();
   // Two step process, set using to false for all your customers.
   const { error } = await supabase
@@ -229,6 +246,6 @@ async function onCustomerChange(e) {
   const { error: error2 } = await supabase
     .from('customer_to_user')
     .update({ using: true })
-    .eq('cust_num', e);
+    .eq('cust_num', custNum);
 
 }
