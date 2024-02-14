@@ -27,7 +27,7 @@ export async function getActiveWorkOrders() {
             filter: {
                 customer: { "eq": customer }, // Customer number
                 custGroup: {
-                    "eq": 1, // Always has to equal one
+                    "eq": 1, // Al ways has to equal one
                 },
                 wOStatus: {
                     "eq": 0
