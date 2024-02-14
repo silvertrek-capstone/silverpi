@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
-import Popup from '@/components/popup';
-import useConfirm from '@/components/popup'
+import Popup from '@/app/components/useConfirm';
+import useConfirm from '@/app/components/useConfirm'
 
 /* 
     This is an example button that will generate the confirmation page. I was thinking that maybe we can have a number of
@@ -11,9 +11,8 @@ import useConfirm from '@/components/popup'
     of the function we would like to trigger. 
 */
 
-function ParentComponent({alert, title, content, buttonText}) {
+function ConfirmButton({title, content, buttonText}) {
     const [Dialog, confirmDelete] = useConfirm(
-        alert,
         title,
         content,
       )
@@ -21,13 +20,9 @@ function ParentComponent({alert, title, content, buttonText}) {
       const handleDelete = async () => {
         const ans = await confirmDelete()
 
-        if(alert){
-            return
-        }
-
         if (ans) {
             // We can probably call a function here
-            console.log("confirmed");
+            console.log("Confirmed");
         }
         else {
             // Can call another function here, but most likely will just exit
@@ -44,4 +39,4 @@ function ParentComponent({alert, title, content, buttonText}) {
       )
 }
 
-export default ParentComponent;
+export default ConfirmButton;

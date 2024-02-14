@@ -1,7 +1,8 @@
 import Table from "@/components/table"
 import Link from 'next/link';
 import { getActiveWorkOrders } from "@/api/workorders/getActiveWorkOrders.js"
-import ParentComponent from "@/components/popupButton"
+import ConfirmButton from "@/app/components/confirmButton"
+import AlertButton from "@/app/components/alertButton"
 
 export default async function Home({ profile }) {
     const {data, error} = await getActiveWorkOrders()
@@ -18,13 +19,11 @@ export default async function Home({ profile }) {
             
             <div className="grid gap-8 grid-cols-2 my-5">
                 <div className="">
-                    <ParentComponent 
-                    alert={true}
+                    <AlertButton
                     title="Example Title"
                     content="Lorem ipsum dolor sit amet"
                     buttonText="Alert"/>
-                    <ParentComponent 
-                    alert={false}
+                    <ConfirmButton
                     title="Example Title"
                     content="Lorem ipsum dolor sit amet"
                     buttonText="Confirm"/>
