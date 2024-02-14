@@ -1,74 +1,20 @@
-"use client"
-import React, { useState, useEffect } from 'react';
 import Table from "@/app/components/table";
 import {getSingleWorkOrder} from '@/api/workorders/getSingleWorkOrder'
 
-const workOrderDetails = {
-    status: 'Open',
-    dateCreated: '12/12/2023',
-    orderDescription: 'Fixed issue with blank lines in export',
-    estimationToComplete: '40 hours',
-    hoursWorked: '20 hours',
-    tableFields: [
-        {
-            description: 'Silvertrek Admin created Work Order #135',
-            date: '12/12/2023'
-        },
-        {
-            description: 'Silvertrek Admin added 6 hours worked.',
-            date: '12/13/2023'
-        },
-        {
-            description: 'Silvertrek Admin edited hours worked.',
-            date: '12/13/2023'
-        },
-        {
-            description: 'Silvertrek Admin added 12 hours worked.',
-            date: '12/15/2023'
-        },
-        {
-            description: 'Silvertrek Admin created Invoice #516584',
-            date: '12/15/2023'
-        },
-    ]
-}
-
-
-
 const headers = [
-    {text: 'Description', value: 'description'},
-    {text: 'Date', value: 'date'},
+    {text: 'Scope', value: 'scope'},
+    {text: 'Description', value: 'scopeDescription'},
+    {text: 'Estimated Hours', value: 'scopeEstimatedHours'},
 ]
 
 
-
-
-export default function WorkOrderDetail({ params }) {
+export default async function WorkOrderDetail({ params }) {
     // Initialize state for the dynamic parts of workOrderDetails
-    const [workOrderInfo, setWorkOrderInfo] = useState({
-        status: '',
-        dateCreated: '',
-        orderDescription: '',
-        estimationToComplete: '',
-        hoursWorked: '',
-    });
 
+    const {data, error} = await getSingleWorkOrder(parseInt(params.id));
+    const workOrderDetails = data;
+    workOrderDetails.workOrderStatus = workOrderDetails.workOrderStatus ? 'Closed' : 'Open';
 
-    useEffect(() => {
-        const fetchWorkOrderData = async () => {
-            if (params.id) {
-                const data = await getSingleWorkOrder(params.id);
-                setWorkOrderInfo({
-                    status: data.workOrderStatus,
-                    //dateCreated: data.dateCreated,
-                    orderDescription: data.workOrderDescription,
-                    estimationToComplete: data.scope,
-                    hoursWorked: data.scopeEstimatedHours,
-                });
-            }
-        };
-        fetchWorkOrderData();
-    }, [params.id]);
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Work Order #{params.id}</h1>  
@@ -77,13 +23,13 @@ export default function WorkOrderDetail({ params }) {
                     <p>
                         <span className="font-semibold">Status: </span>
                         <span style={{ color: workOrderDetails.status === 'Open' ? 'green' : 'inherit' }}>
-                            {workOrderDetails.status}
+                            {workOrderDetails.workOrderStatus}
                         </span>
                     </p>
-                    <p><span className="font-semibold">Date Created: </span> 1 </p>
-                    <p><span className="font-semibold">Description: </span> {workOrderInfo.orderDescription}</p>
-                    <p><span className="font-semibold">Estimated Hour(s) to Complete: </span> {workOrderInfo.estimationToComplete} </p>
-                    <p><span className="font-semibold">Hours Worked: </span> {workOrderInfo.hoursWorked} </p>    
+                    <p><span className="font-semibold">Date Created: </span> N/A </p>
+                    <p><span className="font-semibold">Description: </span> {workOrderDetails.workOrderDescription}</p>
+                    <p><span className="font-semibold">Estimated Hour(s) to Complete: </span> {workOrderDetails.totalEstimatedHours} </p>
+                    <p><span className="font-semibold">Hours Worked: </span> N/A </p>    
                 </div>
                 <div className="flex justify-end space-x-4 mb-12">
                     <button
@@ -103,7 +49,7 @@ export default function WorkOrderDetail({ params }) {
                 <div className="mb-6 overflow-x-auto">
                     <Table
                         headers={headers}
-                        items={workOrderDetails.tableFields}
+                        items={workOrderDetails.scope}
                     >
                     </Table>
                 </div>
