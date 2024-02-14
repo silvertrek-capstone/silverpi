@@ -19,21 +19,14 @@ import dayjs from 'dayjs' // Date calculator
 //  - hovering over row changes val to loading cursor
 
 // dloading var - if loading is true, horizontal loading bar displayed
-export default function Table({ headers, items, mainkey, link, title, loading }) {
+export default function Table({ headers, items, mainkey, link, title, loading, onRowClick }) {
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
-
     const [tableItems, setTableItems] = useState(items);
-    const [isLoading, setIsLoading] = useState(true);
 
+    // loading status indicators depend on passed in parent value
+    const [isLoading, setIsLoading] = useState(loading);   
 
-    // Universal click handler for export to other tables
-    const handleRowClick = (item) => {
-        if (link) {
-            const completeURL = `${link}${item[mainkey]}`;          // build URL
-            console.log(`Row click navigation to: ${completeURL}`); // Log intended navigation in place of route handling for now
-        }
-    };
 
     const handleSort = (colName) => {
         if (sortBy === colName && sortDesc){ // default state
@@ -47,22 +40,24 @@ export default function Table({ headers, items, mainkey, link, title, loading })
         }
     };
 
-    useEffect(() => {
-        if (items) {
-            setTableItems(items);           // Original Sort
-            setIsLoading(false);            // loading var set to false upon page being loaded
-        }
-    }, [items]);                            // loading items dependency in separate use effect
+    useEffect(() => {                               // Update table items when "items" var changes
+        setTableItems(items);
+    }, [items]);                                    
 
-    useEffect(() => {
+    useEffect(() => {                               // Update loading state based on status passed from parent
+        setIsLoading(loading);
+    }, [loading]);
+
+    useEffect(() => {                                           
         if (sortBy) {
             const sortedItems = sortByKey(tableItems, sortBy, sortDesc);
             setTableItems(sortedItems);
-        } else {                            // Sorting not specified, table unsorted
-            setTableItems(items);
+        } else {                                    // Sorting not specified, table unsorted
+            setTableItems(items); 
         }
-    }, [sortBy, sortDesc]);                 // Table sorting dependencies
+    }, [sortBy, sortDesc, items]);                  // Table sorting dependencies
 
+    // Animation time low and ease-in added for dynamic loading effect
     const loadingAnimation = `slideRight 1.5s ease-in-out infinite`;
 
     return (
@@ -78,7 +73,7 @@ export default function Table({ headers, items, mainkey, link, title, loading })
                         <div className="w-full h-2 bg-gray-200 relative overflow-hidden">
                             <div 
                                 className="absolute h-full bg-blue-500 left-0 top-0 w-full"
-                                style={{ animation: 'slideRight 1s ease-in-out infinite' }} // Animation time low and ease-in added for dynamic loading effect
+                                style={{ animation: loadingAnimation }}
                             ></div>
                         </div>
                     ) : (
@@ -99,31 +94,25 @@ export default function Table({ headers, items, mainkey, link, title, loading })
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {tableItems.length > 0 ? (
-                                    tableItems.map((item, i) => (
-                                        <tr
-                                            key={`row-${i}`}
-                                            className="even:bg-gray-50 hover:bg-gray-100 cursor-pointer"
-                                            onClick={() => handleRowClick(item)}
-                                        >
-                                            {headers.map((header, j) => (
-                                                <td
-                                                    className="text-txt whitespace-nowrap py-2 pl-4 pr-3 text-sm"
-                                                    key={`cell-${j}-${item[header.value]}`}
-                                                >
-                                                    {link && header.value === mainkey
-                                                        ? <Link href={`${link}${item[mainkey]}`}>{item[header.value]}</Link>
-                                                        : item[header.value]
-                                                    }
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={headers.length} className="text-center py-4">No data available</td>
+                                {tableItems.map((item, i) => (
+                                    <tr
+                                        key={`row-${i}`}
+                                        className="even:bg-gray-50 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => onRowClick ? onRowClick(item) : {}}
+                                    >
+                                        {headers.map((header, j) => (
+                                            <td
+                                                className="text-txt whitespace-nowrap py-2 pl-4 pr-3 text-sm"
+                                                key={`cell-${j}-${item[header.value]}`}
+                                            >
+                                                {link && header.value === mainkey
+                                                    ? <Link href={`${link}${item[mainkey]}`}>{item[header.value]}</Link>
+                                                    : item[header.value]
+                                                }
+                                            </td>
+                                        ))}
                                     </tr>
-                                )}
+                                ))}
                             </tbody>
                         </table>
                     )}
