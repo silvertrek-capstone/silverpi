@@ -2,43 +2,103 @@ import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
 import { getCustNum } from '@/helpers/usingCustomer'
 
-export async function getActiveWorkOrders() {
+// Get a single work order, in the following format:
+/*
+ {
+    workOrder: Number,
+    workOrderStatus: Number,
+    workOrderDescription: String
+    scope: [
+        {
+            scope: Number
+            scopeDescription: String,
+            scopeEstimatedHours: Float,
+            scopeEstimatedPrice: Float,
+        }
+    ]
+    totalEstimatedHours: Float
+ }
+
+*/
+
+export async function getSingleWorkOrder() {
     try {
         // IMPORTANT, this is how you get the current customer number for the user.
-        const {data: customer, error: custerror} =  await getCustNum();
+        const { data: customer, error: custerror } = await getCustNum();
         if (custerror) {
             throw new Error(custerror)
         }
 
         const query = gql`
-        query($filter: vSMWorkOrderFilterInput){
-            vSMWorkOrder(where: $filter){
+        query($filter: WorkOrderSummaryFilterInput){
+            workOrderSummary(where: $filter){
                 sMCo
                 workOrder
-                custGroup
-                customer
-                description
-                notes
-                wOStatus
+                workOrderDescription
+                workOrderStatus
+                scope
+                scopeDescription
+                scopeEstimatedHours
+                scopeEstimatedPrice
+                readyToBill
+                previouslyBilled
+                billableRemaining
             }
         }`
 
         const variables = {
             filter: {
                 customer: { "eq": customer }, // Customer number
+                sMCo: { "eq": 1 }, // Silvertreks customers.
             }
         }
 
         // Make the request
         const { data, error } = await makeQuery(query, variables)
         if (error) {
-            return {data, error}
+            return { data, error }
         }
 
         // If no error, format data a little to get nice response
-        const tableRows = data.vSMWorkOrder
-        return {data: tableRows, error};
-    } catch(e) {
-        return {data: null, error: e};
+        const tableRows = data.workOrderSummary
+        const formattedWorkOrder = formatData(tableRows);
+        return { data: formattedWorkOrder, error };
+    } catch (e) {
+        return { data: null, error: e };
     }
+}
+
+// The workorder summary table returns duplicate rows for each scope item for a work order, so we need to format into a good object
+// See top of file for what the result of this should be
+function formatData(data) {
+
+    const obj = {
+        workOrder: null,
+        workOrderStatus: null,
+        workOrderDescription: null,
+        totalEstimatedHours: 0,
+        scope: [],
+    };
+    // Loop over data, and set the fields
+    for (let i = 0; i < data.length; i++) {
+        const el = data[i];
+        if (i === 0) { // Set the work order data to the result of the first row.
+            obj.workOrder = el.workOrder;
+            obj.workOrderStatus = el.workOrderStatus;
+            obj.workOrderDescription = el.workOrderDescription;
+        }
+        // Create a scope row
+        const scopeRow = {
+            scope: el.scope,
+            scopeDescription: el.scopeDescription,
+            scopeEstimatedHours: el.scopeEstimatedHours,
+            scopeEstimatedPrice: el.scopeEstimatedPrice,
+        };
+        // Push the scope row to the scope array
+        obj.scope.push(scopeRow);
+
+        // Add the estimated hours to the total estimate
+        totalEstimatedHours += el.scopeEstimatedHours;
+    }
+    return obj; // Return the now filled object.
 }
