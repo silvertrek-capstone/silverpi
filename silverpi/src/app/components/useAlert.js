@@ -23,11 +23,6 @@ const useAlert = (title, content) => {
       handleClose();
     };
   
-    const handleCancel = () => {
-      promise?.resolve(false);
-      handleClose();
-    };
-  
     const AlertDialog = () => (
       <Dialog 
         open={promise !== null} 
