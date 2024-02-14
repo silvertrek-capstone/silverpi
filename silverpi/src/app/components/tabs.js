@@ -1,5 +1,6 @@
 "use client"
 import Select from '@/components/select'
+import { useEffect, useState } from 'react'
 // Tab component, takes several props
 
 /*
@@ -18,6 +19,13 @@ import Select from '@/components/select'
   }
   
   export default function Tabs({value, items, onChange}) {
+    const [tabs, setTabs] = useState(items);
+
+    // Watch the items (tabs) and set tabs when they change
+    useEffect(() => {
+      setTabs(items);
+    }, [items])
+
     return (
       <div>
         <div className="sm:hidden">
@@ -26,7 +34,7 @@ import Select from '@/components/select'
             id="tabs-fallback"
             name="tabs"
             defaultValue={value}
-            items={items}
+            items={tabs}
             onChange={(e) => onChange(e)}
           >
           </Select>
@@ -34,7 +42,7 @@ import Select from '@/components/select'
         <div className="hidden sm:block">
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-              {items.map((tab) => (
+              {tabs.map((tab) => (
                 <a
                   key={tab.text}
                   href="#"
@@ -47,7 +55,7 @@ import Select from '@/components/select'
                   )}
                 >
                   {tab.text}
-                  {tab.count !== null || tab.count !== undefined ? (
+                  {tab.count !== null && tab.count !== undefined ? (
                     <span
                       className='bg-neutral2 text-neutral4 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block'
                     >
