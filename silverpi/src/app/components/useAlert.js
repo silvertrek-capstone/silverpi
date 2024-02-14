@@ -26,7 +26,7 @@ const useAlert = (title, content) => {
     const AlertDialog = () => (
       <Dialog 
         open={promise !== null} 
-        fullWidth={false}
+        fullWidth={true}
         maxWidth="xs">
         
         <DialogTitle className="bg-secondary text-white">
