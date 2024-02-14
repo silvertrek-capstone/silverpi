@@ -1,4 +1,7 @@
+"use client"
+import React, { useState, useEffect } from 'react';
 import Table from "@/app/components/table";
+import {getSingleWorkOrder} from '@/api/workorders/getSingleWorkOrder'
 
 const workOrderDetails = {
     status: 'Open',
@@ -37,8 +40,35 @@ const headers = [
     {text: 'Date', value: 'date'},
 ]
 
-export default function WorkOrderDetail({ params }) {
 
+
+
+export default function WorkOrderDetail({ params }) {
+    // Initialize state for the dynamic parts of workOrderDetails
+    const [workOrderInfo, setWorkOrderInfo] = useState({
+        status: '',
+        dateCreated: '',
+        orderDescription: '',
+        estimationToComplete: '',
+        hoursWorked: '',
+    });
+
+
+    useEffect(() => {
+        const fetchWorkOrderData = async () => {
+            if (params.id) {
+                const data = await getSingleWorkOrder(params.id);
+                setWorkOrderInfo({
+                    status: data.workOrderStatus,
+                    //dateCreated: data.dateCreated,
+                    orderDescription: data.workOrderDescription,
+                    estimationToComplete: data.scope,
+                    hoursWorked: data.scopeEstimatedHours,
+                });
+            }
+        };
+        fetchWorkOrderData();
+    }, [params.id]);
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Work Order #{params.id}</h1>  
@@ -50,10 +80,10 @@ export default function WorkOrderDetail({ params }) {
                             {workOrderDetails.status}
                         </span>
                     </p>
-                    <p><span className="font-semibold">Date Created: </span> {workOrderDetails.dateCreated}</p>
-                    <p><span className="font-semibold">Description: </span> {workOrderDetails.orderDescription}</p>
-                    <p><span className="font-semibold">Estimated Hour(s) to Complete: </span> {workOrderDetails.estimationToComplete} </p>
-                    <p><span className="font-semibold">Hours Worked: </span> {workOrderDetails.hoursWorked} </p>    
+                    <p><span className="font-semibold">Date Created: </span> 1 </p>
+                    <p><span className="font-semibold">Description: </span> {workOrderInfo.orderDescription}</p>
+                    <p><span className="font-semibold">Estimated Hour(s) to Complete: </span> {workOrderInfo.estimationToComplete} </p>
+                    <p><span className="font-semibold">Hours Worked: </span> {workOrderInfo.hoursWorked} </p>    
                 </div>
                 <div className="flex justify-end space-x-4 mb-12">
                     <button
@@ -81,3 +111,4 @@ export default function WorkOrderDetail({ params }) {
         </>
     );
 }
+
