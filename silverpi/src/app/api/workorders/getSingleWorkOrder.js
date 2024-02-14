@@ -1,6 +1,5 @@
 import { gql } from 'graphql-request'
 import { makeQuery } from '@/helpers/graphApi.js'
-import { getCustNum } from '@/helpers/usingCustomer'
 
 // Get a single work order, in the following format:
 /*
@@ -21,14 +20,11 @@ import { getCustNum } from '@/helpers/usingCustomer'
 
 */
 
-export async function getSingleWorkOrder() {
+export async function getSingleWorkOrder(workOrder) {
     try {
-        // IMPORTANT, this is how you get the current customer number for the user.
-        const { data: customer, error: custerror } = await getCustNum();
-        if (custerror) {
-            throw new Error(custerror)
+        if (!workOrder) {
+            throw new Error('Param "workOrder" should have a value');
         }
-
         const query = gql`
         query($filter: WorkOrderSummaryFilterInput){
             workOrderSummary(where: $filter){
@@ -48,8 +44,8 @@ export async function getSingleWorkOrder() {
 
         const variables = {
             filter: {
-                customer: { "eq": customer }, // Customer number
                 sMCo: { "eq": 1 }, // Silvertreks customers.
+                workOrder: { "eq": workOrder }, // The given work order
             }
         }
 
@@ -98,7 +94,7 @@ function formatData(data) {
         obj.scope.push(scopeRow);
 
         // Add the estimated hours to the total estimate
-        totalEstimatedHours += el.scopeEstimatedHours;
+        obj.totalEstimatedHours += el.scopeEstimatedHours;
     }
     return obj; // Return the now filled object.
 }
