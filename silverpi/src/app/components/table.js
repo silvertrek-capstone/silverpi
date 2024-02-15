@@ -22,16 +22,16 @@ import dayjs from 'dayjs' // Date calculator
 export default function Table({ headers, items, mainkey, link, title, loading, onRowClick }) {
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
-    const [tableItems, setTableItems] = useState(items);
-
+    const [tableItems, setTableItems] = useState(items || [])
     // loading status indicators depend on passed in parent value
-    const [isLoading, setIsLoading] = useState(loading);   
+    const [isLoading, setIsLoading] = useState(loading);
 
 
+    // Handles sort
     const handleSort = (colName) => {
-        if (sortBy === colName && sortDesc){ // default state
+        if (sortBy === colName && sortDesc) {
             setSortDesc(false);
-        } else if (sortBy === colName){
+        } else if (sortBy === colName) {
             setSortBy('');
             setSortDesc(true);
         } else {
@@ -40,22 +40,28 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
         }
     };
 
-    useEffect(() => {                               // Update table items when "items" var changes
-        setTableItems(items);
-    }, [items]);                                    
+    // Update table items on change
+    useEffect(() => {
+        if (items !== tableItems) {
+            setTableItems(items)
+        }
+    }, [items]);
 
-    useEffect(() => {                               // Update loading state based on status passed from parent
-        setIsLoading(loading);
+    useEffect(() => {
+        if (isLoading !== loading) {
+            setIsLoading(loading);
+        }
     }, [loading]);
 
-    useEffect(() => {                                           
+    // Watches sortBy, sortDesc, and items. When changed, applies the sort.
+    useEffect(() => {
         if (sortBy) {
             const sortedItems = sortByKey(tableItems, sortBy, sortDesc);
             setTableItems(sortedItems);
-        } else {                                    // Sorting not specified, table unsorted
-            setTableItems(items); 
+        } else {
+            setTableItems(items);
         }
-    }, [sortBy, sortDesc, items]);                  // Table sorting dependencies
+    }, [sortBy, sortDesc, items]);
 
     // Animation time low and ease-in added for dynamic loading effect
     const loadingAnimation = `slideRight 1.5s ease-in-out infinite`;
@@ -71,7 +77,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                     )}
                     {isLoading ? (
                         <div className="w-full h-2 bg-gray-200 relative overflow-hidden">
-                            <div 
+                            <div
                                 className="absolute h-full bg-blue-500 left-0 top-0 w-full"
                                 style={{ animation: loadingAnimation }}
                             ></div>
@@ -87,8 +93,33 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                             className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt cursor-pointer"
                                             onClick={() => handleSort(header.value)}
                                         >
-                                            {header.text}
-                                            {sortBy === header.value && (sortDesc ? <ChevronDownIcon className="h-5 w-5 inline" aria-hidden="true" /> : <ChevronUpIcon className="h-5 w-5 inline" aria-hidden="true" />)}
+                                            <a href='#' onClick={() => { handleSort(header.value) }} className="group inline-flex">
+
+                                                {header.text}
+                                                {
+                                                    (() => {
+                                                        if (sortBy === header.value && sortDesc) {
+                                                            return (
+                                                                <span title="Sort Asc" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                                    <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                                                </span>
+                                                            )
+                                                        } else if (sortBy === header.value) {
+                                                            return (
+                                                                <span title="Clear Sort" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                                    <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
+                                                                </span>
+                                                            )
+                                                        } else {
+                                                            return (
+                                                                <span title="Sort Desc" className="invisible ml-2 flex-none rounded group-hover:visible group-focus:visible">
+                                                                    <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                                                </span>
+                                                            )
+                                                        }
+                                                    })()
+                                                }
+                                            </a>
                                         </th>
                                     ))}
                                 </tr>
@@ -97,8 +128,8 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                 {tableItems.map((item, i) => (
                                     <tr
                                         key={`row-${i}`}
-                                        className="even:bg-gray-50 hover:bg-gray-100 cursor-pointer"
-                                        onClick={() => onRowClick ? onRowClick(item) : {}}
+                                        className={onRowClick ? 'even:bg-gray-50 hover:bg-gray-100 cursor-pointer' : 'even:bg-gray-50'}
+                                        onClick={() => onRowClick ? onRowClick(item[mainkey]) : {}}
                                     >
                                         {headers.map((header, j) => (
                                             <td
