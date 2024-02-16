@@ -15,24 +15,32 @@ import dayjs from 'dayjs' // Date calculator
     link - string that we will append mainKey to to link
 */
 
-export default function Table({ headers, items, mainkey, link, title }) {
+// onClick - pass value of mainkey on click
+//  - hovering over row changes val to loading cursor
+
+// dloading var - if loading is true, horizontal loading bar displayed
+export default function Table({ headers, items, mainkey, link, title, loading, onRowClick }) {
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
-
     const [tableItems, setTableItems] = useState(items || [])
+    // loading status indicators depend on passed in parent value
+    const [isLoading, setIsLoading] = useState(loading);
 
+
+    // Handles sort
     const handleSort = (colName) => {
         if (sortBy === colName && sortDesc) {
-            setSortDesc(false)
+            setSortDesc(false);
         } else if (sortBy === colName) {
-            setSortBy('')
-            setSortDesc(true)
+            setSortBy('');
+            setSortDesc(true);
         } else {
-            setSortBy(colName)
-            setSortDesc(true)
+            setSortBy(colName);
+            setSortDesc(true);
         }
-    }
+    };
 
+    // Update table items on change
     useEffect(() => {
         if (items !== tableItems) {
             setTableItems(items)
@@ -40,94 +48,110 @@ export default function Table({ headers, items, mainkey, link, title }) {
     }, [items]);
 
     useEffect(() => {
-        if (!sortBy && sortDesc) { // default state
-            setTableItems(items) // Original Sort
-        } else {
-            const newSort = sortByKey(tableItems, sortBy, sortDesc)
-            // Set new table items
-            setTableItems(newSort)
+        if (isLoading !== loading) {
+            setIsLoading(loading);
         }
-    }, [sortBy, sortDesc])
+    }, [loading]);
 
+    // Watches sortBy, sortDesc, and items. When changed, applies the sort.
+    useEffect(() => {
+        if (sortBy) {
+            const sortedItems = sortByKey(tableItems, sortBy, sortDesc);
+            setTableItems(sortedItems);
+        } else {
+            setTableItems(items);
+        }
+    }, [sortBy, sortDesc, items]);
+
+    // Animation time low and ease-in added for dynamic loading effect
+    const loadingAnimation = `slideRight 1.5s ease-in-out infinite`;
 
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="overflow-hidden divide-y divide-neutral2">
-                    {
-                        title &&
+                    {title && (
                         <div className='text-txt min-w-full bg-gray-50 py-2 px-2'>
                             <h1>{title}</h1>
                         </div>
-                    }
-                    <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                {headers.map((header, i) => (
-                                    <th
-                                        key={`header-${i}-${header.value}`}
-                                        scope="col"
-                                        className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt "
-                                    >
-                                        <a href='#' onClick={() => { handleSort(header.value) }} className="group inline-flex">
-                                            {header.text}
-                                            {
-                                                (() => {
-                                                    if (sortBy === header.value && sortDesc) {
-                                                        return (
-                                                            <span title="Sort Asc" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
-                                                                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
-                                                            </span>
-                                                        )
-                                                    } else if (sortBy === header.value) {
-                                                        return (
-                                                            <span title="Clear Sort" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
-                                                                <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
-                                                            </span>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <span title="Sort Desc" className="invisible ml-2 flex-none rounded group-hover:visible group-focus:visible">
-                                                                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
-                                                            </span>
-                                                        )
-                                                    }
-                                                })()
-                                            }
-                                        </a>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody className='divide-y divide-gray-200'>
-                            {tableItems.map((item, i) => (
-                                <tr
-                                    key={`row-${i}`}
-                                >
-                                    {headers.map((header, j) => (
-                                        <td
-                                            className="text-txt whitespace-nowrap py-2 pl-4 pr-3 text-sm"
-                                            key={`cell-${j}-${item[header.value]}`}
-
+                    )}
+                    {isLoading ? (
+                        <div className="w-full h-2 bg-gray-200 relative overflow-hidden">
+                            <div
+                                className="absolute h-full bg-blue-500 left-0 top-0 w-full"
+                                style={{ animation: loadingAnimation }}
+                            ></div>
+                        </div>
+                    ) : (
+                        <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    {headers.map((header, i) => (
+                                        <th
+                                            key={`header-${i}-${header.value}`}
+                                            scope="col"
+                                            className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt cursor-pointer"
+                                            onClick={() => handleSort(header.value)}
                                         >
-                                            {link && header.value === mainkey
-                                                ? <Link href={`${link}${item[mainkey]}`} className="font-semibold leading-6 text-primary ">
-                                                    {item[header.value]}
-                                                </Link>
-                                                : item[header.value]
-                                            }
-                                        </td>
+                                            <a href='#' onClick={() => { handleSort(header.value) }} className="group inline-flex">
+
+                                                {header.text}
+                                                {
+                                                    (() => {
+                                                        if (sortBy === header.value && sortDesc) {
+                                                            return (
+                                                                <span title="Sort Asc" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                                    <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                                                </span>
+                                                            )
+                                                        } else if (sortBy === header.value) {
+                                                            return (
+                                                                <span title="Clear Sort" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                                    <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
+                                                                </span>
+                                                            )
+                                                        } else {
+                                                            return (
+                                                                <span title="Sort Desc" className="invisible ml-2 flex-none rounded group-hover:visible group-focus:visible">
+                                                                    <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                                                                </span>
+                                                            )
+                                                        }
+                                                    })()
+                                                }
+                                            </a>
+                                        </th>
                                     ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="divide-y divide-gray-200">
+                                {tableItems.map((item, i) => (
+                                    <tr
+                                        key={`row-${i}`}
+                                        className={onRowClick ? 'even:bg-gray-50 hover:bg-gray-100 cursor-pointer' : 'even:bg-gray-50'}
+                                        onClick={() => onRowClick ? onRowClick(item[mainkey]) : {}}
+                                    >
+                                        {headers.map((header, j) => (
+                                            <td
+                                                className="text-txt whitespace-nowrap py-2 pl-4 pr-3 text-sm"
+                                                key={`cell-${j}-${item[header.value]}`}
+                                            >
+                                                {link && header.value === mainkey
+                                                    ? <Link href={`${link}${item[mainkey]}`}>{item[header.value]}</Link>
+                                                    : item[header.value]
+                                                }
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </div>
-    )
+    );
 }
-
 
 // Takes in an array and a key and returns a sorted array
 // Supports the following sorts:
@@ -154,7 +178,7 @@ function sortByKey(arr, key, desc) {
         const adate = dayjs(aval)
         const bdate = dayjs(bval)
         if (adate.isValid() && bdate.isValid()) {
-            return desc ? bdate - adate : adate - bdate
+            return desc ? bdate.unix() - adate.unix() : adate.unix() - bdate.unix()
         }
 
 
