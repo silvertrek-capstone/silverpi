@@ -19,14 +19,6 @@ export default async function Home({ profile }) {
             
             <div className="grid gap-8 grid-cols-2 my-5">
                 <div className="">
-                    <AlertButton
-                    title="Example Title"
-                    content="Lorem ipsum dolor sit amet"
-                    buttonText="Alert"/>
-                    <ConfirmButton
-                    title="Example Title"
-                    content="Lorem ipsum dolor sit amet"
-                    buttonText="Confirm"/>
                 </div>
 
                 <div className="grid grid-rows-2 grid-flow-col">
