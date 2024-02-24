@@ -10,14 +10,23 @@ export async function POST(request) {
   const cookieStore = cookies()
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
 
-  const response = await supabase.auth.signInWithPassword({
+  const { user, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   })
 
+  //console.log("DEBUG");
 
-
-  return NextResponse.redirect(`${requestUrl.origin}/home`, {
-    status: 301,
-  })
+  if (!error) {                               // Valid Login - direct to home
+    return NextResponse.redirect(`${requestUrl.origin}/home`, {
+      status: 301,
+    });
+  } 
+  else {                                      // Invalid Login - back to login with err status
+    //console.error('Login error:', error);
+    //console.error('Login user:', user);
+    return NextResponse.redirect(`${requestUrl.origin}/login?loginError=true`);
+  }
 }
+
+
