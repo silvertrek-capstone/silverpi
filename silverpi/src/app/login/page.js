@@ -5,6 +5,11 @@ import Link from 'next/link';
 import { EnvelopeIcon } from '@heroicons/react/20/solid';
 import { useState, useEffect } from 'react';
 
+// Imported toast for notifications and container file
+import { toast } from 'react-toastify';
+import CustomToastContainer from 'src/app/components/customtoastcontainer.js'; 
+
+
 export default function Login() {
 
   // Define useState hooks for updating component
@@ -57,85 +62,86 @@ export default function Login() {
       }
     };
 
-  return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="/login2.png"
-            alt="Silver Trek Progress Inquries"
-          />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="/auth/login" method="POST" className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 ">
-                Email address
-              </label>
-              <div className="relative mt-2 rounded-md shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <EnvelopeIcon className="h-5 w-5 text-secondary" aria-hidden="true" />
+    return (
+      <>
+        <CustomToastContainer /> 
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+          <div className="sm:mx-auto sm:w-full sm:max-w-md">
+            <img
+              className="mx-auto h-12 w-auto"
+              src="/login2.png"
+              alt="Company Logo"
+            />
+            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+              Sign in to your account
+            </h2>
+          </div>
+    
+          <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+              <form className="space-y-6" onSubmit={submissionHandle}>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email address
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)} // update email state variable
+                    />
+                  </div>
                 </div>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
-                  placeholder="you@example.com"
-                />
-              </div>
+    
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onKeyUp={keyPressHandle}
+                    />
+                    {capsLockStatus && (                            // Caps Lock indicator here
+                      <p className="mt-2 text-sm text-red-600" id="caps-lock-message">
+                        Caps Lock is on.
+                      </p>
+                    )}
+                  </div>
+                </div>
+    
+                <div>
+                  <button
+                    type="submit"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Sign in
+                  </button>
+                </div>
+              </form>
+    
+              <p className="mt-6 text-center text-sm text-gray-500">
+                Don't have an account?{' '}
+                <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  Sign Up
+                </Link>
+              </p>
             </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                  Password
-                </label>
-                {/* Commenting out below, no forgot password functionality */}
-                {/* <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
-                    </a>
-                  </div> */}
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 
-                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm 
-                font-semibold leading-6 text-neutral1 shadow-sm"
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Don't have an account?{' '}
-            <Link href="/signup" className="font-semibold leading-6 text-secondary hover:text-indigo-500">
-              Sign Up
-            </Link>
-          </p>
+          </div>
         </div>
-      </div>
-    </>
-  )
-}
+      </>
+    );
+                    }  
+  
