@@ -20,7 +20,6 @@ export default function Login() {
     }
   };
 
-
   useEffect(() => {                                                    // useEffect hook for key press
 
     window.addEventListener('keyup', keyPressHandle);                  // Event listener added for keypress function
