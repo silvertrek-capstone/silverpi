@@ -20,6 +20,24 @@ export default function Login() {
     }
   };
 
+
+  useEffect(() => {                                                    // useEffect hook for key press
+
+    window.addEventListener('keyup', keyPressHandle);                  // Event listener added for keypress function
+
+
+    return () => window;  // return window
+  }, []);
+
+    // Handles login credential submissions
+    const submissionHandle = async (event) => {
+      event.preventDefault();                                   // need to define custom behavior, prevent page refresh
+      
+      const formObj = new FormData(event.target);              // define formdata object for email-password pairing
+      
+      const email = formObj.get('email');                      // Acquire email and password fields
+      const password = formObj.get('password');
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
