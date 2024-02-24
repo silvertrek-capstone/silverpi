@@ -37,6 +37,26 @@ export default function Login() {
       const email = formObj.get('email');                      // Acquire email and password fields
       const password = formObj.get('password');
 
+       // Send POST request to endpoint using credentials
+      try { 
+        const response = await fetch('/auth/login', {
+          method: 'POST',
+          body: formObj,
+        });
+
+        if (response.ok) {                                      // response is good
+          window.location.href = '/home';                       // redirect to homepage on success
+        } 
+        else {
+          const error = await response.json();                  // Handle error
+          console.error(error.error);                           // Response
+        }
+      } 
+      catch (error) {                                           // Catch
+        console.error('Incorrect login credentials entered');     // Send custom message
+      }
+    };
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -118,5 +138,4 @@ export default function Login() {
       </div>
     </>
   )
-}
 }
