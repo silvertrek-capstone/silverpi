@@ -1,7 +1,25 @@
-import Link from 'next/link'
-import { EnvelopeIcon } from '@heroicons/react/20/solid'
+// Added Use client parameter to make use of useState and useEffect 
+"use client"              
+
+import Link from 'next/link';
+import { EnvelopeIcon } from '@heroicons/react/20/solid';
+import { useState, useEffect } from 'react';
 
 export default function Login() {
+
+  // Define useState hooks for updating component
+  const [email, setEmail] = useState('');                     // Tracking input fields
+  const [password, setPassword] = useState('');
+  const [capsLockStatus, setCapsStatus] = useState(false);    // caps Lock indicator
+
+  // Handler for key press events
+  const keyPressHandle = (event) => {
+    if (typeof event.getModifierState === 'function') {       // check for existence of getModifier
+      const capsState = event.getModifierState('CapsLock');   // If caps lock is on, set status
+      setCapsStatus(capsState);                               // Status set, message displayed later
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
