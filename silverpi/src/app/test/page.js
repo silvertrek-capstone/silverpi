@@ -1,15 +1,8 @@
 import SignUpForm from '@/components/signupform'
-import { z } from 'zod';
 
-export default function Signup() {
-
+export default function Signup({searchParams}) {
+    const inviteId = searchParams.invite || ''
     return(
-        <div>
-            <SignUpForm />
-        </div>
-    ); 
+        <SignUpForm invite={inviteId}/>
+    )
 }
-
-
-
-
