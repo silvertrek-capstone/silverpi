@@ -1,101 +1,88 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CustomToastContainer from '@/components/customtoastcontainer';
 import { z } from 'zod';
 
 export default function SignUpForm({invite}) {
 
-// current issues
-/*
-    last is styling 
-    check that properly sending to the server
-*/
-    // Do some simple stuff for getting request data
-    const inviteId = invite
+  // Do some simple stuff for getting request data
+  const inviteId = invite
 
-    // zod schema validation
-    const SignUpSchema = z.object({
-        email: z.string().email(),// might mess with later cause s@gm.s wont work but .so does dont know if matters
-        password: z.string().min(10),
-        confirmPassword: z.string(),
-        first: z.string().min(1),
-        last: z.string().min(1)
-    }).refine(data => data.password === data.confirmPassword, {
-        message: "Passwords don't match",
-        path: ['confirmPassword']
-    });
+  // zod object for validation purposes
+  const SignUpZod = z.object({
+    email: z.string().email(), 
+    first: z.string().min(1, {message: "First name: cannot be left empty"}), 
+    last: z.string().min(1, {message: "Last name cannot be left empty"}), 
 
-    const [errors, setErrors] = useState({});
+    password: z.string().min(10, {message: "Password must be at least 10 characters\n"}).refine(password => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email format regex
+      return !emailRegex.test(password);
+    },{
+      message: "Password cannot be in email format",
+      path: ['password']
+    }),
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(e); 
+    repassword: z.string()
+  }).refine(data => data.password === data.repassword, {message: "Passwords don't match", path: ['repassword']});
+
+  // seems to be best to not call directly 
+  const handleSubmit = (e) => {
+    e.preventDefault();// doesnt refresh form 
+    onSubmit(e); 
+  };
+
+  // validates + sends to server 
+  const onSubmit = async (e) => {
+    const formData = {
+      email: e.target['email'].value,
+      password: e.target['password'].value,
+      repassword: e.target['re-password'].value,
+      first: e.target['first-name'].value,
+      last: e.target['last-name'].value,
     };
 
-    const onSubmit = async (e) => {
+    try {
+      SignUpZod.parse(formData);// validating with zod    
 
-        const formData = {
-            email: e.target['email'].value,
-            password: e.target['password'].value,
-            confirmPassword: e.target['re-password'].value,
-            first: e.target['first-name'].value,
-            last: e.target['last-name'].value,
-        };
+      // send to server but first format before sending as event object is differnt from 
+      // what server send on submit i believe this is correct if not turn to json and send to server
+      const formData_e = new FormData(e.target); 
+      // const response = await fetch('/auth/sign-up', {
+      //   method: 'POST',
+      //   body: formData_e
+      // });
 
-        try {
+      toast.success("Form submission successfull");
+    } catch (error) {
+      // might change to be multiple toast notifactions + some issues with newline handling
+      var errorMessages = "";
+      error.errors.forEach(err => {
+          errorMessages += err.message + "\n";
+      });
+      toast.error(errorMessages);      
+    }
+  }; 
 
-
-            SignUpSchema.parse(formData);// validating with zod
-
-            // check supabase just like before but only after validating
-            const formData_e = new FormData(e.target); 
-            const formDataObject = {};
-            for (let [key, value] of formData_e.entries()) {
-                formDataObject[key] = value;
-            }
-            // const response = await fetch('/auth/sign-up', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(formDataObject)
-            // });
-            
-            // console.log('Form submitted successfully!' +  JSON.stringify(formDataObject, null, 2));
-            toast.success('Form submitted successfully!');
-        } catch (error) {
-            const errorMessages = {};
-            error.errors.forEach(err => {
-                errorMessages[err.path[0]] = err.message;
-            });
-            setErrors(errorMessages);
-            // console.log('Form errors:\n', JSON.stringify(errorMessages, null, 2));
-            toast.error(JSON.stringify(errorMessages, null, 2) ); // fix later to look prettier ig or seperate msg idk
-
+  // autofill causes an issue as well it seems impossibel to capture capslock state on load will investigate
+  useEffect(() => {
+    const handleCapsLockDetection = () => {
+      document.addEventListener('keyup', function(event) {
+        const capsLockOn = event.getModifierState && event.getModifierState('CapsLock');
+        const capslockWarningElement = document.getElementById("capslock-msg");
+        if (capsLockOn) {
+          capslockWarningElement.style.display = 'block';
+        } 
+        else {
+          capslockWarningElement.style.display = 'none';
         }
-    }; 
+      });
+    };
 
-
-    // capslock detection could be made into a component might be helpful due to autofill issues with "keyup"
-    useEffect(() => {
-        const handleCapsLockDetection = (warningId) => {
-            // Attach event listener to the document
-            document.addEventListener('keypress', function(event) {
-                const capsLockOn = event.getModifierState('CapsLock');
-                const warningElement = document.getElementById(warningId);
-                if (capsLockOn) {
-                   warningElement.style.display = 'block';
-                } else {
-                   warningElement.style.display = 'none';
-                }
-            });
-        };
-
-        const warningMsgId = "capslock-msg";
-        handleCapsLockDetection( warningMsgId);
-    }, []);// to make func execute after dom loads
-
+    // call on after load 
+    handleCapsLockDetection();
+  }, []);// [] is to make func execute after dom loads
 
   return (
     <>
@@ -234,8 +221,7 @@ export default function SignUpForm({invite}) {
   
           </div>
         </div>
-        <ToastContainer/>
-        <></>
+        <CustomToastContainer/>
       </>
   )
 }
