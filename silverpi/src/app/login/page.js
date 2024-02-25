@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { EnvelopeIcon } from '@heroicons/react/20/solid';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Imported toast for notifications and container file
 import { toast } from 'react-toastify';
@@ -15,6 +16,7 @@ export default function Login() {
   const [email, setEmail] = useState('');                     // Tracking input fields
   const [password, setPassword] = useState('');
   const [capsLockStatus, setCapsStatus] = useState(false);    // caps Lock indicator
+  const router = useRouter();                                 // next router
 
   // Handler for key press events
   const keyPressHandle = (event) => {
@@ -27,7 +29,7 @@ export default function Login() {
 
   useEffect(() => {                                           // useEffect hook for key press
 
-    window.addEventListener('keyup', keyPressHandle);            // Event listener added for keypress function
+    window.addEventListener('keyup', keyPressHandle);         // Event listener added for keypress function
 
 
     return () => window.removeEventListener('keyup', keyPressHandle);  // cleanup after mounting
@@ -37,7 +39,7 @@ export default function Login() {
   const submissionHandle = async (event) => {
     event.preventDefault();                                   // need to define custom behavior, prevent page refresh
     
-    const formObj = new FormData(event.target);              // define formdata object for email-password pairing
+    const formObj = new FormData(event.target);               // define formdata object for email-password pairing
     
     const email = formObj.get('email');                      // Acquire email and password fields
     const password = formObj.get('password');
@@ -50,7 +52,7 @@ export default function Login() {
       });
 
       if (response.ok) {                                      // response is good
-        window.location.href = '/home';                       // redirect to homepage on success
+          router.push('/home');                               // redirect to homepage on success
       } 
       else {
         const error = await response.json();                  // Send error response and display toast message

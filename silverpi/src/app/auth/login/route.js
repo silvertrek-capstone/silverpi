@@ -25,7 +25,7 @@ export async function POST(request) {
   else {                                      // Invalid Login - back to login with err status
     //console.error('Login error:', error);
     //console.error('Login user:', user);
-    return NextResponse.redirect(`${requestUrl.origin}/login?loginError=true`);
+    return NextResponse.redirect(`${requestUrl.origin}/login`);
   }
 }
 
