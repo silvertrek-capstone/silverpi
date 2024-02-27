@@ -13,10 +13,10 @@ export default function SignUpForm({invite}) {
   // zod object for validation purposes
   const SignUpZod = z.object({
     email: z.string().email(), 
-    first: z.string().min(1, {message: "First name: cannot be left empty"}), 
-    last: z.string().min(1, {message: "Last name cannot be left empty"}), 
+    first: z.string().min(1, {message: "First name: cannot be empty"}), 
+    last: z.string().min(1, {message: "Last name cannot be empty"}), 
 
-    password: z.string().min(10, {message: "Password must be at least 10 characters\n"}).refine(password => {
+    password: z.string().min(2, {message: "Password must be at least 10 characters"}).refine(password => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email format regex
       return !emailRegex.test(password);
     },{
@@ -43,27 +43,39 @@ export default function SignUpForm({invite}) {
       last: e.target['last-name'].value,
     };
 
+    // validate form with zod
     try {
       SignUpZod.parse(formData);// validating with zod    
 
-      // send to server but first format before sending as event object is differnt from 
-      // what server send on submit i believe this is correct if not turn to json and send to server
-      const formData_e = new FormData(e.target); 
-      // const response = await fetch('/auth/sign-up', {
-      //   method: 'POST',
-      //   body: formData_e
-      // });
-
-      toast.success("Form submission successfull");
-    } catch (error) {
-      // might change to be multiple toast notifactions + some issues with newline handling
-      var errorMessages = "";
-      error.errors.forEach(err => {
-          errorMessages += err.message + "\n";
-      });
-      toast.error(errorMessages);      
     }
-  }; 
+    catch (error) {
+      error.errors.forEach(err => {
+          toast.error(err.message);
+      });
+      return; 
+    }
+
+    // then send to server
+    try{
+        const formData_e = new FormData(e.target); 
+        const response = await fetch('/auth/sign-up', {
+          method: 'POST',
+          body: formData_e
+        });
+
+        if (!response.ok) {         
+          console.log("fine");                              
+          // router.push('/home');                               
+        } 
+        else {
+          const error = await response.json();                 
+          toast.error(error.error);                            
+        }
+    } 
+    catch (error) {                                           
+      toast.error('Sign Up Failed');    
+    }
+  };
 
   // autofill causes an issue as well it seems impossibel to capture capslock state on load will investigate
   useEffect(() => {
