@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getActiveWorkOrders } from "@/api/workorders/getActiveWorkOrders.js"
 
 export default async function Home({ profile }) {
+
     const {data, error} = await getActiveWorkOrders()
     const wos = data || [];
     const woHeaders = [
@@ -11,12 +12,14 @@ export default async function Home({ profile }) {
         { text: "Description", value: "description" }
     ]
 
+
+
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
-            
             <div className="grid gap-8 grid-cols-2 my-5">
                 <div>
+        
                 </div>
 
                 <div className="grid grid-rows-2 grid-flow-col">
