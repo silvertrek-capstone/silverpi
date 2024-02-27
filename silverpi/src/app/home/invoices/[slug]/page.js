@@ -27,6 +27,7 @@ const invoiceDetails = {
       unitPrice: 1000.0,
       total: 1000.0
     },
+    
     // More entries here
   ],
 };
