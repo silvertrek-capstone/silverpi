@@ -1,8 +1,6 @@
 import Table from "@/components/table"
 import Link from 'next/link';
 import { getActiveWorkOrders } from "@/api/workorders/getActiveWorkOrders.js"
-import ConfirmButton from "@/app/components/confirmButton"
-import AlertButton from "@/app/components/alertButton"
 
 export default async function Home({ profile }) {
     const {data, error} = await getActiveWorkOrders()
@@ -18,7 +16,7 @@ export default async function Home({ profile }) {
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
             
             <div className="grid gap-8 grid-cols-2 my-5">
-                <div className="">
+                <div>
                 </div>
 
                 <div className="grid grid-rows-2 grid-flow-col">
