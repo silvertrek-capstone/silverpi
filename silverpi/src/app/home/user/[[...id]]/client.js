@@ -3,6 +3,7 @@ import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import TextField from '@/components/textfield';
 import Select from '@/components/select';
 import Table from '@/components/table';
+import Autocomplete from '@/components/autocomplete';
 import { useState } from 'react';
 
 const headers = [
@@ -75,23 +76,40 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                 {roleId === 1 &&
                     <div className="border-b border-gray-900/10 pb-12 pt-6">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Admin Only</h2>
-                        <div className="sm:col-span-4 mt-3 w-1/4">
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                Role
-                            </label>
-                            <div className="mt-2">
-                                <Select
-                                    value={role}
-                                    items={roles}
-                                    onChange={(e) => setRole(e)}
-                                />
+                        <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="sm:col-span-3">
+                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Role
+                                </label>
+                                <div className="mt-2">
+                                    <Select
+                                        value={role}
+                                        items={roles}
+                                        onChange={(e) => setRole(e)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="sm:col-span-3">
+                                <label htmlFor="table" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Add Customer
+                                </label>
+                                <div className='mt-2'>
+                                    <Autocomplete
+                                        items={allCustomers}
+
+                                    />
+                                </div>
                             </div>
                         </div>
-                        <Table
-                            headers={headers}
-                            items={customerRows}
-                            title="Customers for user"
-                        />
+
+                        <div className='mt-4 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg'>
+                            <Table
+                                id="table"
+                                headers={headers}
+                                items={customerRows}
+                            />
+                        </div>
 
                     </div>
                 }

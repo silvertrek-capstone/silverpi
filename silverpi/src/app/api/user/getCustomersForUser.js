@@ -77,7 +77,7 @@ export async function getCustomersForUser(user_id) {
         const tableRows = data.bARCM;
 
         // Join the tableRows with the customer_to_user rows.
-        const joined = leftJoin(data, tableRows || [], 'cust_num', 'customer')
+        const joined = leftJoin(customers, tableRows || [], 'cust_num', 'customer')
 
         // Sort the rows by the "using" column, so its always first
         joined.sort((a, b) => {

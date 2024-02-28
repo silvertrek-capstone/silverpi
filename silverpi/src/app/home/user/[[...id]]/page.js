@@ -85,7 +85,14 @@ async function handleGetAllCustomers() {
             errorMsg: 'Failed to get all customers'
         };
     }
-    return {data, error};
+    const customers = data.map((e) => {
+        return {
+            text: `${e.customer} - ${e.name}`,
+            value: e.customer,
+            ...e,
+        }
+    })
+    return {data: customers, error};
 }
 
 async function handleGetAllRoles() {
