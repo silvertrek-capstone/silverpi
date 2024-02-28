@@ -20,6 +20,8 @@ export default async function AdminPanel() {
           headers={headers}
           items={pendingUsers}
           title="Pending Users"
+          mainkey='id'
+          link="/home/user/"
         >
 
         </Table>
@@ -29,6 +31,8 @@ export default async function AdminPanel() {
           headers={headers}
           items={activeUsers}
           title="Active Users"
+          mainkey='id'
+          link="/home/user/"
         >
 
         </Table>
