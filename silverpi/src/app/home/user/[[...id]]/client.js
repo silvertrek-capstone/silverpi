@@ -1,15 +1,24 @@
 "use client"
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
-import TextField from '@/app/components/textfield';
+import TextField from '@/components/textfield';
+import Select from '@/components/select';
+import Table from '@/components/table';
 import { useState } from 'react';
+
+const headers = [
+    { text: 'Customer #', value: 'customer' },
+    { text: 'Name', value: 'name' },
+];
 
 // Note, roleId passed may differ from the role_id in the profile info, if you are viewing someone elses profile
 // Only possible if you are an admin.
-export default function ClientUserPage({ profile, roleId, roles, getCustomers, setProfile,  }) {
+export default function ClientUserPage({ profile, roleId, roles, customers, allCustomers, getCustomers, setProfile, }) {
     // Create all the values that the changable fields have.
     const { first_name, last_name, email, role_id } = profile;
     const [first, setFirst] = useState(first_name);
     const [last, setLast] = useState(last_name)
+    const [role, setRole] = useState(role_id);
+    const [customerRows, setCustomerRows] = useState(customers || []);
 
     return (
         <>
@@ -66,6 +75,23 @@ export default function ClientUserPage({ profile, roleId, roles, getCustomers, s
                 {roleId === 1 &&
                     <div className="border-b border-gray-900/10 pb-12 pt-6">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Admin Only</h2>
+                        <div className="sm:col-span-4 mt-3 w-1/4">
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                Role
+                            </label>
+                            <div className="mt-2">
+                                <Select
+                                    value={role}
+                                    items={roles}
+                                    onChange={(e) => setRole(e)}
+                                />
+                            </div>
+                        </div>
+                        <Table
+                            headers={headers}
+                            items={customerRows}
+                            title="Customers for user"
+                        />
 
                     </div>
                 }
