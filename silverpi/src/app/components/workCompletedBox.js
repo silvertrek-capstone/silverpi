@@ -9,25 +9,29 @@ function CompletedCardList(woCompletedList) {
     woCompletedList = woCompletedList || []
     // have to take out the actual list since we are being returned an object with a woCompletedList value that points to the list
     woCompletedList = woCompletedList.woCompletedList.slice(0, 5)
+
     console.log(woCompletedList)
     if(Array.isArray(woCompletedList)) {
         console.log("YEP, IT'S AN ARRAY")
     } else {
         console.log("NOPE, NOT AN ARRAY")
     }
+    let arr = []
+    {woCompletedList.map((woComp, index) =>(
+            arr.push(
+                <WorkCompletedCard 
+                    title="title"
+                    description="description"
+                    key={index}
+                />
+            )
+        )
+    )}
+    console.log("hello")
 
     return(
         <div>
-            {woCompletedList.map((woComp, index) =>(
-                    <>
-                        <WorkCompletedCard 
-                            title = "Hello"
-                            description = "description lorem ipsum dolor sit emet"
-                            key={index}
-                        />
-                    </>  
-                )
-            )}
+            {arr}
         </div>
     )
 }
