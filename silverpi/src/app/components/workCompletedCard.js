@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function WorkCompletedCard(title, description) {
+export default function WorkCompletedCard({title, description}) {
   return <>
         <div className="border-double border-2 border-neutral2 hover:border-secondary">
             <h1 className="text-neutral4 px-3 py-2">{title}</h1>
