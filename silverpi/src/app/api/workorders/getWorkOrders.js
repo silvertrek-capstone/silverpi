@@ -37,6 +37,7 @@ export async function getWorkOrders() {
         if (error) {
             return {data, error};
         }
+        
         // If no error, format the data a bit to return just the rows
         const tableRows = data.vSMWorkOrder;
         return {data: tableRows, error};

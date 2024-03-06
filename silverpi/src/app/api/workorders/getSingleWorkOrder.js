@@ -49,8 +49,10 @@ export async function getSingleWorkOrder(workOrder) {
             }
         }
 
-        // Make the request
+        // Make the request\
         const { data, error } = await makeQuery(query, variables)
+        
+
         if (error) {
             return { data, error }
         }
