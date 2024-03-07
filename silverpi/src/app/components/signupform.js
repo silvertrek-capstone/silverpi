@@ -4,6 +4,7 @@ import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomToastContainer from '@/components/customtoastcontainer';
 import { z } from 'zod';
+import { stringify } from 'postcss';
 
 export default function SignUpForm({invite}) {
 
@@ -28,13 +29,11 @@ export default function SignUpForm({invite}) {
   }).refine(data => data.password === data.repassword, {message: "Passwords don't match", path: ['repassword']});
 
   // seems to be best to not call directly 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();// doesnt refresh form 
-    onSubmit(e); 
-  };
 
-  // validates + sends to server 
-  const onSubmit = async (e) => {
+    // validate on client side with zod 
+    // assuming supabase catches other errors such as injections
     const formData = {
       email: e.target['email'].value,
       password: e.target['password'].value,
@@ -43,37 +42,55 @@ export default function SignUpForm({invite}) {
       last: e.target['last-name'].value,
     };
 
-    // validate form with zod
     try {
-      SignUpZod.parse(formData);// validating with zod    
-
+      SignUpZod.parse(formData);    // validating with zod    
     }
     catch (error) {
       error.errors.forEach(err => {
           toast.error(err.message);
       });
-      return; 
+      return;                       // if failed return 
     }
+    
+    // try to submit form to server
+    const submission = await onSubmit(e);
+  };
 
-    // then send to server
+  // sends to server 
+  const onSubmit = async (e) => {
     try{
         const formData_e = new FormData(e.target); 
         const response = await fetch('/auth/sign-up', {
           method: 'POST',
           body: formData_e
         });
+        
+        const data = await response.json()
 
-        if (!response.ok) {         
-          console.log("fine");                              
-          // router.push('/home');                               
-        } 
-        else {
-          const error = await response.json();                 
-          toast.error(error.error);                            
+        // console.log(response)
+        if (response.ok){
+          // console.log("successfully signed up"); 
+          toast.success("Successfully signed up"); 
+        }
+        else{
+          console.log(data);
+          if(response.status == 400){
+            throw new Error(data.error);
+          }
+          else if(response.status == 404){  
+            throw new Error("Error: 404 Not Found");
+          }
+          else if(response.status == 422){
+            throw new Error(data.error);
+          }
+          else{
+            throw new Error("Internal server error");
+          }
         }
     } 
-    catch (error) {                                           
-      toast.error('Sign Up Failed');    
+    catch (error) {  
+      // console.error(error.message);
+      toast.error(error.message); 
     }
   };
 

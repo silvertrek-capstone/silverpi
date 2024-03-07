@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 
 
 // TODO: break up into functions
-export async function POST(request) {
+export async function POST(request, res) {
   const requestUrl = new URL(request.url)
   const formData = await request.formData()
   const cookieStore = cookies()
@@ -21,7 +21,8 @@ export async function POST(request) {
   }
   // First, check that password and rePassword match
   if (signupData.password !== signupData.rePassword) {
-    return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
+    return NextResponse.json({ error: 'Passwords do not match' }, { status: 301 })
+    // return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
   }
 
 
@@ -36,8 +37,9 @@ export async function POST(request) {
 
   // Next, check that there was not an error
   if (response.error !== null) {
-    console.log('error1', response.error)
-    return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
+    console.log('error1', response);
+    return NextResponse.json({ error: response.error.message }, { status: response.error.status })
+    // return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
   }
 
   const userData = response.data.user // Data about the user, id, email, etc.
@@ -53,8 +55,9 @@ export async function POST(request) {
       console.log(response2)
       // If error, quit.
       if (response2.error) {
-        console.log('error2', response2.error)
-        return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
+        console.log('error2', response2.error) 
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: response2.error.status })
+        // return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
       }
       if (response2.data.length) {
         signupData.custNum = response2.data[0].cust_num;
@@ -78,7 +81,8 @@ export async function POST(request) {
 
   if (response3.error) {
     console.log('error3', response3.error)
-    return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: response3.error.status })
+    // return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
   }
 
   return NextResponse.redirect(`${requestUrl.origin}/home`, {
