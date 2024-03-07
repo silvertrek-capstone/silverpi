@@ -14,8 +14,10 @@ function CompletedCardList(woCompletedList) {
     {woCompletedList.map((woComp, index) =>(
             arr.push(
                 <WorkCompletedCard 
-                    title={woComp.date}
-                    description="description"
+                    title={"Example Title"}
+                    status={woComp.status}
+                    date={`${woComp.date.slice(0, woComp.date.indexOf('T'))}`}
+                    description={woComp.description}
                     key={index}
                 />
             )
@@ -35,7 +37,7 @@ export default function WorkCompletedBox(woCompletedList) {
   woCompletedList = woCompletedList.woCompletedList
 
   return <>
-        <div className="border-double border-2 border-neutral2 hover:border-secondary">
+        <div className="pr-20">
             <CompletedCardList woCompletedList={woCompletedList} />
         </div>
   </>
