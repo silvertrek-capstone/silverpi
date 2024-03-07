@@ -18,6 +18,7 @@ function CompletedCardList(woCompletedList) {
                     status={woComp.status}
                     date={`${woComp.date.slice(0, woComp.date.indexOf('T'))}`}
                     description={woComp.description}
+                    wo={woComp.workOrder}
                     key={index}
                 />
             )
@@ -37,7 +38,7 @@ export default function WorkCompletedBox(woCompletedList) {
   woCompletedList = woCompletedList.woCompletedList
 
   return <>
-        <div className="pr-20">
+        <div className="lg:pr-20 md:pr-8">
             <CompletedCardList woCompletedList={woCompletedList} />
         </div>
   </>
