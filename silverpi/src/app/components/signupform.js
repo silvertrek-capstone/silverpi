@@ -4,11 +4,12 @@ import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomToastContainer from '@/components/customtoastcontainer';
 import { z } from 'zod';
-import { stringify } from 'postcss';
+import { useRouter } from 'next/navigation'
 
 export default function SignUpForm({invite}) {
 
   // Do some simple stuff for getting request data
+  const router = useRouter()
   const inviteId = invite
 
   // zod object for validation purposes
@@ -17,7 +18,7 @@ export default function SignUpForm({invite}) {
     first: z.string().min(1, {message: "First name: cannot be empty"}), 
     last: z.string().min(1, {message: "Last name cannot be empty"}), 
 
-    password: z.string().min(2, {message: "Password must be at least 10 characters"}).refine(password => {
+    password: z.string().min(10, {message: "Password must be at least 10 characters"}).refine(password => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email format regex
       return !emailRegex.test(password);
     },{
@@ -65,14 +66,13 @@ export default function SignUpForm({invite}) {
           body: formData_e
         });
         
-        const data = await response.json()
-
-        // console.log(response)
-        if (response.ok){
-          // console.log("successfully signed up"); 
-          toast.success("Successfully signed up"); 
+        if (response.ok){               // check response if successful
+          // toast.success("Successfully signed up"); 
+          router.push('/home');    
         }
         else{
+          const data = await response.json()  // else get info(data) about error and notify user
+
           console.log(data);
           if(response.status == 400){
             throw new Error(data.error);
@@ -89,7 +89,6 @@ export default function SignUpForm({invite}) {
         }
     } 
     catch (error) {  
-      // console.error(error.message);
       toast.error(error.message); 
     }
   };
@@ -236,7 +235,7 @@ export default function SignUpForm({invite}) {
             </div>
 
             <div>
-                <small id= "capslock-msg" className='hidden'> CapsLock is on</small>
+                <small id= "capslock-msg" className='hidden mt-2 text-sm text-red-600'> Caps Lock is on.</small>
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm 

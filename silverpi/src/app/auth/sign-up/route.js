@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 
 
 // TODO: break up into functions
-export async function POST(request, res) {
+export async function POST(request) {
   const requestUrl = new URL(request.url)
   const formData = await request.formData()
   const cookieStore = cookies()
