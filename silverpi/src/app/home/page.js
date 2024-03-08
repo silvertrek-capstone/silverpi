@@ -34,13 +34,12 @@ export default async function Home({ profile }) {
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
             <div className="grid gap-8 grid-cols-2 my-5">
-                <div>
+                <div className="row-span-2">
                     <WorkCompletedBox
                         woCompletedList={completeWos} />
-                    {/* <pre>{JSON.stringify(wosComp, null, 2)}</pre> */}
                 </div>
 
-                <div className="grid grid-rows-2 grid-flow-col">
+                <div className="grid grid-rows-2 grid-flow-col mt-11">
                     <div>
                         <Table
                             headers={woHeaders}
@@ -51,7 +50,7 @@ export default async function Home({ profile }) {
                         >
 
                         </Table>
-                        <Link href="/home/workorders" className="py-2 float-right font-semibold leading-6 text-primary hover:text-indigo-500">
+                        <Link href="/home/workorders" className="py-2 float-right font-bold leading-6 text-primary hover:underline">
                             see more
                         </Link>
                     </div> {/*End of Tables  Workorders*/}
@@ -65,7 +64,7 @@ export default async function Home({ profile }) {
                         >
 
                         </Table>
-                        <Link href="/home/Invoices" className="py-2 float-right font-semibold leading-6 text-primary hover:text-indigo-500">
+                        <Link href="/home/Invoices" className="py-2 float-right font-bold leading-6 text-primary hover:underline">
                             see more
                         </Link>
                     </div>
