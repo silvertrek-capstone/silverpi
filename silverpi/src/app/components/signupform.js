@@ -228,7 +228,7 @@ export default function SignUpForm({invite}) {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-neutral1 shadow-sm ring-1 ring-inset ring-gray-300 
+                  className="block w-full rounded-md border-0 py-1.5 text-txt shadow-sm ring-1 ring-inset ring-gray-300 
                   focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
                 />
               </div>
