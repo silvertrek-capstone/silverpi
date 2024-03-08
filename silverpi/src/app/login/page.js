@@ -93,7 +93,7 @@ export default function Login() {
                     type="email"
                     autoComplete="email"
                     required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} // update email state variable
                   />
@@ -111,7 +111,7 @@ export default function Login() {
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyUp={keyPressHandle}
@@ -136,7 +136,7 @@ export default function Login() {
   
             <p className="mt-6 text-center text-sm text-gray-500">
               Don't have an account?{' '}
-              <Link href="/signup" className="font-semibold leading-6 text-secondary hover:text-indigo-500">
+              <Link href="/signup" className="font-semibold leading-6 text-secondary">
                 Sign Up
               </Link>
             </p>
