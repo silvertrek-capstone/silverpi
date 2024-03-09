@@ -5,10 +5,11 @@ import { getCustNum } from '@/helpers/usingCustomer'
 export async function getJustWorkorders() {
     try {
         // IMPORTANT, this is how you get the current customer number for the user.
-        // const {data: customer, error: custerror} =  await getCustNum();
-        // if (custerror) {
-        //     throw new Error(custerror)
-        // }
+        const {data: customer, error: custerror} =  await getCustNum();
+        if (custerror) {
+            console.log("bruh")
+            throw new Error(custerror)
+        }
 
         const query = gql`
         query($filter: vSMWorkOrderFilterInput){
@@ -19,6 +20,7 @@ export async function getJustWorkorders() {
 
         const variables = {
             filter: {
+                customer: { "eq": customer },
                 sMCo: { "eq": 1 },
                 // customer: { "eq": customer }, // Customer number
                 custGroup: {

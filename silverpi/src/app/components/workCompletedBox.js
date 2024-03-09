@@ -34,7 +34,7 @@ function CompletedCardList(woCompletedList) {
             arr.push(
                 <WorkCompletedCard 
                     title={"Example Title"}
-                    status={woComp.status}
+                    // status={woComp.status}
                     date={`${woComp.date.slice(0, woComp.date.indexOf('T'))}`}
                     description={woComp.description}
                     wo={woComp.workOrder}
@@ -45,20 +45,22 @@ function CompletedCardList(woCompletedList) {
     )}
 
     return(
-        <>  
-            <div className="flex flex-row items-end">
-                <h1 className="pb-2 text-3xl text-neutral3">Recent Completed Work</h1>
-                <div className="ml-auto">
-                    <button onClick={handlePrev} disabled={startIndex === 0} className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
-                        <ArrowLeftIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ArrowLeftIcon>
-                    </button>  
-                    <button onClick={handleNext} disabled={endIndex >= woCompletedList.woCompletedList.length}className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
-                        <ArrowRightIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ArrowRightIcon>
-                    </button>  
-                </div>  
-            </div>
-            <div>
-                {arr}
+        <> 
+            <div className="border border-neutral2 p-5">
+                <div className="flex flex-row items-end">
+                    <h1 className="pb-2 text-3xl text-neutral3">Recent Completed Work</h1>
+                    <div className="ml-auto">
+                        <button onClick={handlePrev} disabled={startIndex === 0} className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
+                            <ArrowLeftIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ArrowLeftIcon>
+                        </button>  
+                        <button onClick={handleNext} disabled={endIndex >= woCompletedList.woCompletedList.length}className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
+                            <ArrowRightIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ArrowRightIcon>
+                        </button>  
+                    </div>  
+                </div>
+                <div>
+                    {arr}
+                </div>
             </div>
         </>
     )
@@ -68,10 +70,22 @@ export default function WorkCompletedBox(woCompletedList) {
   woCompletedList = woCompletedList || []
   // have to take out the actual list since we are being returned an object with a woCompletedList value that points to the list
   woCompletedList = woCompletedList.woCompletedList
+  
 
-  return <>
+  return (
+    <>
+      {woCompletedList.length === 0 ? (
         <div className="lg:pr-20 md:pr-8">
-            <CompletedCardList woCompletedList={woCompletedList} />
+            <div className="rounded-md flex border border-neutral2 bg-neutral2 bg-opacity-5 justify-center">
+                <h1 className="text-neutral3 text-xl m-10">No recent work completed data found!</h1>
+            </div>
         </div>
-  </>
+        
+      ) : (
+        <div className="lg:pr-20 md:pr-8">
+          <CompletedCardList woCompletedList={woCompletedList} />
+        </div>
+      )}
+    </>
+  );
 }

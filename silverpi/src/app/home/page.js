@@ -33,13 +33,13 @@ export default async function Home({ profile }) {
     return (
         <>
             <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
-            <div className="grid gap-8 grid-cols-2 my-5">
+            <div className="grid gap-8 grid-cols-2">
                 <div className="row-span-2">
                     <WorkCompletedBox
                         woCompletedList={completeWos} />
                 </div>
 
-                <div className="grid grid-rows-2 grid-flow-col mt-11">
+                <div className="grid grid-rows-2 grid-flow-col mt-1">
                     <div>
                         <Table
                             headers={woHeaders}
