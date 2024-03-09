@@ -3,6 +3,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export default function WorkCompletedCard({title, description, date, status, wo}) {
+  // Split the date string into an array of year, month, and day components
+  const [year, month, day] = date.split('-');
+
   return <>
 
         <div className="rounded-md border-double border border-neutral2 hover:border-secondary mb-2 bg-neutral2 bg-opacity-5">
@@ -11,7 +14,7 @@ export default function WorkCompletedCard({title, description, date, status, wo}
               <Link href={`/home/workorders/${wo}`} className="text-primary font-bold hover:underline">
                 {wo}
               </Link>
-              <span className="text-neutral3 pl-10">{date}</span>
+              <span className="text-neutral3 pl-10">{`${month}/${day}/${year}`}</span>
             </h1> 
             <p className="text-neutral3 px-3 pb-2">{description}</p>
         </div>

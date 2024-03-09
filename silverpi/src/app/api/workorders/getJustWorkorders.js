@@ -7,7 +7,6 @@ export async function getJustWorkorders() {
         // IMPORTANT, this is how you get the current customer number for the user.
         const {data: customer, error: custerror} =  await getCustNum();
         if (custerror) {
-            console.log("bruh")
             throw new Error(custerror)
         }
 
@@ -20,7 +19,8 @@ export async function getJustWorkorders() {
 
         const variables = {
             filter: {
-                customer: { "eq": customer },
+                customer: { "eq": 10044 },
+                // using customer 10044 is good if you want an example with lots of workorders
                 sMCo: { "eq": 1 },
                 // customer: { "eq": customer }, // Customer number
                 custGroup: {

@@ -10,15 +10,18 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline"
 function CompletedCardList(woCompletedList) {
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(5);
+    const [page, setPage] = useState(1);
 
     const handleNext = () => {
         setStartIndex((prevStartIndex) => prevStartIndex + 5);
         setEndIndex((prevEndIndex) => prevEndIndex + 5);
+        setPage((prevPage) => prevPage + 1);
     };
     
     const handlePrev = () => {
             setStartIndex((prevStartIndex) => prevStartIndex - 5);
             setEndIndex((prevEndIndex) => prevEndIndex - 5);
+            setPage((prevPage) => prevPage - 1);
     };
 
     woCompletedList = woCompletedList || []
@@ -28,6 +31,7 @@ function CompletedCardList(woCompletedList) {
     // }
 
     let slicedList = woCompletedList.woCompletedList.slice(startIndex, endIndex)
+    const numPages = parseInt(woCompletedList.woCompletedList.length/5) +1
 
     let arr = []
     {slicedList.map((woComp, index) =>(
@@ -48,7 +52,7 @@ function CompletedCardList(woCompletedList) {
         <> 
             <div className="border border-neutral2 p-5">
                 <div className="flex flex-row items-end">
-                    <h1 className="pb-2 text-3xl text-neutral3">Recent Completed Work</h1>
+                    <h1 className="pb-2 lg:text-2xl md:text-2xl sm:text-xl text-neutral3">Recent Completed Work</h1>
                     <div className="ml-auto">
                         <button onClick={handlePrev} disabled={startIndex === 0} className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
                             <ArrowLeftIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ArrowLeftIcon>
@@ -60,6 +64,9 @@ function CompletedCardList(woCompletedList) {
                 </div>
                 <div>
                     {arr}
+                </div>
+                <div className="flex flex-row justify-center">
+                    <h3 className="justify-center">{`page ${page} of ${numPages}`}</h3>
                 </div>
             </div>
         </>
