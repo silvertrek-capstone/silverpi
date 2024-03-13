@@ -1,5 +1,5 @@
 "use client"
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, ChevronUpIcon, PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs' // Date calculator
@@ -140,6 +140,24 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                     ? <Link href={`${link}${item[mainkey]}`}>{item[header.value]}</Link>
                                                     : item[header.value]
                                                 }
+                                                {header.edit && (
+                                                    <button 
+                                                        onClick={() => onEdit(item)} // Define your handleEdit function to perform the edit action
+                                                        className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                        aria-label="Edit"
+                                                    >
+                                                        <PencilIcon className="h-5 w-5" />
+                                                    </button>
+                                                )}
+                                                {header.delete && (
+                                                    <button 
+                                                    onClick={() => onDelete(item)} 
+                                                    className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                    aria-label="Edit"
+                                                    >
+                                                        <TrashIcon className="h-5 w-5" />
+                                                    </button>
+                                                )}
                                             </td>
                                         ))}
                                     </tr>
