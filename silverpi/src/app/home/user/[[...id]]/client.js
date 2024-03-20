@@ -1,9 +1,10 @@
 "use client"
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import TextField from '@/components/textfield';
 import Select from '@/components/select';
 import Table from '@/components/table';
 import Autocomplete from '@/components/autocomplete';
+import { toast } from 'react-toastify';
+import CustomToastContainer from 'src/app/components/customtoastcontainer.js'; 
 import { useState } from 'react';
 
 const headers = [
@@ -13,13 +14,58 @@ const headers = [
 
 // Note, roleId passed may differ from the role_id in the profile info, if you are viewing someone elses profile
 // Only possible if you are an admin.
-export default function ClientUserPage({ profile, roleId, roles, customers, allCustomers, getCustomers, setProfile, }) {
+export default function ClientUserPage({ profile, roleId, roles, customers, allCustomers, updateProfile, insertCustomer, removeCustomer }) {
     // Create all the values that the changable fields have.
     const { first_name, last_name, email, role_id } = profile;
     const [first, setFirst] = useState(first_name);
     const [last, setLast] = useState(last_name)
     const [role, setRole] = useState(role_id);
     const [customerRows, setCustomerRows] = useState(customers || []);
+    const [cust, setCust] = useState(null);
+
+    // Called when role changed or save button clicked
+    async function handleUpdateProfile() {
+        const newProfile = {
+            first_name: first,
+            last_name: last,
+            role_id: role,
+        };
+        const {data, error} = await updateProfile(newProfile);
+        if (error) {
+            toast.error('Failed to update profile')
+        } else {
+            toast.success('Successfully updated profile')
+        }
+    }
+
+    async function addCustomer(customer) {
+        console.log(customer);
+        const newCustomer = {
+            cust_num: customer.value,
+            using: false,
+        };
+        const {data, error} = await insertCustomer(newCustomer);
+        if (error) {
+            toast.error('Failed to add customer')
+        } else {
+            toast.success('Successfully added customer')
+            const newRows = [...customerRows, customer];
+            setCustomerRows(newRows);
+        }
+    }
+
+    async function deleteCustomer(value) {
+        const removeCustomer = {
+            cust_num: value,
+        };
+        const {data, error} = await removeCustomer(removeCustomer);
+        if (error) {
+            toast.error('Failed to remove customer')
+        } else {
+            toast.success('Successfully removed customer')
+        }
+        setCust(null);
+    }
 
     return (
         <>
@@ -72,6 +118,15 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                         </div>
                     </div>
                 </div>
+                <div className="mt-6 flex items-center justify-end gap-x-6">
+                    <button
+                        type="button"
+                        onClick={() => handleUpdateProfile()}
+                        className="rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:shadow-md"
+                    >
+                        Save
+                    </button>
+                </div>
                 {/* If logged in user is an admin, show the following. */}
                 {roleId === 1 &&
                     <div className="border-b border-gray-900/10 pb-12 pt-6">
@@ -96,8 +151,9 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                                 </label>
                                 <div className='mt-2'>
                                     <Autocomplete
+                                        value={cust}
                                         items={allCustomers}
-
+                                        onChange={(e) => addCustomer(e)}
                                     />
                                 </div>
                             </div>
@@ -114,19 +170,8 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                     </div>
                 }
 
-
-                <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Save
-                    </button>
-                </div>
             </form>
+            <CustomToastContainer/>
         </>
     );
 }

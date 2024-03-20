@@ -1,16 +1,16 @@
-"use server"
-
 import ClientUserPage from "./client";
 import { getRole } from "@/api/admin/getRole";
 import { getCustomersForUser } from "@/api/user/getCustomersForUser";
 import { getUserProfile } from "@/api/user/getUserProfile";
 import { getAllCustomers } from "@/api/user/getAllCustomers";
 import { getAllRoles } from "@/api/admin/getAllRoles";
+import { setProfile } from "@/api/admin/setProfile";
+import { addCustomerForUser } from "@/api/admin/addCustomerForUser";
 
 export default async function UserPage({ params }) {
 
     // Get role id of user, if user is not admin (1), just get their own user profile
-    const {data: role_id, error: roleError} = await getRole(); // Always gets logged in users.
+    const { data: role_id, error: roleError } = await getRole(); // Always gets logged in users.
     let userId = params.id?.[0];
     if (role_id !== 1) {
         userId = null;
@@ -32,28 +32,59 @@ export default async function UserPage({ params }) {
     });
     const allCustomers = responses[0].data;
     const customers = responses[1].data;
-    const profile= responses[2].data;
+    const profile = responses[2].data;
     const roles = responses[3].data
 
+
+    // Event handlers
+    async function handleSetProfile(profile) {
+        "use server";
+
+        const { data, error } = await setProfile(userId, profile);
+        return JSON.parse(JSON.stringify({ data, error }));
+    }
+
+    async function insertCustomer(profile) {
+        "use server";
+
+        const { data, error } = await addCustomerForUser(userId, profile);
+        return JSON.parse(JSON.stringify({ data, error }));
+    }
+    async function removeCustomer(profile) {
+        "use server";
+
+        const { data, error } = await deleteCustomerForUser(userId, profile);
+        return JSON.parse(JSON.stringify({ data, error }));
+    }
+
+
+
+
+
     return (
-        <>
-            <ClientUserPage
-                profile={profile}
-                roleId={role_id}
-                roles={roles}
-                customers={customers}
-                allCustomers={allCustomers}
-                errors={initialErrors}
-            >
-            </ClientUserPage>
-        </>
+        <ClientUserPage
+            profile={profile}
+            roleId={role_id}
+            roles={roles}
+            customers={customers}
+            allCustomers={allCustomers}
+            errors={initialErrors}
+            updateProfile={handleSetProfile}
+            insertCustomer={insertCustomer}
+            removeCustomer={removeCustomer}
+        >
+        </ClientUserPage>
     );
 }
 
+
+
+
 // API CALLS
 
+
 async function handleGetUserProfile(userId) {
-    const {data, error} = await getUserProfile(userId);
+    const { data, error } = await getUserProfile(userId);
     if (error) {
         return {
             data,
@@ -61,11 +92,11 @@ async function handleGetUserProfile(userId) {
             errorMsg: 'Failed to get user profile'
         };
     }
-    return {data, error};
+    return { data, error };
 };
 
 async function handleGetCustomersForUser(userId) {
-    const {data, error} = await getCustomersForUser(userId);
+    const { data, error } = await getCustomersForUser(userId);
     if (error) {
         return {
             data,
@@ -73,11 +104,11 @@ async function handleGetCustomersForUser(userId) {
             errorMsg: 'Failed to get related customers for user.'
         };
     }
-    return {data, error};
+    return { data, error };
 }
 
 async function handleGetAllCustomers() {
-    const {data, error} = await getAllCustomers();
+    const { data, error } = await getAllCustomers();
     if (error) {
         return {
             data,
@@ -92,11 +123,11 @@ async function handleGetAllCustomers() {
             ...e,
         }
     })
-    return {data: customers, error};
+    return { data: customers, error };
 }
 
 async function handleGetAllRoles() {
-    const {data, error} = await getAllRoles();
+    const { data, error } = await getAllRoles();
     if (error) {
         return {
             data,
@@ -111,6 +142,6 @@ async function handleGetAllRoles() {
             ...e,
         }
     })
-    return {data: roles, error};
+    return { data: roles, error };
 }
 
