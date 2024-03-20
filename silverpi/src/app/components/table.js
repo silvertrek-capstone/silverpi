@@ -19,7 +19,7 @@ import dayjs from 'dayjs' // Date calculator
 //  - hovering over row changes val to loading cursor
 
 // dloading var - if loading is true, horizontal loading bar displayed
-export default function Table({ headers, items, mainkey, link, title, loading, onRowClick }) {
+export default function Table({ headers, items, mainkey, link, title, loading, onRowClick, onDelete, onEdit }) {
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
     const [tableItems, setTableItems] = useState(items || [])
@@ -142,7 +142,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                 }
                                                 {header.edit && (
                                                     <button 
-                                                        onClick={() => onEdit(item)} // Define your handleEdit function to perform the edit action
+                                                        onClick={(e) => { e.stopPropagation(); onEdit(item[mainkey]); }}
                                                         className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                         aria-label="Edit"
                                                     >
@@ -151,7 +151,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                 )}
                                                 {header.delete && (
                                                     <button 
-                                                    onClick={() => onDelete(item)} 
+                                                    onClick={(e) => { e.stopPropagation(); onDelete(item[mainkey]); }}
                                                     className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                     aria-label="Edit"
                                                     >
