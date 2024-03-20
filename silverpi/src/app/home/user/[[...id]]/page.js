@@ -6,6 +6,7 @@ import { getAllCustomers } from "@/api/user/getAllCustomers";
 import { getAllRoles } from "@/api/admin/getAllRoles";
 import { setProfile } from "@/api/admin/setProfile";
 import { addCustomerForUser } from "@/api/admin/addCustomerForUser";
+import { deleteCustomerForUser } from "@/api/admin/deleteCustomerForUser";
 
 export default async function UserPage({ params }) {
 
@@ -50,10 +51,9 @@ export default async function UserPage({ params }) {
         const { data, error } = await addCustomerForUser(userId, profile);
         return JSON.parse(JSON.stringify({ data, error }));
     }
-    async function removeCustomer(profile) {
+    async function removeCustomer(cust_num) {
         "use server";
-
-        const { data, error } = await deleteCustomerForUser(userId, profile);
+        const { data, error } = await deleteCustomerForUser(userId, cust_num);
         return JSON.parse(JSON.stringify({ data, error }));
     }
 

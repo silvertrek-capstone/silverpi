@@ -10,6 +10,7 @@ import { useState } from 'react';
 const headers = [
     { text: 'Customer #', value: 'customer' },
     { text: 'Name', value: 'name' },
+    { text: 'Remove', value: 'delete', delete: true },
 ];
 
 // Note, roleId passed may differ from the role_id in the profile info, if you are viewing someone elses profile
@@ -52,19 +53,21 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
             const newRows = [...customerRows, customer];
             setCustomerRows(newRows);
         }
+        setCust(null);
     }
 
-    async function deleteCustomer(value) {
-        const removeCustomer = {
-            cust_num: value,
-        };
-        const {data, error} = await removeCustomer(removeCustomer);
+    async function deleteCustomer(row) {
+        const {data, error} = await removeCustomer(row.customer);
         if (error) {
             toast.error('Failed to remove customer')
         } else {
             toast.success('Successfully removed customer')
+            // Filter the table to remove the customer
+            const filtered = customerRows.filter((e) => {
+                return e.customer !== row.customer;
+            });
+            setCustomerRows(filtered);
         }
-        setCust(null);
     }
 
     return (
@@ -129,7 +132,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                 </div>
                 {/* If logged in user is an admin, show the following. */}
                 {roleId === 1 &&
-                    <div className="border-b border-gray-900/10 pb-12 pt-6">
+                    <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Admin Only</h2>
                         <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-3">
@@ -164,6 +167,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                                 id="table"
                                 headers={headers}
                                 items={customerRows}
+                                onDelete={(e) => deleteCustomer(e)}
                             />
                         </div>
 
