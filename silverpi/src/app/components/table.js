@@ -142,7 +142,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                 key={`cell-${j}-${item[header.value]}`}
                                             >
                                                 {link && header.value === mainkey
-                                                    ? <Link href={`${link}${item[mainkey]}`}>{item[header.value]}</Link>
+                                                    ? <Link href={`${link}${item[mainkey]}`} className="font-semibold text-primary ">{item[header.value]}</Link>
                                                     : item[header.value]
                                                 }
                                                 {header.edit && (

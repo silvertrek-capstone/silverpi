@@ -59,12 +59,12 @@ export default async function Home({ profile }) {
                             headers={woHeaders}
                             items={[]}
                             mainkey="workOrder"
-                            link="/home/Invoices/"
+                            link="/home/invoices/"
                             title="Unpaid Invoices"
                         >
 
                         </Table>
-                        <Link href="/home/Invoices" className="py-2 float-right font-bold leading-6 text-primary hover:underline">
+                        <Link href="/home/invoices" className="py-2 float-right font-bold leading-6 text-primary hover:underline">
                             see more
                         </Link>
                     </div>
