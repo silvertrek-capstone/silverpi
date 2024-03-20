@@ -1,5 +1,5 @@
 "use client"
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, ChevronUpIcon, PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs' // Date calculator
@@ -9,17 +9,22 @@ import dayjs from 'dayjs' // Date calculator
     headers - array of objects, containing the headers.
         - Object should contain the following:
             {text: Header name, value: key name in items, sortable: whether the column is sortable (default true), searchable: whether it can be searched (default true)}
+            - If a header contains the keys "edit" or "delete", an edit and/or delete icon will be added to the end of the column
     items - array of objects, object keys should match the value in headers
     mainkey - name of key in the items object that is a unique identifier for the row (used for delete/edit)
     title - Table title, put at the top, default null
     link - string that we will append mainKey to to link
+    
+    IMPORTANT - EVENT HANDLERS CAN ONLY BE USED IN CLIENT COMPONENTS.
+    onRowClick - function, if defined, clicking a row will call the function with the row.
+    onEdit - if an edit button exists, clicking it will call this with the row.
+    onDelete - if a delete button exists, clicking it will call this with the row.
 */
 
-// onClick - pass value of mainkey on click
 //  - hovering over row changes val to loading cursor
 
 // dloading var - if loading is true, horizontal loading bar displayed
-export default function Table({ headers, items, mainkey, link, title, loading, onRowClick }) {
+export default function Table({ headers, items, mainkey, link, title, loading, onRowClick, onEdit, onDelete }) {
     const [sortBy, setSortBy] = useState('');
     const [sortDesc, setSortDesc] = useState(true);
     const [tableItems, setTableItems] = useState(items || [])
@@ -129,7 +134,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                     <tr
                                         key={`row-${i}`}
                                         className={onRowClick ? 'even:bg-gray-50 hover:bg-gray-100 cursor-pointer' : 'even:bg-gray-50'}
-                                        onClick={() => onRowClick ? onRowClick(item[mainkey]) : {}}
+                                        onClick={() => onRowClick ? onRowClick(item) : {}}
                                     >
                                         {headers.map((header, j) => (
                                             <td
@@ -140,6 +145,24 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                     ? <Link href={`${link}${item[mainkey]}`} className="font-semibold leading-6 text-primary ">{item[header.value]}</Link>
                                                     : item[header.value]
                                                 }
+                                                {header.edit && (
+                                                    <button 
+                                                        onClick={() => onEdit(item)} // Define your handleEdit function to perform the edit action
+                                                        className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
+                                                        aria-label="Edit"
+                                                    >
+                                                        <PencilIcon className="h-5 w-5" />
+                                                    </button>
+                                                )}
+                                                {header.delete && (
+                                                    <button 
+                                                    onClick={() => onDelete(item)} 
+                                                    className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
+                                                    aria-label="Edit"
+                                                    >
+                                                        <TrashIcon className="h-5 w-5" />
+                                                    </button>
+                                                )}
                                             </td>
                                         ))}
                                     </tr>
