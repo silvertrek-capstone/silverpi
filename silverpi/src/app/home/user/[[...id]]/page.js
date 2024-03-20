@@ -53,6 +53,7 @@ export default async function UserPage({ params }) {
     }
     async function removeCustomer(cust_num) {
         "use server";
+        console.log(userId);
         const { data, error } = await deleteCustomerForUser(userId, cust_num);
         return JSON.parse(JSON.stringify({ data, error }));
     }

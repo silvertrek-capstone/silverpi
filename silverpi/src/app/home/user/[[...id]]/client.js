@@ -40,7 +40,9 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
     }
 
     async function addCustomer(customer) {
-        console.log(customer);
+        if (!customer) {
+            return;
+        }
         const newCustomer = {
             cust_num: customer.value,
             using: false,

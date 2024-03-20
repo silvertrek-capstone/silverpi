@@ -22,6 +22,7 @@ export async function deleteCustomerForUser(user_id, cust_num) {
                 .eq('cust_num', cust_num)
                 .eq('user_id', user_id);
             if (error) {
+                console.log(error);
                 throw new Error(error);
             }
         } else { // Updating US, use RLS to do update
@@ -41,6 +42,6 @@ export async function deleteCustomerForUser(user_id, cust_num) {
         return { data: null, error: null };
     } catch (e) {
         console.log(e);
-        return { data: null, error: e.toString() }
+        return { data: null, error: e }
     }
 }
