@@ -235,7 +235,7 @@ export default function SignUpForm({invite}) {
             </div>
 
             <div>
-                <small id= "capslock-msg" className='hidden mt-2 text-sm text-red-600'> Caps Lock is on.</small>
+                <small id= "capslock-msg" className='hidden my-2 text-sm text-red-600'> Caps Lock is on.</small>
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm 
