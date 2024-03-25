@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline"
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline"
 import { set } from "zod"
-
+import Pagination from '@mui/material/Pagination';
 
 function CompletedCardList(woCompletedList) {
     const [startIndex, setStartIndex] = useState(0);
@@ -64,9 +64,9 @@ function CompletedCardList(woCompletedList) {
 
     return(
         <> 
-            <div className="border border-neutral2 p-5">
+            <div className="border rounded-md bg-neutral2 bg-opacity-5 border-neutral2 p-5">
                 <div className="flex flex-row items-end">
-                    <h1 className="pb-2 lg:text-2xl md:text-2xl sm:text-xl text-neutral3">Recent Completed Work</h1>
+                    <h1 className="pb-2 lg:text-2xl md:text-2xl sm:text-xl text-neutral3 my-3 font-semibold">Recent Completed Work</h1>
                     <div className="ml-auto">
                         <button onClick={handleFirst} disabled={startIndex === 0} className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
                             <ChevronDoubleLeftIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ChevronDoubleLeftIcon>

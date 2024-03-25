@@ -8,14 +8,15 @@ export default function WorkCompletedCard({title, description, date, status, wo}
 
   return <>
 
-        <div className="rounded-md border-double border border-neutral2 hover:border-secondary mb-2 bg-neutral2 bg-opacity-5">
-            <h1 className="text-neutral3 px-3 py-2">
-            {"Workorder: "}
-              <Link href={`/home/workorders/${wo}`} className="text-primary font-bold hover:underline">
+        <div className="rounded-md border-double border border-neutral2 hover:border-secondary mb-2 bg-neutral2 bg-opacity-10">
+          <div className="flex px-3 py-2">
+            <span className="text-neutral4 font-bold">{"WO#  "}</span>
+              <Link href={`/home/workorders/${wo}`} className="text-primary font-bold hover:underline pl-1">
                 {wo}
               </Link>
-              <span className="text-neutral3 pl-10">{`${month}/${day}/${year}`}</span>
-            </h1> 
+            <span className="items-end text-neutral3 text-opacity-50 font-bold text-xssm italic ml-auto">{`Created on ${month}/${day}/${year}`}</span>
+          </div>
+              
             <p className="text-neutral3 px-3 pb-2">{description}</p>
         </div>
   </>

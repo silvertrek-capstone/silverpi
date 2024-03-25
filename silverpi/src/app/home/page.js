@@ -32,7 +32,7 @@ export default async function Home({ profile }) {
 
     return (
         <>
-            <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
+            <h1 className="text-3xl my-12 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
             <div className="grid gap-8 grid-cols-2">
                 <div className="row-span-2">
                     <WorkCompletedBox
