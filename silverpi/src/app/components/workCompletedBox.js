@@ -16,11 +16,11 @@ const theme = createTheme({
 
 function CompletedCardList(woCompletedList) {
     const [startIndex, setStartIndex] = useState(0);
-    const [endIndex, setEndIndex] = useState(4);
+    const [endIndex, setEndIndex] = useState(5);
 
     const setIndexes = (page) => {
-        setStartIndex((prevStartIndex) => (4*page)-4)
-        setEndIndex((prevEndIndex) => 4*page)
+        setStartIndex((prevStartIndex) => (5*page)-5)
+        setEndIndex((prevEndIndex) => 5*page)
     }
 
     woCompletedList = woCompletedList || []
@@ -30,7 +30,7 @@ function CompletedCardList(woCompletedList) {
     // }
 
     let slicedList = woCompletedList.woCompletedList.slice(startIndex, endIndex)
-    const numPages = parseInt(woCompletedList.woCompletedList.length/4) +1
+    const numPages = parseInt(woCompletedList.woCompletedList.length/5) +1
 
     let arr = []
     {slicedList.map((woComp, index) =>(
@@ -77,14 +77,14 @@ export default function WorkCompletedBox(woCompletedList) {
   return (
     <>
       {woCompletedList.length === 0 ? (
-        <div className="lg:pr-20 md:pr-8">
+        <div className="pr-8">
             <div className="rounded-md flex border border-neutral2 bg-neutral2 bg-opacity-5 justify-center">
                 <h1 className="text-neutral3 text-xl m-10">No recent work completed data found!</h1>
             </div>
         </div>
         
       ) : (
-        <div className="lg:pr-20 md:pr-8">
+        <div className="pr-8">
           <CompletedCardList woCompletedList={woCompletedList} />
         </div>
       )}

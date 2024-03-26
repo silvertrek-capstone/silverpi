@@ -16,8 +16,6 @@ function WOsCardList(woList) {
 
     let slicedList = woList.woList.slice(startIndex, endIndex)
     
-    console.log(slicedList[0])
-    
     let arr = []
     {slicedList.map((wo, index) =>(
             arr.push(
@@ -44,7 +42,7 @@ function WOsCardList(woList) {
                 </div>
                 <div className="flex flex-row justify-end ml-auto">
                     <Link href="/home/workorders" className="font-bold leading-6 text-primary hover:underline">
-                            see more
+                            See more
                     </Link>
                 </div>
             </div>
@@ -56,19 +54,17 @@ export default function ActiveWOBox(woList) {
   woList = woList || []
   // have to take out the actual list since we are being returned an object with a woList value that points to the list
   woList = woList.woList
-  console.log(woList)
-
 
   return (
     <>
       {woList.length === 0 ? (
-        <div className="lg:pr-20 md:pr-8 mb-4">
+        <div className="mb-4">
             <div className="rounded-md flex border border-neutral2 bg-neutral2 bg-opacity-5 justify-center">
                 <h1 className="text-neutral3 text-xl m-10">No Active Work Orders Currently!</h1>
             </div>
         </div>
       ) : (
-        <div className="lg:pr-20 md:pr-8 mb-4">
+        <div className="mb-4">
           <WOsCardList woList={woList} />
         </div>
       )}
