@@ -1,42 +1,27 @@
 "use client"
 import React from "react"
-import Link from 'next/link'
-import Image from 'next/image'
 import WorkCompletedCard from './workCompletedCard'
 import { useState } from 'react';
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline"
-import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline"
 import { set } from "zod"
 import Pagination from '@mui/material/Pagination';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: "rgba(0, 33, 110, 0.9)"
+      }
+    }
+  });
 
 function CompletedCardList(woCompletedList) {
     const [startIndex, setStartIndex] = useState(0);
-    const [endIndex, setEndIndex] = useState(5);
-    const [page, setPage] = useState(1);
+    const [endIndex, setEndIndex] = useState(4);
 
-    const handleFirst = () => {
-        setStartIndex((prevStartIndex) => 0);
-        setEndIndex((prevEndIndex) => 5);
-        setPage((prevPage) => 1);
+    const setIndexes = (page) => {
+        setStartIndex((prevStartIndex) => (4*page)-4)
+        setEndIndex((prevEndIndex) => 4*page)
     }
-
-    const handleLast = () => {
-        setStartIndex((prevStartIndex) => woCompletedList.woCompletedList.length - 5);
-        setEndIndex((prevEndIndex) => woCompletedList.woCompletedList.length);
-        setPage((prevPage) => numPages);
-    }
-
-    const handleNext = () => {
-        setStartIndex((prevStartIndex) => prevStartIndex + 5);
-        setEndIndex((prevEndIndex) => prevEndIndex + 5);
-        setPage((prevPage) => prevPage + 1);
-    };
-    
-    const handlePrev = () => {
-            setStartIndex((prevStartIndex) => prevStartIndex - 5);
-            setEndIndex((prevEndIndex) => prevEndIndex - 5);
-            setPage((prevPage) => prevPage - 1);
-    };
 
     woCompletedList = woCompletedList || []
     // have to take out the actual list since we are being returned an object with a woCompletedList value that points to the list
@@ -45,7 +30,7 @@ function CompletedCardList(woCompletedList) {
     // }
 
     let slicedList = woCompletedList.woCompletedList.slice(startIndex, endIndex)
-    const numPages = parseInt(woCompletedList.woCompletedList.length/5) +1
+    const numPages = parseInt(woCompletedList.woCompletedList.length/4) +1
 
     let arr = []
     {slicedList.map((woComp, index) =>(
@@ -64,29 +49,19 @@ function CompletedCardList(woCompletedList) {
 
     return(
         <> 
-            <div className="border rounded-md bg-neutral2 bg-opacity-5 border-neutral2 p-5">
+            <div className="border rounded-lg bg-neutral2 bg-opacity-5 border-neutral2 p-5">
                 <div className="flex flex-row items-end">
-                    <h1 className="pb-2 lg:text-2xl md:text-2xl sm:text-xl text-neutral3 my-3 font-semibold">Recent Completed Work</h1>
-                    <div className="ml-auto">
-                        <button onClick={handleFirst} disabled={startIndex === 0} className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
-                            <ChevronDoubleLeftIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ChevronDoubleLeftIcon>
-                        </button>  
-                        <button onClick={handlePrev} disabled={startIndex === 0} className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
-                            <ArrowLeftIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ArrowLeftIcon>
-                        </button>  
-                        <button onClick={handleNext} disabled={endIndex >= woCompletedList.woCompletedList.length}className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
-                            <ArrowRightIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ArrowRightIcon>
-                        </button> 
-                        <button onClick={handleLast} disabled={endIndex >= woCompletedList.woCompletedList.length} className="rounded-md active:bg-opacity-40 hover:bg-neutral2 hover:bg-opacity-10">
-                            <ChevronDoubleRightIcon className="font-bold text-neutral3 hover:text-neutral4 h-6 w-8"></ChevronDoubleRightIcon>
-                        </button> 
-                    </div>  
+                    <h1 className="pb-2 text-xl text-neutral3 my-3 font-semibold">Recent Completed Work</h1>
                 </div>
                 <div>
                     {arr}
                 </div>
-                <div className="flex flex-row justify-center">
-                    <h3>{`page ${page} of ${numPages}`}</h3>
+                <div className="flex flex-row justify-center mt-10">
+                    <ThemeProvider theme={theme}>
+                        <Pagination count={numPages} shape="rounded" color="primary" 
+                            onChange={(e, value) => setIndexes(value)}
+                        />
+                    </ThemeProvider>
                 </div>
             </div>
         </>

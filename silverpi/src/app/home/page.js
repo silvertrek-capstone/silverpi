@@ -4,6 +4,7 @@ import { getActiveWorkOrders } from "@/api/workorders/getActiveWorkOrders.js"
 import { getWorkCompleted } from "@/api/workorders/getWorkCompleted"
 import { getJustWorkorders } from "@/api/workorders/getJustWorkorders"
 import WorkCompletedBox from "@/components/workCompletedBox"
+import ActiveWOBox from "@/components/activeWorkOrdersBox"
 
 export default async function Home({ profile }) {
 
@@ -34,25 +35,15 @@ export default async function Home({ profile }) {
         <>
             <h1 className="text-3xl my-12 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
             <div className="grid gap-8 grid-cols-2">
-                <div className="row-span-2">
+                <div className="row-span-2 mb-8">
                     <WorkCompletedBox
                         woCompletedList={completeWos} />
                 </div>
 
                 <div className="grid grid-rows-2 grid-flow-col mt-1">
                     <div>
-                        <Table
-                            headers={woHeaders}
-                            items={wos}
-                            mainkey="workOrder"
-                            link="/home/workorders/"
-                            title="Open Work Orders"
-                        >
-
-                        </Table>
-                        <Link href="/home/workorders" className="py-2 float-right font-bold leading-6 text-primary hover:underline">
-                            see more
-                        </Link>
+                        <ActiveWOBox 
+                            woList={wos} />
                     </div> {/*End of Tables  Workorders*/}
                     <div>
                         <Table
