@@ -1,6 +1,6 @@
 import Table from "@/components/table"
-import { handler as handlePendingUsers } from "@/api/admin/getPendingUsers/route"
-import { handler as handleActiveUsers } from "@/api/admin/getActiveUsers/route"
+import { getPendingUsers } from "@/api/admin/getPendingUsers"
+import { getActiveUsers } from "@/api/admin/getActiveUsers"
 
 export default async function AdminPanel() {
   const headers = [
@@ -9,8 +9,11 @@ export default async function AdminPanel() {
     { text: 'Email', value: 'email' },
   ]
 
-  const pendingUsers = await getAllPending()
-  const activeUsers = await getAllActive()
+  const res = await getPendingUsers()
+  const pendingUsers = res.data;
+  console.log(pendingUsers);
+  const res2 = await getActiveUsers()
+  const activeUsers = res2.data;
 
   return (
     <>
@@ -20,6 +23,8 @@ export default async function AdminPanel() {
           headers={headers}
           items={pendingUsers}
           title="Pending Users"
+          mainkey='id'
+          link="/home/user/"
         >
 
         </Table>
@@ -29,25 +34,12 @@ export default async function AdminPanel() {
           headers={headers}
           items={activeUsers}
           title="Active Users"
+          mainkey='id'
+          link="/home/user/"
         >
 
         </Table>
       </div>
     </>
   );
-}
-
-
-async function getAllPending() {
-  const res = await handlePendingUsers()
-  const jsonData = await res.json();
-  const { data, error } = jsonData
-  return data;
-}
-
-async function getAllActive() {
-  const res = await handleActiveUsers()
-  const jsonData = await res.json();
-  const { data, error } = jsonData
-  return data;
 }

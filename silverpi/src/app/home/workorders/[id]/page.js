@@ -1,4 +1,4 @@
-import Table from "@/app/components/table";
+import Table from "@/components/table";
 import {getSingleWorkOrder} from '@/api/workorders/getSingleWorkOrder'
 
 const headers = [
