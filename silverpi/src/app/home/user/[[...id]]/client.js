@@ -4,7 +4,7 @@ import Select from '@/components/select';
 import Table from '@/components/table';
 import Autocomplete from '@/components/autocomplete';
 import { toast } from 'react-toastify';
-import CustomToastContainer from 'src/app/components/customtoastcontainer.js'; 
+import CustomToastContainer from 'src/app/components/customtoastcontainer.js';
 import { useState } from 'react';
 
 const headers = [
@@ -24,6 +24,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
     const [customerRows, setCustomerRows] = useState(customers || []);
     const [cust, setCust] = useState(null);
 
+
     // Called when role changed or save button clicked
     async function handleUpdateProfile() {
         const newProfile = {
@@ -31,7 +32,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
             last_name: last,
             role_id: role,
         };
-        const {data, error} = await updateProfile(newProfile);
+        const { data, error } = await updateProfile(newProfile);
         if (error) {
             toast.error('Failed to update profile')
         } else {
@@ -47,7 +48,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
             cust_num: customer.value,
             using: false,
         };
-        const {data, error} = await insertCustomer(newCustomer);
+        const { data, error } = await insertCustomer(newCustomer);
         if (error) {
             toast.error('Failed to add customer')
         } else {
@@ -59,7 +60,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
     }
 
     async function deleteCustomer(row) {
-        const {data, error} = await removeCustomer(row.customer);
+        const { data, error } = await removeCustomer(row.customer);
         if (error) {
             toast.error('Failed to remove customer')
         } else {
@@ -71,6 +72,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
             setCustomerRows(filtered);
         }
     }
+
 
     return (
         <>
@@ -177,7 +179,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                 }
 
             </form>
-            <CustomToastContainer/>
+            <CustomToastContainer />
         </>
     );
 }
