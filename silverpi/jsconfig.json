@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"],
       "@/api/*": ["./src/app/api/*"],
       "@/components/*": ["./src/app/components/*"],
       "@/helpers/*": ["./src/app/helpers/*"],

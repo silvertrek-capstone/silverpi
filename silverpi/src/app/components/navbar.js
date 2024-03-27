@@ -114,7 +114,7 @@ export default function Navbar({ user, customers, profile }) {
                           <Menu.Item>
                             {({ active }) => (
                               <Link
-                                href="#"
+                                href="/home/user"
                                 className={classNames(
                                   active ? 'text-primary' : '',
                                   'block px-4 py-2 text-sm text-greytxt'

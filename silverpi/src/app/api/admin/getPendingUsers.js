@@ -1,12 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
-import { NextResponse } from 'next/server'
 import "dotenv/config"
 
 
 // TODO: Implement pagination, listUsers defaults to 50 users.
 // IMPORTANT: Not going to scale super well, should be fine until a few thousand users i'd guess
 // https://supabase.com/docs/reference/javascript/auth-admin-listusers
-export async function POST(request, sParams) {
+export async function getPendingUsers() {
     try {
         // TODO: Implement auth here so we don't get screwed by the stuff we do below.
 
@@ -39,18 +38,10 @@ export async function POST(request, sParams) {
             return !customers.includes(user.id)
         })
 
-        return NextResponse.json({ data: users, error: null }, { status: 200 })
+        return { data: users, error: null };
     } catch(error) {
-        return NextResponse.json({ data: null, error }, { status: 500 })
+        return { data: null, error: error.toString() }
 
     }
 
-
 }
-
-// Called in server components
-export async function handler(params) {
-    return POST(null, params)
-}
-
-// Helper functions
