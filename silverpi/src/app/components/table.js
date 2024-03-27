@@ -146,7 +146,8 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                     : item[header.value]
                                                 }
                                                 {header.edit && (
-                                                    <button 
+                                                    <button
+                                                        type="button"
                                                         onClick={() => onEdit(item)} // Define your handleEdit function to perform the edit action
                                                         className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
                                                         aria-label="Edit"
@@ -155,10 +156,11 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                     </button>
                                                 )}
                                                 {header.delete && (
-                                                    <button 
-                                                    onClick={() => onDelete(item)} 
-                                                    className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
-                                                    aria-label="Edit"
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => onDelete(item)}
+                                                        className="inline-flex items-center justify-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
+                                                        aria-label="Edit"
                                                     >
                                                         <TrashIcon className="h-5 w-5" />
                                                     </button>

@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
-import Popup from '@/app/components/useConfirm';
-import useAlert from '@/app/components/useAlert'
+import Popup from '@/components/useConfirm';
+import useAlert from '@/components/useAlert'
 
 /* 
     This is an example button that will generate the confirmation page. I was thinking that maybe we can have a number of
