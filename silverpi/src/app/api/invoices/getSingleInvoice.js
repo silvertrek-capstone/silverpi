@@ -134,7 +134,6 @@ function formatData(row) {
     }
     for (let i = 0; i < row.sMInvoice.sMInvoiceDetails.length; i++) {
         const el = row.sMInvoice.sMInvoiceDetails[i];
-        console.log(el)
         // Joined tables
         const { sMWorkCompleted, sMWorkOrderScope, sMInvoiceLines } = el;
         const lineData = sMInvoiceLines[0]; // Should always have one related line.
