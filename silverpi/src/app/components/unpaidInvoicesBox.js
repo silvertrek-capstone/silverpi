@@ -1,19 +1,13 @@
-"use client"
 import React from "react"
 import Link from 'next/link'
 import UnpaidInvCard from './unpaidInvoicesCard'
-import { useState } from 'react';
-import { set } from "zod"
 
 function InvCardList(invList) {
-    const startIndex = 2
-    const endIndex = 4
+    const startIndex = 0
+    const endIndex = 2
     invList = invList || []
-    // have to take out the actual list since we are being returned an object with a invList value that points to the list
-    // {
-    //     invList: [x, x, x]
-    // }
 
+    // Get first two items.
     let slicedList = invList.invList.slice(startIndex, endIndex)
     
     // Grabbing correlated WOs
@@ -22,6 +16,7 @@ function InvCardList(invList) {
     {slicedList.map((inv, index) =>(
             arr.push(
                 <UnpaidInvCard
+                    key={`unpaid-inv-card-${index}`}
                     // status={wo.status}
                     invoice = {inv}
                 />
