@@ -16,6 +16,8 @@ export async function getInvoices() {
         const query = gql`
         query($filter: vrvSMInvoicesByInvoiceNumberFilterInput){
             sMInvoicesByInvoiceNumber(where: $filter){
+                sMCo
+                invoice
                 invoiceDate
                 dueDate
                 amount
@@ -25,7 +27,35 @@ export async function getInvoices() {
                 paidInFullYN
                 workOrder
                 sMInvoice{
+                    sMCo
                     invoice
+                    payTerms
+                    sMInvoiceDetails{
+                        sMCo
+                        invoice
+                        invoiceDetail
+                        workOrder
+                        scope
+                        workCompleted
+                        
+                        sMWorkCompleted {
+                            workCompleted
+                            description
+                            priceRate
+                            priceTotal
+                        }
+        
+                        sMWorkOrderScope {
+                            workScope
+                            description
+                        }
+        
+                        sMInvoiceLines{
+                            description
+                            taxAmount
+                            amount
+                        }
+                    }
                 }
             }
         }`
@@ -40,11 +70,13 @@ export async function getInvoices() {
         // Make the request
         const { data, error } = await makeQuery(query, variables)
         if (error) {
-            return {data, error}
+            throw new Error(error);
         }
 
         // If no error, format data a little to get nice response
         const tableRows = data.sMInvoicesByInvoiceNumber;
+        console.log(tableRows[0]);
+        console.log(tableRows[1]);
         const formatted = formatData(tableRows);
         const wos = formatted.map((e) => e.workOrder).filter((e) => e);
         const workOrders = await getCorrelatedWorkOrders(wos, customer).catch((e) => {throw e});

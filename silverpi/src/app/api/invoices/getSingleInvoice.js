@@ -73,6 +73,7 @@ export async function getSingleInvoice(invNum) {
         const formatted = formatData(rows[0]);
         return { data: formatted, error };
     } catch (e) {
+        console.log(e)
         return { data: null, error: e };
     }
 }
@@ -133,6 +134,7 @@ function formatData(row) {
     }
     for (let i = 0; i < row.sMInvoice.sMInvoiceDetails.length; i++) {
         const el = row.sMInvoice.sMInvoiceDetails[i];
+        console.log(el)
         // Joined tables
         const { sMWorkCompleted, sMWorkOrderScope, sMInvoiceLines } = el;
         const lineData = sMInvoiceLines[0]; // Should always have one related line.
@@ -146,9 +148,9 @@ function formatData(row) {
         // Calculate description
         if (lineData.description) {
             newLine.description = lineData.description;
-        } else if (sMWorkOrderScope.description) {
+        } else if (sMWorkOrderScope && sMWorkOrderScope.description) {
             newLine.description = sMWorkOrderScope.description;
-        } else if (sMWorkCompleted.description) {
+        } else if (sMWorkCompleted && sMWorkCompleted.description) {
             newLine.description = sMWorkCompleted.description;
         }
         obj.lines.push(newLine);
