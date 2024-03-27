@@ -17,6 +17,8 @@ export async function getActiveWorkOrders() {
                 workOrder
                 custGroup
                 customer
+                requestedDate
+                contactName
                 description
                 notes
                 wOStatus
