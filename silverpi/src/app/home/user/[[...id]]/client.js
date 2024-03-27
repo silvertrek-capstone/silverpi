@@ -41,6 +41,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
     }
 
     async function addCustomer(customer) {
+        console.log(customer || 'oops');
         if (!customer) {
             return;
         }
