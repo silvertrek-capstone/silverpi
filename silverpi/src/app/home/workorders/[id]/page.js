@@ -46,7 +46,7 @@ export default async function WorkOrderDetail({ params }) {
                     </button>
                 </div>
                 
-                <div className="mb-6 overflow-x-auto">
+                <div className='mt-4 mb-8 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg'>
                     <Table
                         headers={headers}
                         items={workOrderDetails.scope}
