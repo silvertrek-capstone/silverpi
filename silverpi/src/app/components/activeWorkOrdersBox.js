@@ -64,7 +64,7 @@ export default function ActiveWOBox(woList) {
             </div>
         </div>
       ) : (
-        <div className="mb-2">
+        <div className="mb-4">
           <WOsCardList woList={woList} />
         </div>
       )}
