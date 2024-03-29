@@ -34,6 +34,7 @@ function CompletedCardList(woCompletedList) {
 
     let arr = []
     {slicedList.map((woComp, index) =>(
+
             arr.push(
                 <WorkCompletedCard 
                     title={"Example Title"}
@@ -42,6 +43,8 @@ function CompletedCardList(woCompletedList) {
                     description={woComp.description}
                     wo={woComp.workOrder}
                     key={index}
+                    mb={index === slicedList.length - 1
+                        ? false : true}
                 />
             )
         )
@@ -53,10 +56,10 @@ function CompletedCardList(woCompletedList) {
                 <div className="flex flex-row items-end">
                     <h1 className="pb-2 text-xl text-neutral3 my-3 font-semibold">Recent Completed Work</h1>
                 </div>
-                <div>
+                <div className="max-h-[50vh] border p-3 border-neutral2  rounded-md overflow-y-scroll">
                     {arr}
                 </div>
-                <div className="flex flex-row justify-center mt-10">
+                <div className="flex flex-row justify-center mt-12">
                     <ThemeProvider theme={theme}>
                         <Pagination count={numPages} shape="rounded" color="primary" 
                             onChange={(e, value) => setIndexes(value)}
@@ -77,14 +80,14 @@ export default function WorkCompletedBox(woCompletedList) {
   return (
     <>
       {woCompletedList.length === 0 ? (
-        <div className="pr-8">
+        <div className="md:pr-8">
             <div className="rounded-md flex border border-neutral2 bg-neutral2 bg-opacity-5 justify-center">
                 <h1 className="text-neutral3 text-xl m-10">No recent work completed data found!</h1>
             </div>
         </div>
         
       ) : (
-        <div className="pr-8">
+        <div className="md:pr-8">
           <CompletedCardList woCompletedList={woCompletedList} />
         </div>
       )}

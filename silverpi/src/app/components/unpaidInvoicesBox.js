@@ -24,6 +24,7 @@ function InvCardList(invList) {
                 <UnpaidInvCard
                     // status={wo.status}
                     invoice = {inv}
+                    key={index}
                 />
             )
         )
@@ -52,8 +53,6 @@ export default function ActiveWOBox(invList) {
   invList = invList || []
   // have to take out the actual list since we are being returned an object with a invList value that points to the list
   invList = invList.invList
-//   console.log(invList)
-
 
   return (
     <>

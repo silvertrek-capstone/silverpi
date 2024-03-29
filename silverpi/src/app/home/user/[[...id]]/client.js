@@ -167,7 +167,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
                             </div>
                         </div>
 
-                        <div className='mt-4 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg'>
+                        <div className='mt-4 sm:mx-0 sm:rounded-lg'>
                             <Table
                                 id="table"
                                 headers={headers}

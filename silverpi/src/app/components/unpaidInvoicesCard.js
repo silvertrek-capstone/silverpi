@@ -3,8 +3,7 @@ import Link from 'next/link'
 export default function UnpaidInvCard({ invoice }) {
     // Split the date string into an array of year, month, and day components
     const [year, month, day] = invoice.dueDate.split('-');
-    console.log("Invoices:")
-    console.log(invoice)
+
     const moneyFormatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -26,7 +25,7 @@ export default function UnpaidInvCard({ invoice }) {
                     For the completed work orders
                     {
                         invoice.workorders.map((wo, index) => (
-                            <span>
+                            <span key={index}>
                                 
                                 <Link href={`/home/workorders/${wo}`} className="text-primary font-bold hover:underline pl-1">
                                     #{wo}

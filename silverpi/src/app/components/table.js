@@ -88,14 +88,15 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                             ></div>
                         </div>
                     ) : (
+                        <div className="max-h-[60vh] overflow-y-auto border border-neutral2 border-opacity-60">
                         <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
-                            <thead className="bg-gray-50">
+                            <thead className="sticky top-0 z-10 bg-secondary">
                                 <tr>
                                     {headers.map((header, i) => (
                                         <th
                                             key={`header-${i}-${header.value}`}
                                             scope="col"
-                                            className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-txt cursor-pointer"
+                                            className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-neutral1 cursor-pointer"
                                             onClick={() => handleSort(header.value)}
                                         >
                                             <a href='#' onClick={() => { handleSort(header.value) }} className="group inline-flex">
@@ -105,13 +106,13 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                                     (() => {
                                                         if (sortBy === header.value && sortDesc) {
                                                             return (
-                                                                <span title="Sort Asc" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                                <span title="Sort Asc" className="ml-2 flex-none rounded bg-neutral2 bg-opacity-50">
                                                                     <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                                                                 </span>
                                                             )
                                                         } else if (sortBy === header.value) {
                                                             return (
-                                                                <span title="Clear Sort" className="ml-2 flex-none rounded bg-neutral2 group-hover:bg-gray-200">
+                                                                <span title="Clear Sort" className="ml-2 flex-none rounded bg-neutral2 bg-opacity-50">
                                                                     <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
                                                                 </span>
                                                             )
@@ -171,6 +172,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                                 ))}
                             </tbody>
                         </table>
+                        </div>
                     )}
                 </div>
             </div>

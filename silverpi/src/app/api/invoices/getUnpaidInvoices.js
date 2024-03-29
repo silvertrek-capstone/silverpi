@@ -100,6 +100,5 @@ function formatData(rows) {
         }
         arr.push(obj)
     }
-    console.log(arr)
     return arr
 }
