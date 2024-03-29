@@ -22,11 +22,10 @@ export default function UnpaidInvCard({ invoice }) {
             </div>
             <div className="flex flex-row">
                 <div className="text-neutral4 font-semibold text-sm pl-5 pb-3">
-                    For the completed work orders
+                    Related work orders: 
                     {
                         invoice.workorders.map((wo, index) => (
-                            <span key={index}>
-                                
+                            <span key={`workorder-link-${index}`}>
                                 <Link href={`/home/workorders/${wo}`} className="text-primary font-bold hover:underline pl-1">
                                     #{wo}
                                 </Link>
