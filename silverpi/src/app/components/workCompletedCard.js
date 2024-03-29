@@ -3,10 +3,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export default function WorkCompletedCard({title, description, date, status, wo, mb}) {
-  console.log(mb)
   // Split the date string into an array of year, month, and day components
   const [year, month, day] = date.split('-');
-  console.log(description)
   return <>
 
         <div className={"rounded-md border-double border border-neutral2 hover:border-secondary bg-neutral2 bg-opacity-10" + (mb ? " mb-2" : " ")}>

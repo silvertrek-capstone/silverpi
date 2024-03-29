@@ -6,7 +6,7 @@ import { getJustWorkorders } from "@/api/workorders/getJustWorkorders"
 import { getUnpaidInvoices } from "@/api/invoices/getUnpaidInvoices"
 import WorkCompletedBox from "@/components/workCompletedBox"
 import ActiveWOBox from "@/components/activeWorkOrdersBox"
-import unpaidInvBox from "@/components/unpaidInvoicesBox"
+import UnpaidInvBox from "@/components/unpaidInvoicesBox"
 
 export default async function Home({ profile }) {
 
@@ -50,7 +50,7 @@ export default async function Home({ profile }) {
                     <div>
                         <ActiveWOBox 
                             woList={wos} />
-                        <UnpaidInvCard
+                        <UnpaidInvBox
                             invList={unpaidInvs} />
                     </div> {/*End of Tables  Workorders*/}
                 </div>
