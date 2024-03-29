@@ -58,13 +58,13 @@ export default function ActiveWOBox(woList) {
   return (
     <>
       {woList.length === 0 ? (
-        <div className="mb-2">
+        <div className="">
             <div className="rounded-md flex border border-neutral2 bg-neutral2 bg-opacity-5 justify-center">
                 <h1 className="text-neutral3 text-xl m-10">No Active Work Orders Currently!</h1>
             </div>
         </div>
       ) : (
-        <div className="mb-4">
+        <div className="">
           <WOsCardList woList={woList} />
         </div>
       )}

@@ -51,14 +51,14 @@ export default function UnpaidInvBox(invList) {
   return (
     <>
       {invList.length === 0 ? (
-        <div className="mb-4">
-            <div className="rounded-md flex justify-center border border-neutral2 bg-neutral2 bg-opacity-5 justify-center">
+        <div className="">
+            <div className="rounded-md flex justify-center border border-neutral2 bg-neutral2 bg-opacity-5">
                 <h1 className="relative text-neutral3 text-xl py-10">No Unpaid Invoices Currently!</h1>
             </div>
 
         </div>
       ) : (
-        <div className="mb-4">
+        <div className="">
           <InvCardList invList={invList} />
         </div>
       )}

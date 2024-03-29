@@ -40,19 +40,19 @@ export default async function Home({ profile }) {
     return (
         <div className="">
             <h1 className="text-3xl my-8 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
-            <div className="grid gap-8 sm:grid-cols-2">
-                <div className="row-span-2 mb-2">
+            <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+                <div className="row-span-2 self-auto">
                     <WorkCompletedBox
                         woCompletedList={completeWos} />
                 </div>
 
-                <div className="grid grid-rows-1 grid-flow-col">
-                    <div>
-                        <ActiveWOBox 
-                            woList={wos} />
-                        <UnpaidInvBox
+                <div className="self-start">
+                    <ActiveWOBox 
+                        woList={wos} />
+                </div>
+                <div className="self-end">
+                    <UnpaidInvBox
                             invList={unpaidInvs} />
-                    </div> {/*End of Tables  Workorders*/}
                 </div>
             </div>
         </div>
