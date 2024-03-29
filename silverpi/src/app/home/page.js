@@ -39,7 +39,7 @@ export default async function Home({ profile }) {
 
     return (
         <div className="">
-            <h1 className="text-3xl my-10 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
+            <h1 className="text-3xl my-8 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
             <div className="grid gap-8 sm:grid-cols-2">
                 <div className="row-span-2 mb-2">
                     <WorkCompletedBox
