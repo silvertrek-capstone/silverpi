@@ -43,7 +43,7 @@ function InvCardList(invList) {
     )
 }
 
-export default function ActiveWOBox(invList) {
+export default function UnpaidInvBox(invList) {
   invList = invList || []
   // have to take out the actual list since we are being returned an object with a invList value that points to the list
   invList = invList.invList

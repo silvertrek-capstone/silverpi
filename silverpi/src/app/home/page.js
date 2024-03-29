@@ -6,7 +6,7 @@ import { getJustWorkorders } from "@/api/workorders/getJustWorkorders"
 import { getUnpaidInvoices } from "@/api/invoices/getUnpaidInvoices"
 import WorkCompletedBox from "@/components/workCompletedBox"
 import ActiveWOBox from "@/components/activeWorkOrdersBox"
-import UnpaidInvCard from "@/components/unpaidInvoicesBox"
+import unpaidInvBox from "@/components/unpaidInvoicesBox"
 
 export default async function Home({ profile }) {
 
