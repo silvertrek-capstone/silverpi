@@ -56,7 +56,7 @@ function CompletedCardList(woCompletedList) {
                 <div className="flex flex-row items-end">
                     <h1 className="pb-2 text-xl text-neutral3 my-3 font-semibold">Recent Completed Work</h1>
                 </div>
-                <div className="max-h-[40vh] border p-3 border-neutral2 rounded-md overflow-y-scroll">
+                <div className="max-h-[52vh] border p-3 border-neutral2 rounded-md overflow-y-scroll">
                     {arr}
                 </div>
                 <div className="flex flex-row justify-center mt-12">

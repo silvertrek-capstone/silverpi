@@ -48,7 +48,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
     // Update table items on change
     useEffect(() => {
         if (items !== tableItems) {
-            setTableItems(items)
+            setTableItems(items || [])
         }
     }, [items]);
 
@@ -62,9 +62,9 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
     useEffect(() => {
         if (sortBy) {
             const sortedItems = sortByKey(tableItems, sortBy, sortDesc);
-            setTableItems(sortedItems);
+            setTableItems(sortedItems || []);
         } else {
-            setTableItems(items);
+            setTableItems(items || []);
         }
     }, [sortBy, sortDesc, items]);
 
