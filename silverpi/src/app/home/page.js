@@ -41,7 +41,7 @@ export default async function Home({ profile }) {
         <div className="">
             <h1 className="text-3xl my-8 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
             <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
-                <div className="row-span-2 self-auto">
+                <div className="row-span-2 self-start">
                     <WorkCompletedBox
                         woCompletedList={completeWos} />
                 </div>
