@@ -60,11 +60,17 @@ function CompletedCardList(woCompletedList) {
                     {arr}
                 </div>
                 <div className="flex flex-row justify-center mt-12">
-                    <ThemeProvider theme={theme}>
-                        <Pagination count={numPages} shape="rounded" color="primary" 
-                            onChange={(e, value) => setIndexes(value)}
-                        />
-                    </ThemeProvider>
+                    {numPages > 1 ? (
+                            <ThemeProvider theme={theme}>
+                                <Pagination count={numPages} shape="rounded" color="primary" 
+                                    onChange={(e, value) => setIndexes(value)}
+                                />
+                            </ThemeProvider>
+                        ) : (
+                         <></>
+                        )
+                    }
+                    
                 </div>
             </div>
         </>
@@ -82,7 +88,7 @@ export default function WorkCompletedBox(woCompletedList) {
       {woCompletedList.length === 0 ? (
         <div className="">
             <div className="rounded-md flex border border-neutral2 bg-neutral2 bg-opacity-5 justify-center">
-                <h1 className="text-neutral3 text-xl m-10">No recent work completed data found!</h1>
+                <h1 className="text-neutral3 text-xl m-10">No Recent Work Completed Data Found!</h1>
             </div>
         </div>
         

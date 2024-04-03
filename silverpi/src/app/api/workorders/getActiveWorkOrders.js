@@ -12,7 +12,11 @@ export async function getActiveWorkOrders() {
 
         const query = gql`
         query($filter: vSMWorkOrderFilterInput){
-            vSMWorkOrder(where: $filter){
+            vSMWorkOrder(where: $filter
+                order: { 
+                    requestedDate: DESC 
+                }
+                ){
                 sMCo
                 workOrder
                 custGroup
