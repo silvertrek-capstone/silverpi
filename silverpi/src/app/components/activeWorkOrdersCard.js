@@ -12,7 +12,7 @@ export default function ActiveWOCard({title, description, date, status, wo}) {
               <Link href={`/home/workorders/${wo}`} className="text-primary font-bold hover:underline pl-1">
                 {wo}
               </Link>
-            <span className="items-end text-neutral3 text-opacity-50 font-semibold text-xssm italic ml-auto">{`Certified Start Date: ${month}/${day}/${year}`}</span>
+            <span className="items-end text-neutral3 text-opacity-50 font-semibold text-xssm italic ml-auto">{`Requested Date: ${month}/${day}/${year}`}</span>
           </div>
           <p className="text-neutral4 font-semibold text-sm px-3 pb-2 pl-5 pb-3">{description}</p>
         </div>

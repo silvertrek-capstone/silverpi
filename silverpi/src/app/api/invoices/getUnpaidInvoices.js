@@ -12,7 +12,13 @@ export async function getUnpaidInvoices() {
 
         const query = gql`
         query($filter: vrvSMInvoicesByInvoiceNumberFilterInput){
-            sMInvoicesByInvoiceNumber(where: $filter){
+            sMInvoicesByInvoiceNumber
+            (   
+                where: $filter
+                order: { 
+                    dueDate: DESC 
+                }
+            ){
                 sMCo
                 invoice
                 status
@@ -62,8 +68,10 @@ export async function getUnpaidInvoices() {
             filter: {
                 sMCo: { "eq": 1 },
                 customer: { "eq": customer }, // Customer number
-                paidInFullYN: { "neq": "Y"}
+                paidInFullYN: { "neq": "Y"},
+                
             }
+            
         }
 
         // Make the request

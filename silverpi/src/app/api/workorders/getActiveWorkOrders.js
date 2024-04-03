@@ -18,6 +18,9 @@ export async function getActiveWorkOrders() {
                 custGroup
                 customer
                 requestedDate
+                certifiedStartDate
+                enteredDateTime
+                requestedTime
                 contactName
                 description
                 notes
