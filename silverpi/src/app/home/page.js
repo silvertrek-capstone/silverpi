@@ -1,7 +1,6 @@
 import Table from "@/components/table"
 import Link from 'next/link';
-import { cookies } from 'next/headers'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { getUserProfile } from '@/api/user/getUserProfile'
 import { getActiveWorkOrders } from "@/api/workorders/getActiveWorkOrders.js"
 import { getWorkCompleted } from "@/api/workorders/getWorkCompleted"
 import { getJustWorkorders } from "@/api/workorders/getJustWorkorders"
@@ -11,22 +10,8 @@ import ActiveWOBox from "@/components/activeWorkOrdersBox"
 import UnpaidInvBox from "@/components/unpaidInvoicesBox"
 
 export default async function Home({ }) {
-    const cookieStore = cookies()
-    const supabase = createServerComponentClient({ cookies: () => cookieStore })
-    const { data: supadata, error: supaerror} = await supabase.auth.getSession()
-    const { session } = supadata
-    // Check if not signed in. Because all pages are a child component of this one, this should handle security
-    if (session === null || supaerror) {
-        redirect('/login')
-    }
-
-    const profile = await getProfileForUser(supabase, session);
-    // Check profile, if no result, log out user, large error occured somewhere
-    if (profile === null) {
-        redirect('/login')
-    }
-
-
+    const { data: user, error: userError} = await getUserProfile()
+    const profile = user || []
 
     const {data, error} = await getActiveWorkOrders()
     const wos = data || [];
@@ -75,12 +60,4 @@ export default async function Home({ }) {
             </div>
         </div>
     )
-}
-
-async function getProfileForUser(supabase) {
-    // Do a select to get profile data for user (name, role, etc)
-    // RLS policy should result in just the users data
-    const { data } = await supabase.from('profiles').select().single();
-    // Above should result in a single row returned
-    return data || null;
 }

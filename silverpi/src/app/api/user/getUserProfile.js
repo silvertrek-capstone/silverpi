@@ -43,6 +43,7 @@ export async function getUserProfile(user_id) {
                 .from('profiles')
                 .select()
                 .single(); // Dont need an eq, because RLS only allows select your profile row
+
             if (profileError) {
                 throw new Error(profileError);
             }
@@ -50,8 +51,6 @@ export async function getUserProfile(user_id) {
             // If no error, append the profile data to the user object
             user = { ...user, ...profileData };
         }
-
-
 
         // Return the user/profile object
         return { data: user, error: null };
