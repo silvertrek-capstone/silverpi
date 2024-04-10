@@ -19,7 +19,7 @@ export async function POST(request) {
     inviteId: formData.get('invite-id') || null, // Get the invite id, or null if non existent.
     custNum: null,
   }
-  // First, check that password and rePassword match
+  // Check that password and rePassword match
   if (signupData.password !== signupData.rePassword) {
     return NextResponse.json({ error: 'Passwords do not match' }, { status: 301 })
     // return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
@@ -48,22 +48,23 @@ export async function POST(request) {
   if (signupData.inviteId) {
     // Make a search on the invite table for customer numbers
     let response2 = await supabase
-      .from('invites')
+      .from('invite_to_customer')
       .select('cust_num')
-      .eq('id', signupData.inviteId);
+      .eq('invite_id', signupData.inviteId);
   
       console.log(response2)
       // If error, quit.
       if (response2.error) {
-        console.log('error2', response2.error) 
+        console.log('error2', response2.error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: response2.error.status })
         // return NextResponse.redirect(`${requestUrl.origin}/signup`, {status: 301})
       }
       if (response2.data.length) {
-        signupData.custNum = response2.data[0].cust_num;
-
+        const mapped = response2.data.map((e, i) => {
+          return {user_id: userData.id, cust_num: e.cust_num, using: i === 0};
+        })
         // Kind messy, but add the customer - user relation here.
-        await supabase.from('customer_to_user').insert({user_id: userData.id, cust_num: signupData.custNum})
+        await supabase.from('customer_to_user').insert(mapped)
       }
   }
 
@@ -74,7 +75,7 @@ export async function POST(request) {
       id: userData.id,
       first_name: signupData.first,
       last_name: signupData.last,
-      role_id: signupData.custNum ? 2 : null, // If we got a valid customer number, set their role to customer off the bat.
+      role_id: 2
     })
   
   console.log(response3)
