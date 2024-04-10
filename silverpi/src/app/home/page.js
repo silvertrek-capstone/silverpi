@@ -1,11 +1,17 @@
 import Table from "@/components/table"
 import Link from 'next/link';
+import { getUserProfile } from '@/api/user/getUserProfile'
 import { getActiveWorkOrders } from "@/api/workorders/getActiveWorkOrders.js"
 import { getWorkCompleted } from "@/api/workorders/getWorkCompleted"
 import { getJustWorkorders } from "@/api/workorders/getJustWorkorders"
+import { getUnpaidInvoices } from "@/api/invoices/getUnpaidInvoices"
 import WorkCompletedBox from "@/components/workCompletedBox"
+import ActiveWOBox from "@/components/activeWorkOrdersBox"
+import UnpaidInvBox from "@/components/unpaidInvoicesBox"
 
-export default async function Home({ profile }) {
+export default async function Home({ }) {
+    const { data: user, error: userError} = await getUserProfile()
+    const profile = user || []
 
     const {data, error} = await getActiveWorkOrders()
     const wos = data || [];
@@ -23,6 +29,10 @@ export default async function Home({ profile }) {
 
     const {data: completedData, error: completedError} = await getWorkCompleted(wosList)
     const completeWos = completedData || [];
+
+    const {data: unpaidData, error: invError} = await getUnpaidInvoices()
+    const unpaidInvs = unpaidData || []
+    
     
     const woHeaders = [
         { text: "ID", value: "workOrder" },
@@ -31,46 +41,23 @@ export default async function Home({ profile }) {
     ]
 
     return (
-        <>
-            <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Hello, Judah!</h1>
-            <div className="grid gap-8 grid-cols-2">
-                <div className="row-span-2">
+        <div className="">
+            <h1 className="text-3xl my-8 text-txt font-bold leading-tight tracking-tight">Hello, {profile.first_name}!</h1>
+            <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+                <div className="row-span-2 self-start">
                     <WorkCompletedBox
                         woCompletedList={completeWos} />
                 </div>
 
-                <div className="grid grid-rows-2 grid-flow-col mt-1">
-                    <div>
-                        <Table
-                            headers={woHeaders}
-                            items={wos}
-                            mainkey="workOrder"
-                            link="/home/workorders/"
-                            title="Open Work Orders"
-                        >
-
-                        </Table>
-                        <Link href="/home/workorders" className="py-2 float-right font-bold leading-6 text-primary hover:underline">
-                            see more
-                        </Link>
-                    </div> {/*End of Tables  Workorders*/}
-                    <div>
-                        <Table
-                            headers={woHeaders}
-                            items={[]}
-                            mainkey="workOrder"
-                            link="/home/invoices/"
-                            title="Unpaid Invoices"
-                        >
-
-                        </Table>
-                        <Link href="/home/invoices" className="py-2 float-right font-bold leading-6 text-primary hover:underline">
-                            see more
-                        </Link>
-                    </div>
+                <div className="self-start">
+                    <ActiveWOBox 
+                        woList={wos} />
+                </div>
+                <div className="self-end">
+                    <UnpaidInvBox
+                            invList={unpaidInvs} />
                 </div>
             </div>
-
-        </>
+        </div>
     )
 }

@@ -26,7 +26,7 @@ export default async function DashboardLayout({ children }) {
 
     return (
         <>
-            <section className='h-full'>
+            <section className='overflow-x-hidden h-full'>
                 <Navbar profile={profile} user={session.user} customers={customers} />
                 <div className='flex'>
                     <div className='flex-1 mx-12 w-full'>
