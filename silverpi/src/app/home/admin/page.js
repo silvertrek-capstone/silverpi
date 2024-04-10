@@ -2,6 +2,9 @@ import Table from "@/components/table"
 import { getPendingUsers } from "@/api/admin/getPendingUsers"
 import { getActiveUsers } from "@/api/admin/getActiveUsers"
 import { getAllInvites } from "@/api/admin/getAllInvites";
+import { setInvite } from "@/api/admin/setInvite";
+import InviteButton from "./addInviteButton";
+import { redirect } from "next/navigation";
 
 export default async function AdminPanel() {
   const headers = [
@@ -21,6 +24,14 @@ export default async function AdminPanel() {
   const activeUsers = res2.data;
   const res3 = await getAllInvites();
   const invites = res3.data;
+
+  async function handleSetInvite() {
+    "use server";
+
+    const { data, error } = await setInvite();
+    redirect('/home/admin/invites/' + data)
+
+  }
 
   return (
     <>
@@ -53,12 +64,8 @@ export default async function AdminPanel() {
         </div>
       </div>
       <div className="mt-6">
-        <button
-          type="button"
-          className="rounded-md bg-secondary px-3 py-2 mb-6 text-sm font-semibold text-white shadow-sm hover:shadow-md"
-        >
-          Add Invite
-        </button>
+        <InviteButton handleSetInvite={handleSetInvite} />
+
         <Table
           headers={headers}
           items={invites}
@@ -67,8 +74,6 @@ export default async function AdminPanel() {
         >
 
         </Table>
-      </div>
-      <div>
 
       </div>
     </>

@@ -9,10 +9,11 @@ export async function setInvite(id, email) {
         // Update our profile
         const { data, error } = await supabase
             .from('invites')
-            .upsert({id: id || null, email: email || null})
+            .upsert({id, email: email || null})
             .select()
             .single();
         if (error) {
+            console.log(error)
             throw new Error(error);
         }
 
