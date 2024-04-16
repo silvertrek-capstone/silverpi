@@ -4,6 +4,7 @@ import { addCustomerToInvite } from "@/api/admin/addCustomerToInvite";
 import { removeCustomerFromInvite } from "@/api/admin/removeCustomerFromInvite";
 import { setInvite } from "@/api/admin/setInvite";
 import { getInvite } from "@/api/admin/getInvite";
+import { deleteInvite } from "@/api/admin/deleteInvite";
 import { redirect } from 'next/navigation';
 
 export default async function UserPage({ params }) {
@@ -48,6 +49,13 @@ export default async function UserPage({ params }) {
         const { data, error } = await removeCustomerFromInvite(invite_id, cust_num);
         return JSON.parse(JSON.stringify({ data, error }));
     }
+    async function handleDeleteInvite() {
+        "use server";
+
+        const { data, error } = await deleteInvite(invite_id);
+        return JSON.parse(JSON.stringify({ data, error }));
+    }
+
 
 
 
@@ -59,6 +67,7 @@ export default async function UserPage({ params }) {
             invite={invite}
             handleSetInvite={handleSetInvite}
             handleAddCustomer={handleAddCustomer}
+            handleDeleteInvite={handleDeleteInvite}
             handleRemoveCustomer={handleRemoveCustomer}
         >
         </ClientUserPage>

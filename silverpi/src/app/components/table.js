@@ -90,7 +90,7 @@ export default function Table({ headers, items, mainkey, link, title, loading, o
                     ) : (
                         <div className="max-h-[60vh] overflow-y-auto border border-neutral2 border-opacity-60">
                         <table className="min-w-full divide-y divide-neutral2 table-auto w-full">
-                            <thead className="sticky top-0 z-10 bg-secondary">
+                            <thead className="sticky top-0 z-1 bg-secondary">
                                 <tr>
                                     {headers.map((header, i) => (
                                         <th
@@ -191,12 +191,12 @@ function sortByKey(arr, key, desc) {
     const sorting = structuredClone(arr) // Deep clone of array
     // Big sort function
     sorting.sort((a, b) => {
-        const aval = a[key]
-        const bval = b[key]
+        const aval = a[key];
+        const bval = b[key];
 
         // Check if floats
-        const afloat = Number(aval)
-        const bfloat = Number(bval)
+        const afloat = Number(aval);
+        const bfloat = Number(bval);
         if (!isNaN(afloat) && !isNaN(bfloat)) {
             return desc ? bfloat - afloat : afloat - bfloat
         }
@@ -211,9 +211,9 @@ function sortByKey(arr, key, desc) {
 
 
         if (desc) {
-            return aval < bval;
+            return (bval || '').localeCompare((aval || ''))
         }
-        return aval >= bval;
+        return (aval || '').localeCompare((bval || ''))
     })
     return sorting
 }

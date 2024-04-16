@@ -13,10 +13,6 @@ export default async function AdminPanel() {
     { text: 'Email', value: 'email' },
   ];
 
-  const headers2 = [
-    { text: 'ID', value: 'id' },
-    { text: 'Email', value: 'email' },
-  ]
 
   const res = await getPendingUsers()
   const pendingUsers = res.data;
@@ -72,7 +68,6 @@ export default async function AdminPanel() {
           mainkey='id'
           link="/home/admin/invites/"
         >
-
         </Table>
 
       </div>

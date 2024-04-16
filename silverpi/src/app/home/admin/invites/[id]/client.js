@@ -5,7 +5,8 @@ import Table from '@/components/table';
 import Autocomplete from '@/components/autocomplete';
 import { toast } from 'react-toastify';
 import CustomToastContainer from 'src/app/components/customtoastcontainer.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const headers = [
     { text: 'Customer #', value: 'cust_num' },
@@ -14,11 +15,22 @@ const headers = [
 
 // Note, roleId passed may differ from the role_id in the profile info, if you are viewing someone elses profile
 // Only possible if you are an admin.
-export default function ClientUserPage({ allCustomers, invite, handleSetInvite, handleAddCustomer, handleRemoveCustomer }) {
+export default function ClientUserPage({ allCustomers, invite, handleSetInvite, handleAddCustomer, handleRemoveCustomer, handleDeleteInvite }) {
     // Create all the values that the changable fields have.
     const [email, setEmail] = useState(invite.email);
     const [customerRows, setCustomerRows] = useState(invite.customers || []);
     const [cust, setCust] = useState(null);
+    const [goBack, setGoBack] = useState(false);
+
+    const router = useRouter();
+
+
+    // Use effect for going back
+    useEffect(() => {
+        if (goBack === true) {
+            router.replace('/home/admin');
+        }
+    }, [goBack]);
 
 
     // Called when role changed or save button clicked
@@ -60,16 +72,30 @@ export default function ClientUserPage({ allCustomers, invite, handleSetInvite, 
         }
     }
 
+    async function deleteInvite() {
+        const { data, error } = await handleDeleteInvite();
+        if (error) {
+            toast.error('Failed to delete invite')
+        } else {
+            toast.success('Successfully deleted invite')
+            // Go back to admin
+            setGoBack(true);
+        }
+    }
+
+
 
     // Opens a mailto with the invite information.
     function handleSendEmail() {
         let str = "mailto:"
+        const n = '%0d%0a'
         str += email;
         str += "?subject=Invitation To SilverPI"
-        str += "&body=Click the below link to create an account with SilverPI"
-        str += "%0d%0ahttp://localhost:3000/signup?invite="
+        str += "&body=Click the below link to create an account with SilverPI:"
+        str += n + "http://localhost:3000/signup?invite="
         str += invite.id
-        str += "%0d%0aThank you!"
+        str += n + "Your invite ID is: " + invite.id + "."
+        str += n + "Thank you!"
         window.top.location = str;
     }
 
@@ -106,6 +132,13 @@ export default function ClientUserPage({ allCustomers, invite, handleSetInvite, 
                         className="rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:shadow-md"
                     >
                         Send Email
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => deleteInvite()}
+                        className="rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:shadow-md"
+                    >
+                        Delete
                     </button>
                     <button
                         type="button"
