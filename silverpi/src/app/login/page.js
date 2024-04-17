@@ -41,8 +41,6 @@ export default function Login() {
     
     const formObj = new FormData(event.target);               // define formdata object for email-password pairing
     
-    const email = formObj.get('email');                      // Acquire email and password fields
-    const password = formObj.get('password');
 
     // Send POST request to endpoint using credentials
     try { 
@@ -50,17 +48,17 @@ export default function Login() {
         method: 'POST',
         body: formObj,
       });
-
-      if (response.ok) {                                      // response is good
-          router.push('/home');                               // redirect to homepage on success
-      } 
-      else {
-        const error = await response.json();                  // Send error response and display toast message
-        toast.error(error.error);                             // toast error
+      const json = await response.json();
+      const {error} = json;
+      console.log(error);
+      if (error) {
+        toast.error(error);
+        return;
       }
-    } 
-    catch (error) {                                           // Catch
-      toast.error('Incorrect login credentials entered');     // Send custom message
+      router.push('/home');
+
+    } catch (e) {                                           // Catch
+      toast.error('Unknown error occured');     // Send custom message
     }
   };
 

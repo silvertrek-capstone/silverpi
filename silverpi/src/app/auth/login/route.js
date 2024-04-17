@@ -15,18 +15,11 @@ export async function POST(request) {
     password,
   })
 
-  //console.log("DEBUG");
-
-  if (!error) {                               // Valid Login - direct to home
-    return NextResponse.redirect(`${requestUrl.origin}/home`, {
-      status: 301,
-    });
-  } 
-  else {                                      // Invalid Login - back to login with err status
-    //console.error('Login error:', error);
-    //console.error('Login user:', user);
-    return NextResponse.redirect(`${requestUrl.origin}/login`);
+  if (error) {
+    return NextResponse.json({error: error.message}, {status: error.status})
   }
+  // Else, successful sign in, return no error
+  return NextResponse.json({ error: null }, { status: 200 })
 }
 
 

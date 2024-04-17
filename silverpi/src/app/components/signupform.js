@@ -54,7 +54,7 @@ export default function SignUpForm({invite}) {
     }
     
     // try to submit form to server
-    const submission = await onSubmit(e);
+    await onSubmit(e);
   };
 
   // sends to server 
@@ -65,27 +65,14 @@ export default function SignUpForm({invite}) {
           method: 'POST',
           body: formData_e
         });
-        
-        if (response.ok){               // check response if successful
-          // toast.success("Successfully signed up"); 
-          router.push('/home');    
-        }
-        else{
-          const data = await response.json()  // else get info(data) about error and notify user
 
-          console.log(data);
-          if(response.status == 400){
-            throw new Error(data.error);
-          }
-          else if(response.status == 404){  
-            throw new Error("Error: 404 Not Found");
-          }
-          else if(response.status == 422){
-            throw new Error(data.error);
-          }
-          else{
-            throw new Error("Internal server error");
-          }
+        const json = await response.json();
+        // Check for error, if no error, go to the home page
+        const { error } = json;
+        if (!error) {
+          router.push('/home');
+        } else {
+          throw new Error(error);
         }
     } 
     catch (error) {  
@@ -136,6 +123,7 @@ export default function SignUpForm({invite}) {
                 <div className="mt-1">
                   <input
                     type="text"
+                    required
                     name="first-name"
                     id="first-name"
                     autoComplete="given-name"
@@ -151,6 +139,7 @@ export default function SignUpForm({invite}) {
                 <div className="mt-1">
                   <input
                     type="text"
+                    required
                     name="last-name"
                     id="last-name"
                     autoComplete="family-name"
@@ -185,6 +174,7 @@ export default function SignUpForm({invite}) {
                   id="invite-id"
                   name="invite-id"
                   type="text"
+                  required
                   readOnly={Boolean(inviteId)}
                   defaultValue={inviteId}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
