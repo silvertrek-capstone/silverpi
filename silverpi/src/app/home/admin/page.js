@@ -39,7 +39,7 @@ export default async function AdminPanel() {
       <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Admin Panel</h1>
       <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
         <div className="row-span-2 self-start">
-          <h2 className=" mb-2 text-base font-semibold leading-7 text-gray-900">Pending Users</h2>
+          <h2 className=" mb-2 text-base font-semibold leading-7 text-gray-900">Invitations</h2>
 
 
           <Table
