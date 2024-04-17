@@ -102,11 +102,11 @@ export default function ClientUserPage({ allCustomers, invite, handleSetInvite, 
 
     return (
         <>
-            <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Your Profile</h1>
+            <h1 className="text-3xl my-5 text-txt font-bold leading-tight tracking-tight">Invite - {invite.id}</h1>
             <form>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900">To</h2>
                         <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
                             <div className="sm:col-span-4">
@@ -149,6 +149,8 @@ export default function ClientUserPage({ allCustomers, invite, handleSetInvite, 
                     </button>
                 </div>
                 <div className="border-b border-gray-900/10 pb-12">
+                <h2 className="text-base font-semibold leading-7 text-gray-900">Related Customer(s)</h2>
+
                     <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
                         <div className="sm:col-span-3">

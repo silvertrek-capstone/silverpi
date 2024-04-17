@@ -2,7 +2,8 @@ import { cookies } from 'next/headers'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import Navbar from "@/components/navbar.js"
 import { redirect } from 'next/navigation.js'
-import { handler } from "@/api/user/getCustomersForNums/route"
+import { getUserProfile } from '@/api/user/getUserProfile'
+import { getCustomersForUser } from '@/api/user/getCustomersForUser'
 
 export default async function DashboardLayout({ children }) {
     const cookieStore = cookies()
@@ -11,18 +12,21 @@ export default async function DashboardLayout({ children }) {
     const { session } = data
     // Check if not signed in. Because all pages are a child component of this one, this should handle security
     if (session === null || error) {
+        console.log(error || 'bad')
         redirect('/login')
     }
-    const profile = await getProfileForUser(supabase, session);
+    const res1 = await getUserProfile();
     // Check profile, if no result, log out user, large error occured somewhere
-    if (profile === null) {
+    if (res1.error) {
         redirect('/login')
     }
-    const customers = await getAllCustomersForUser(supabase, session);
+    const profile = res1.data;
+    const res2 = await getCustomersForUser();
     // Can't do anything if you don't have any customers, logout.
-    if (!customers.length) {
+    if (res2.error || !res2.data?.length) {
         redirect('/login')
     }
+    const customers = res2.data;
 
     return (
         <>
@@ -38,53 +42,3 @@ export default async function DashboardLayout({ children }) {
         </>
     );
 }
-
-async function getProfileForUser(supabase) {
-    // Do a select to get profile data for user (name, role, etc)
-    // RLS policy should result in just the users data
-    const { data } = await supabase.from('profiles').select().single();
-    // Above should result in a single row returned
-    return data || null;
-}
-
-// Returns an array of all customers available to the current user.
-async function getAllCustomersForUser(supabase) {
-    // Do a select on all customer_to_user table, RLS policy should result in just the results we need
-    const { data } = await supabase.from('customer_to_user').select();
-    if (!data) {
-        return [];
-    }
-
-    // Get just cust nums
-    const ids = data.map((e) => {
-        return e.cust_num;
-    });
-
-    // Get the actual customer information related to the ids
-    const res = await handler(ids);
-    const realCustomers = await res.json();
-
-    // Left join the customer to user data on the real customers data.
-    const joined = leftJoin(data, realCustomers.data || [], 'cust_num', 'customer')
-
-    // Now, sort by the "using" column, so that the one being used is in first
-    joined.sort((a, b) => {
-        return b.using - a.using
-    });
-
-    return joined
-
-}
-
-
-// helper function
-function leftJoin(objArr1, objArr2, key1, key2) {
-    return objArr1.map(
-        anObj1 => ({
-            ...objArr2.find(
-                anObj2 => anObj1[key1] === anObj2[key2]
-            ),
-            ...anObj1
-        })
-    );
-} 

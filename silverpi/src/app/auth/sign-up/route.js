@@ -47,6 +47,9 @@ export async function POST(request) {
     return NextResponse.json({ error: "Failed to add customers to user" }, { status: 422 })
   }
 
+  // Now, burn the invite, one user per invite only, so it stays clean.
+  await burnInvite(supabase, signupData.inviteId);
+
   // Finally, add the profile data to the profiles table
   const profile = await addNewProfile(supabase, newUser, signupData);
   if (profile.error) {
@@ -102,4 +105,12 @@ async function addNewProfile(supabase, newUser, signupData) {
       role_id: 2
     });
   return {data, error};
+}
+
+// Burn invite function, deletes the invite from the invites table (which should cascade to the sub table)
+async function burnInvite(supabase, inviteId) {
+  return supabase
+    .from('invites')
+    .delete()
+    .eq('id', inviteId);
 }
