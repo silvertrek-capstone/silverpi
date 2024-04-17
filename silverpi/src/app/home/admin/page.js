@@ -1,5 +1,4 @@
 import Table from "@/components/table"
-import { getPendingUsers } from "@/api/admin/getPendingUsers"
 import { getActiveUsers } from "@/api/admin/getActiveUsers"
 import { getAllInvites } from "@/api/admin/getAllInvites";
 import { setInvite } from "@/api/admin/setInvite";
@@ -14,7 +13,7 @@ export default async function AdminPanel() {
     redirect('/home');
   }
 
-  
+
 
   const headers = [
     { text: 'ID', value: 'id' },
@@ -22,9 +21,6 @@ export default async function AdminPanel() {
     { text: 'Email', value: 'email' },
   ];
 
-
-  const res = await getPendingUsers()
-  const pendingUsers = res.data;
   const res2 = await getActiveUsers()
   const activeUsers = res2.data;
   const res3 = await getAllInvites();
@@ -45,14 +41,15 @@ export default async function AdminPanel() {
         <div className="row-span-2 self-start">
           <h2 className=" mb-2 text-base font-semibold leading-7 text-gray-900">Pending Users</h2>
 
+
           <Table
             headers={headers}
-            items={pendingUsers}
+            items={invites}
             mainkey='id'
-            link="/home/user/"
+            link="/home/admin/invites/"
           >
-
           </Table>
+          <InviteButton handleSetInvite={handleSetInvite} />
         </div>
 
         <div className="self-start">
@@ -67,18 +64,6 @@ export default async function AdminPanel() {
 
           </Table>
         </div>
-      </div>
-      <div className="mt-6">
-        <InviteButton handleSetInvite={handleSetInvite} />
-
-        <Table
-          headers={headers}
-          items={invites}
-          mainkey='id'
-          link="/home/admin/invites/"
-        >
-        </Table>
-
       </div>
     </>
   );

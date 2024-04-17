@@ -6,7 +6,7 @@ import { cookies } from 'next/headers'
 
 // Inserts a customer for the given user
 // If user is null, adds to the logged in user.
-// Obj should have cust_num and using: false.
+// Obj should have cust_num and using: true.
 export async function addCustomerForUser(user_id, obj) {
     try {
 
