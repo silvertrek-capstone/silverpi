@@ -5,8 +5,17 @@ import { getAllInvites } from "@/api/admin/getAllInvites";
 import { setInvite } from "@/api/admin/setInvite";
 import InviteButton from "./addInviteButton";
 import { redirect } from "next/navigation";
+import { getRole } from "@/api/admin/getRole";
 
 export default async function AdminPanel() {
+
+  const { data: role_id, error: roleError } = await getRole();
+  if (roleError || role_id !== 1) { // Only authenticated users
+    redirect('/home');
+  }
+
+  
+
   const headers = [
     { text: 'ID', value: 'id' },
     // { text: 'Name', value: 'name' },

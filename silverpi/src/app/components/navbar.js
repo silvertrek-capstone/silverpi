@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState, useEffect, Fragment } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Select from "@/components/select"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
@@ -11,30 +11,38 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar({ user, customers, profile }) {
+export default function Navbar({ role_id, customers, profile }) {
   const [currentPage, setCurrentPage] = useState();
   const pathName = usePathname();
 
   // Customer select stuff starts here
 
   // Set the current customer to the first item in the list. (Should be right due to sorting)
-  
+
   // Generate the items for the dropdown
   const customerSelectItems = customers.map((e) => {
     return { text: e.name, value: e.cust_num }
   })
   const [currentCustomer, setCurrentCustomer] = useState(customerSelectItems[0]?.value);
 
+  // Page reload stuff
+  const [reloadPage, setReloadPage] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    if (reloadPage) {
+      router.refresh();
+    }
+
+  }, [reloadPage])
+
+
   // Function for handling a customer change
   async function handleCustomerChange(e) {
     // Set current customer for the select
     setCurrentCustomer(e);
     // Handle updating the db
-    await updateUsingCustomer(e);
-    // Does not refresh currently, which causes bugs.
-    // // Refresh everything, because almost everything is customer based, its easier to just refresh it all
-    // const router = useRouter();
-    // router.reload();
+    await updateUsingCustomer(e);updateUsingCustomer
+    setReloadPage(true); // Reload everything
   }
 
   useEffect(() => {
@@ -124,19 +132,21 @@ export default function Navbar({ user, customers, profile }) {
                               </Link>
                             )}
                           </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                href="/home/admin"
-                                className={classNames(
-                                  active ? 'text-primary' : '',
-                                  'block px-4 py-2 text-sm text-greytxt'
-                                )}
-                              >
-                                Admin
-                              </Link>
-                            )}
-                          </Menu.Item>
+                          {role_id == 1 &&
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  href="/home/admin"
+                                  className={classNames(
+                                    active ? 'text-primary' : '',
+                                    'block px-4 py-2 text-sm text-greytxt'
+                                  )}
+                                >
+                                  Admin
+                                </Link>
+                              )}
+                            </Menu.Item>
+                          }
                           <Menu.Item>
                             {({ active }) => (
 
@@ -209,13 +219,15 @@ export default function Navbar({ user, customers, profile }) {
                 >
                   {profile.first_name} {profile.last_name}
                 </Disclosure.Button>
-                <Disclosure.Button
-                  as={Link}
-                  href="/home/admin"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                >
-                  Admin
-                </Disclosure.Button>
+                {role_id == 1 &&
+                  <Disclosure.Button
+                    as={Link}
+                    href="/home/admin"
+                    className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                  >
+                    Admin
+                  </Disclosure.Button>
+                }
                 <Disclosure.Button
                   as={Link}
                   href="/auth/logout"

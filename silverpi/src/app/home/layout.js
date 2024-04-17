@@ -3,6 +3,7 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import Navbar from "@/components/navbar.js"
 import { redirect } from 'next/navigation.js'
 import { getUserProfile } from '@/api/user/getUserProfile'
+import { getRole } from '@/api/admin/getRole'
 import { getCustomersForUser } from '@/api/user/getCustomersForUser'
 
 export default async function DashboardLayout({ children }) {
@@ -28,10 +29,14 @@ export default async function DashboardLayout({ children }) {
     }
     const customers = res2.data;
 
+    // Get the logged in role
+    const { data: role_id, error: roleError } = await getRole(); // Always gets logged in users.
+
+
     return (
         <>
             <section className='overflow-x-hidden h-full'>
-                <Navbar profile={profile} user={session.user} customers={customers} />
+                <Navbar profile={profile} role_id={role_id} customers={customers} />
                 <div className='flex'>
                     <div className='flex-1 mx-12 w-full'>
                         {children}
