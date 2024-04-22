@@ -22,17 +22,7 @@ const InvoicePage = async ({ params }) => {
   const { data: fileData, error: error3 } = await getbHQAFAttachments(uniqueAttachmentID);
 
   
-    const downloadImage = () => {
-      const a = document.createElement("a");
-  
-      a.href = `data:image/png;base64,${fileData.attachmentData}`;
-  
-      a.download = "Image.png";
-  
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
+    
          
 
   return (
