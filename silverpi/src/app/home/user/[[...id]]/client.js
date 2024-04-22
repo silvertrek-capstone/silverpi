@@ -47,7 +47,7 @@ export default function ClientUserPage({ profile, roleId, roles, customers, allC
         }
         const newCustomer = {
             cust_num: customer.value,
-            using: false,
+            using: true,
         };
         const { data, error } = await insertCustomer(newCustomer);
         if (error) {

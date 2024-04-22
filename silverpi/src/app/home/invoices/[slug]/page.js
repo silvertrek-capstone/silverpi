@@ -1,5 +1,4 @@
 // app/home/admin/[slug]/page.js
-import React from 'react';
 import Table from '@/components/table';
 import { getSingleInvoice, getbHQATAttachments, getbHQAFAttachments } from '@/api/invoices/getSingleInvoice';
 
@@ -9,7 +8,7 @@ const headers = [
   { text: 'Amount', value: 'amountString' },
 ]
 
-const InvoicePage = async ({ params }) => {
+export default async function InvoicePage({ params }) {
   const invnum = params.slug;
   const { data, error } = await getSingleInvoice(invnum);
   const invoiceData = data;
@@ -68,13 +67,5 @@ const InvoicePage = async ({ params }) => {
     </>
   );
 };
-
-export default InvoicePage;        // Assign default export for Next.js to recognize and render component
-
-export async function getStaticPaths() {
-  return {
-    paths: [], fallback: true,   // Set no paths and fallback to true so any URL will generate the page
-  };                             // Note: this will change later once API data is accessible
-}
 
 
