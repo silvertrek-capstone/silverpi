@@ -25,6 +25,7 @@ export async function getSingleInvoice(invNum) {
                 sMInvoice{
                     invoice
                     payTerms
+                    uniqueAttchID
                     sMInvoiceDetails{
                         invoice
                         invoiceDetail
@@ -108,10 +109,15 @@ function formatData(row) {
         currency: 'USD',
     });
     let obj = {
+        
+
         invoice: row.sMInvoice.invoice,
         terms: row.sMInvoice.payTerms,
         invoiceDate: row.invoiceDate,
         dueDate: row.dueDate,
+
+        unique: row.sMInvoice.uniqueAttchID,
+
         workOrder: row.workOrder,
         taxAmount: row.taxAmount,
         totalAmount: row.totalAmount,
@@ -155,4 +161,86 @@ function formatData(row) {
         obj.lines.push(newLine);
     }
     return obj;
+}
+
+export async function getbHQATAttachments(uniqueID) {
+    try {
+        // IMPORTANT, this is how you get the current customer number for the user.
+        const {data: customer, error: custerror} =  await getCustNum();
+        if (custerror) {
+            throw new Error(custerror)
+        }
+
+        const query = gql`
+        query($filter: bHQATFilterInput){
+            bHQAT(where: $filter){
+                attachmentID
+                uniqueAttchID
+                origFileName
+            }
+        }`
+
+        const variables = {
+            filter: {
+                uniqueAttchID: { "eq": uniqueID}
+                
+            }
+        }
+
+        // Make the request
+        const { data, error } = await makeQuery(query, variables)
+        if (error) {
+            return {data, error}
+        }
+
+        // If no error, format data a little to get nice response
+        //const tableRows = data.bHQAT
+        //const formatted = ;
+        //return {data: tableRows, error};
+
+        const attachments = data.bHQAT;
+        console.log(attachments[0])
+        return { data: attachments[0], error};
+    } catch(e) {
+        return {data: null, error: e};
+    }
+}
+
+
+export async function getbHQAFAttachments(uniqueID) {
+    try {
+        // IMPORTANT, this is how you get the current customer number for the user.
+        const {data: customer, error: custerror} =  await getCustNum();
+        if (custerror) {
+            throw new Error(custerror)
+        }
+
+        const query = gql`
+        query($filter: bHQAFFilterInput){
+            bHQAF(where: $filter){
+                attachmentData
+                attachmentID
+                attachmentFileType
+            }
+        }`
+
+        const variables = {
+            filter: {
+                    attachmentID: { "eq": Number(uniqueID)}
+            }
+        }
+
+        // Make the request
+        const { data, error } = await makeQuery(query, variables)
+        if (error) {
+            return {data, error}
+        }
+
+        // If no error, format data a little to get nice response
+
+        const attachments = data.bHQAF;
+        return { data: attachments[0], error};
+    } catch(e) {
+        return {data: null, error: e};
+    }
 }
