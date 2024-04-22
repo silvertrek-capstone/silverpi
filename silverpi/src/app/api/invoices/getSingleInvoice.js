@@ -193,10 +193,7 @@ export async function getbHQATAttachments(uniqueID) {
             return {data, error}
         }
 
-        // If no error, format data a little to get nice response
-        //const tableRows = data.bHQAT
-        //const formatted = ;
-        //return {data: tableRows, error};
+
 
         const attachments = data.bHQAT;
         console.log(attachments[0])

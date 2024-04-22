@@ -31,20 +31,7 @@ export default async function WorkOrderDetail({ params }) {
                     <p><span className="font-semibold">Estimated Hour(s) to Complete: </span> {workOrderDetails.totalEstimatedHours} </p>
                     <p><span className="font-semibold">Hours Worked: </span> N/A </p>    
                 </div>
-                <div className="flex justify-end space-x-4 mb-12">
-                    <button
-                        type="button"
-                        className="rounded bg-white px-4 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    >
-                        View Work Order in PDF
-                    </button>
-                    <button
-                        type="button"
-                        className="rounded bg-indigo-500 px-4 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    >
-                        View Invoice
-                    </button>
-                </div>
+                
                 
                 <div className='mt-4 mb-8 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg'>
                     <Table
