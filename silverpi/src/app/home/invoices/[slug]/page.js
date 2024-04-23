@@ -38,15 +38,30 @@ export default async function InvoicePage({ params }) {
           <p><span className="font-semibold">Terms: </span> {invoiceData.terms} days</p>
           </div>
 
-        <div className="flex justify-end space-x-4 mb-12">
+          <div className="flex justify-end space-x-4 mb-12">
+            {fileID?.origFileName && fileData?.attachmentFileType && fileData?.attachmentData ? (
+              <button
+                type="button"
+                className="rounded bg-primary px-4 py-1 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              >
+              <a
+              download={fileID.origFileName}
+              href={`data:${fileData.attachmentFileType};base64,${fileData.attachmentData}`}
+            >
+              View Invoice in PDF
+            </a>
+          </button>
+        ) : (
           <button
             type="button"
-            className="rounded bg-indigo-500 px-4 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" 
-            
-          > 
-            <a download={`${fileID.origFileName}`} href={`data:${fileData.attachmentFileType};base64,${fileData.attachmentData}`}>View Invoice in PDF</a>
+            className="rounded bg-primary px-4 py-1 text-sm font-semibold text-white shadow-sm"
+            disabled
+          >
+            View Invoice in PDF
           </button>
+        )}
         </div>
+
 
         <div className='mt-4 mb-8 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg'>
           <Table

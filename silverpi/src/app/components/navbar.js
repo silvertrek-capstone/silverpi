@@ -41,7 +41,7 @@ export default function Navbar({ role_id, customers, profile }) {
     // Set current customer for the select
     setCurrentCustomer(e);
     // Handle updating the db
-    await updateUsingCustomer(e);updateUsingCustomer
+    await updateUsingCustomer(e);
     setReloadPage(true); // Reload everything
   }
 
